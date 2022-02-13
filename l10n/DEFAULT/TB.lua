@@ -82,6 +82,7 @@ FDS.exportPath = 'C:\\fdsServerData\\'
 FDS.killEventNumber = 0
 FDS.killEventVector = {}
 FDS.sendDataFreq = 2.0
+FDS.exportDataSite = true -- use false for non-multiplayer games
 
 -- Rewards
 FDS.playerReward = 250.0
@@ -163,10 +164,12 @@ FDS.bluecountUCat = {}
 FDS.blueunitsInZone = {}
 
 -- Starting event file
-lfs.mkdir(FDS.exportPath)
-local file = io.open(FDS.exportPath .. "killRecord.json", "w")
-file:write(nil)
-file:close()
+if FDS.exportDataSite then
+	lfs.mkdir(FDS.exportPath)
+	local file = io.open(FDS.exportPath .. "killRecord.json", "w")
+	file:write(nil)
+	file:close()
+end
 
 -- Switch
 function FDS.switch(t,p)
@@ -433,55 +436,100 @@ function creatingBases()
 	end
 end
 
+function killDCSProcess()
+	os.execute("C:\\automationScript\\dcsKill.bat")
+end
+
 -- Player data
 function getPlayersStats()
 	local jogList = {}
 	local jog = net.get_player_list()
+	local enumSide = {[1] = 'red', [2] = 'blue'}
 	for _,i in pairs(jog) do
         jogInfo = net.get_player_info(i)
         jogStats = net.get_stat(i)
-        jogList[jogInfo.name] = {jogInfo,jogStats}
+		jogStats['points'] = FDS.teamPoints[enumSide[jogInfo['side']]]['Players'][jogInfo['name']]
+		listaViva = mist.DBs.humansByName
+        local playerUnits = {}
+		for k,z in pairs(listaViva) do
+			table.insert(playerUnits, Unit.getByName(k))
+        end
+        for _, k in pairs(playerUnits) do
+            if jogInfo['name'] == k:getPlayerName() then
+                jogInfo['unit'] = k:getDesc().typeName
+            end     
+        end
+        table.insert(jogList, {['information'] = jogInfo, ['stats'] = jogStats})
     end
 	return jogList
+end
+
+function createJSONEntities()
+	local entStart = {}
+	for i,j in pairs(FDS.initTgtObj) do
+		entStart[i] = {}
+		for k,z in pairs(j) do
+			local auxListName = {}
+			local auxListType = {}
+			for _, y in pairs(z) do
+				local isAlive = false
+				for _, obj in pairs(tgtObj[i][k]) do
+					if obj[1] == y[1] then
+						isAlive = true
+					end
+				end
+				table.insert(auxListName, {['name'] = y[1], ['type'] = y[4], ['unitName'] = y[5], ['isAlive'] = isAlive})
+			end
+			table.insert(entStart[i], {
+					['name'] = k,
+					['units'] = auxListName
+				})
+		end
+	end
+	return entStart
 end
 
 -- Creating export vector
 function exportMisData()
     FDS.exportVector = {}
-	FDS.exportVector['entitiesStarting'] = FDS.initTgtObj
-	FDS.exportVector['entitiesCurrent'] = tgtObj
-	FDS.exportVector['dropTime'] = {
-		['blue'] = math.floor((FDS.refreshTime - timer.getTime() + FDS.lastDropTime['blue'])/60.0),
-		['red'] = math.floor((FDS.refreshTime - timer.getTime() + FDS.lastDropTime['red'])/60.0)
-	}
-	FDS.exportVector['bombers'] = {
-		['blue'] = FDS.bomberQty['blue'],
-		['red'] = FDS.bomberQty['red']
-	}
-	FDS.exportVector['points'] = FDS.teamPoints
-	FDS.exportVector['playerStats'] = getPlayersStats()
-	FDS.exportVector['deliveredPoints'] = FDS.recordDeliveredPoints
-	local misTime = math.floor(timer.getTime())
-	local misAbsTime = math.floor(timer.getAbsTime())
-	local misTime0 = math.floor(timer.getTime0())
-	FDS.exportVector['missionTime'] = {
-		['decorrido'] = {math.floor(misTime/(60*60)),math.fmod(math.floor(misTime/60),60),math.fmod(misTime,60)}, 
-		['atual'] = {math.floor(misAbsTime/(60*60)),math.fmod(math.floor(misAbsTime/60),60),math.fmod(misAbsTime,60)}, 
-		['inicio'] = {math.floor(misTime0/(60*60)),math.fmod(math.floor(misTime0/60),60),math.fmod(misTime0,60)}
-	}
-	FDS.exportVector['transportSquad'] = {}
+	FDS.exportVector['entities'] = createJSONEntities()
+	local transportSquad = {}
 	for _, coa in pairs({'blue', 'red'}) do
 		if Group.getByName(FDS.currentTransport[coa][2]) and Group.getByName(FDS.currentTransport[coa][2]):isExist() then
 			local transportGp = Group.getByName(FDS.currentTransport[coa][2])
 			local squadNumber = transportGp:getSize()
-			FDS.exportVector['transportSquad'][coa] = squadNumber
+			transportSquad[coa] = squadNumber
+		else
+			transportSquad[coa] = 0
 		end
 	end
-
-	local file = io.open(FDS.exportPath .. "currentStats.json", "w")
-    jsonExport = net.lua2json(FDS.exportVector)
-    file:write(jsonExport)
-    file:close()
+	FDS.exportVector['coalition'] = {
+		['blue'] = {
+			['dropTime'] = math.floor((FDS.refreshTime - timer.getTime() + FDS.lastDropTime['blue'])/60.0),
+			['bombers'] = FDS.bomberQty['blue'],
+			['transportSquad'] = transportSquad['blue'],
+			['basePoints'] = FDS.teamPoints['blue']['Base']
+		},
+		['red'] = {
+			['dropTime'] = math.floor((FDS.refreshTime - timer.getTime() + FDS.lastDropTime['red'])/60.0),
+			['bombers'] = FDS.bomberQty['red'],
+			['transportSquad'] = transportSquad['red'],
+			['basePoints'] = FDS.teamPoints['red']['Base']
+		}	
+	}
+	FDS.exportVector['playerStats'] = getPlayersStats()
+	FDS.exportVector['deliveredPoints'] = FDS.recordDeliveredPoints
+	FDS.exportVector['missionTime'] = {
+		['elapsed'] = math.floor(timer.getTime()), 
+		['current'] = math.floor(timer.getAbsTime()), 
+		['initial'] = math.floor(timer.getTime0())
+	}
+	if FDS.exportDataSite then
+		local file = io.open(FDS.exportPath .. "currentStats.json", "w")
+		jsonExport = net.lua2json(FDS.exportVector)
+		file:write(jsonExport)
+		file:close()
+	end
 end
 
 jogList = {}
@@ -1392,14 +1440,38 @@ function createRandomDrop()
 end
 
 function recordLandPoints(_initEnt, coa)
-	-- Data to record || [player name] = {1 - max point record .. 2 - total delivered points}
-	if FDS.recordDeliveredPoints[_initEnt:getPlayerName()] ~= nil then
-		if FDS.recordDeliveredPoints[_initEnt:getPlayerName()][1] < FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()] then
-			FDS.recordDeliveredPoints[_initEnt:getPlayerName()][1] = FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()]
+	--local activePlayerList = net.get_player_list()
+	--local activePlayerListTable = {}
+	--for _, i in pairs(activePlayerList) do
+	--	table.insert(activePlayerListTable, net.get_player_info(i))
+	--end
+	--if FDS.recordDeliveredPoints[_initEnt:getPlayerName()] ~= nil then
+	--	table.insert(FDS.recordDeliveredPoints[_initEnt:getPlayerName()], FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()])
+	--else
+	--	FDS.recordDeliveredPoints[_initEnt:getPlayerName()] = {FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()],FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()]}
+	--end
+	local activePlayerList = net.get_player_list()
+	local activePlayerListTable = {}
+	for _, i in pairs(activePlayerList) do
+		table.insert(activePlayerListTable, net.get_player_info(i))
+	end
+	local newID = true
+	for _, i in pairs(activePlayerListTable) do
+		if i.name == _initEnt:getPlayerName() then 
+			for index, data in pairs(FDS.recordDeliveredPoints) do
+				if i.ucid == data.ucid then
+					newID = false
+					if FDS.recordDeliveredPoints[index]['deliveries'] ~= nil then
+						table.insert(FDS.recordDeliveredPoints[index]['deliveries'], {['name']= i.name,['value']= FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()]})
+					else
+						FDS.recordDeliveredPoints[index]['deliveries'] = {}
+					end
+				end
+			end
+            if newID then 
+                table.insert(FDS.recordDeliveredPoints, {['ucid'] = i.ucid, ['deliveries'] = {['name']= i.name,['value']= FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()], ['aircraft'] = _initEnt:getDesc().typeName}})
+            end            
 		end
-		FDS.recordDeliveredPoints[_initEnt:getPlayerName()][2] = FDS.recordDeliveredPoints[_initEnt:getPlayerName()][2] + FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()]
-	else
-		FDS.recordDeliveredPoints[_initEnt:getPlayerName()] = {FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()],FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()]}
 	end
 end
 
@@ -1695,16 +1767,18 @@ FDS.eventActions = FDS.switch {
 				--end
 
 				--Exporting event record
-				local file = io.open(FDS.exportPath .. "killRecord.json", "w")
-				FDS.killEventNumber = FDS.killEventNumber + 1
-				eventExport = {}
-				eventExport['initiator'] = FDS.lastHits[_initEnt:getPlayerName()][1]
-				eventExport['target'] = _initEnt:getPlayerName()
-				eventExport['weapon'] = '** LEFT **'
-				FDS.killEventVector[FDS.killEventNumber] = eventExport
-				jsonExport = net.lua2json(FDS.killEventVector)
-				file:write(jsonExport)
-				file:close()
+				if FDS.exportDataSite then
+					local file = io.open(FDS.exportPath .. "killRecord.json", "w")
+					FDS.killEventNumber = FDS.killEventNumber + 1
+					eventExport = {}
+					eventExport['initiator'] = FDS.lastHits[_initEnt:getPlayerName()][1]
+					eventExport['target'] = _initEnt:getPlayerName()
+					eventExport['weapon'] = '** LEFT **'
+					FDS.killEventVector[FDS.killEventNumber] = eventExport
+					jsonExport = net.lua2json(FDS.killEventVector)
+					file:write(jsonExport)
+					file:close()
+				end
 
 				local msgKillLeft = {}
 				msgKillLeft.displayTime = 20
@@ -1853,31 +1927,33 @@ FDS.eventActions = FDS.switch {
 		local rewardType = ''
 
 		--Exporting event record
-		local file = io.open(FDS.exportPath .. "killRecord.json", "w")
-		FDS.killEventNumber = FDS.killEventNumber + 1
-		eventExport = mist.utils.deepCopy(_event)
-		if initCheck and eventExport['initiator'] ~= nil and eventExport['initiator']:getPlayerName() ~= nil then 
-			eventExport['initiatorPlayerName'] = eventExport['initiator']:getPlayerName()
+		if FDS.exportDataSite then
+			local file = io.open(FDS.exportPath .. "killRecord.json", "w")
+			FDS.killEventNumber = FDS.killEventNumber + 1
+			eventExport = mist.utils.deepCopy(_event)
+			if initCheck and eventExport['initiator'] ~= nil and eventExport['initiator']:getPlayerName() ~= nil then 
+				eventExport['initiatorPlayerName'] = eventExport['initiator']:getPlayerName()
+			end
+			if eventExport['initiator'] ~= nil and eventExport['initiator']:getDesc() then 
+				eventExport['initiatorDesc'] = eventExport['initiator']:getDesc()
+				eventExport['initiatorName'] = eventExport['initiator']:getName()
+			end
+			if targetCheck and eventExport['target'] ~= nil and eventExport['target']:getPlayerName() ~= nil then 
+				eventExport['targetPlayerName'] = eventExport['target']:getPlayerName()
+			end
+			if eventExport['target'] ~= nil and eventExport['target']:getDesc() then 
+				eventExport['targetDesc'] = eventExport['target']:getDesc()
+				eventExport['targetName'] = eventExport['target']:getName()
+			end
+			if eventExport['weapon'] ~= nil and eventExport['weapon']:getDesc() then 
+				eventExport['weaponDesc'] = eventExport['weapon']:getDesc()
+				eventExport['weaponName'] = eventExport['weapon']:getName()
+			end
+			FDS.killEventVector[FDS.killEventNumber] = eventExport
+			jsonExport = net.lua2json(FDS.killEventVector)
+			file:write(jsonExport)
+			file:close()
 		end
-		if eventExport['initiator'] ~= nil and eventExport['initiator']:getDesc() then 
-			eventExport['initiatorDesc'] = eventExport['initiator']:getDesc()
-			eventExport['initiatorName'] = eventExport['initiator']:getName()
-		end
-		if targetCheck and eventExport['target'] ~= nil and eventExport['target']:getPlayerName() ~= nil then 
-			eventExport['targetPlayerName'] = eventExport['target']:getPlayerName()
-		end
-		if eventExport['target'] ~= nil and eventExport['target']:getDesc() then 
-			eventExport['targetDesc'] = eventExport['target']:getDesc()
-			eventExport['targetName'] = eventExport['target']:getName()
-		end
-		if eventExport['weapon'] ~= nil and eventExport['weapon']:getDesc() then 
-			eventExport['weaponDesc'] = eventExport['weapon']:getDesc()
-			eventExport['weaponName'] = eventExport['weapon']:getName()
-		end
-		FDS.killEventVector[FDS.killEventNumber] = eventExport
-		jsonExport = net.lua2json(FDS.killEventVector)
-		file:write(jsonExport)
-		file:close()
 
 		if _targetEnt and _targetEnt:getDesc() and _targetEnt:getDesc().typeName and FDS.rewardDict[_targetEnt:getDesc().typeName] then
 			rewardType = _targetEnt:getDesc().typeName
@@ -1931,21 +2007,25 @@ FDS.eventActions = FDS.switch {
 		end
 	end,
 	[world.event.S_EVENT_MISSION_END] = function(x, param)
-		local infile = io.open(FDS.exportPath .. "killRecord.json", "r")
-		local instr = infile:read("*a")
-		infile:close()
-		
-		local outfile = io.open(FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
-		outfile:write(instr)
-		outfile:close()
+		if FDS.exportDataSite then
+			local infile = io.open(FDS.exportPath .. "killRecord.json", "r")
+			local instr = infile:read("*a")
+			infile:close()
+			
+			local outfile = io.open(FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
+			outfile:write(instr)
+			outfile:close()
 
-		local infile = io.open(FDS.exportPath .. "currentStats.json", "r")
-		local instr = infile:read("*a")
-		infile:close()
-		
-		local outfile = io.open(FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
-		outfile:write(instr)
-		outfile:close()
+			local infile = io.open(FDS.exportPath .. "currentStats.json", "r")
+			local instr = infile:read("*a")
+			infile:close()
+			
+			local outfile = io.open(FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
+			outfile:write(instr)
+			outfile:close()
+
+			pcall(killDCSProcess,{})
+		end
 	end,
 	[world.event.S_EVENT_DEAD] = function(x, param)
 		local _event = param.event
@@ -2007,7 +2087,7 @@ FDS.eventActions = FDS.switch {
 								if allClearFlag then
 									local msgfinal = {}
 									trigger.action.setUserFlag(901, true)
-									msgfinal.text = 'Red Team is victorious! Restarting Server in 60 seconds.'
+									msgfinal.text = 'Red Team is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 									msgfinal.displayTime = 20  
 									msgfinal.sound = 'victory_Lane.ogg'
 									trigger.action.outText(msgfinal.text, msgfinal.displayTime)
@@ -2068,7 +2148,7 @@ FDS.eventActions = FDS.switch {
 								if allClearFlag then
 									local msgfinal = {}
 									trigger.action.setUserFlag(900, true)
-									msgfinal.text = 'Blue Team is victorious! Restarting Server in 60 seconds.'
+									msgfinal.text = 'Blue Team is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 									msgfinal.displayTime = 20
 									msgfinal.sound = 'victory_Lane.ogg'
 									trigger.action.outText(msgfinal.text, msgfinal.displayTime)
@@ -2139,7 +2219,9 @@ mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+5, FDS.randomDropTim
 mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 -- Export mission data
-mist.scheduleFunction(exportMisData, {}, timer.getTime()+6, FDS.sendDataFreq)
+if FDS.exportDataSite then
+	mist.scheduleFunction(exportMisData, {}, timer.getTime()+6, FDS.sendDataFreq)
+end
 
 for _,i in pairs(FDS.coalitionCode) do
 	FDS.resAWACSTime[i][2] = mist.scheduleFunction(respawnAWACSFuel, {i},timer.getTime()+FDS.fuelAWACSRestart)
