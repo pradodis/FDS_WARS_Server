@@ -115,7 +115,7 @@ FDS.lastDropTime = {
 -- Bombers
 FDS.bomberQuantity = 10
 FDS.bomberMinInterval = 10.0
-FDS.bomberTargetsNumber = 8
+FDS.bomberTargetsNumber = 16
 FDS.bomberQty = {
 	['blue'] = 0,
 	['red'] = 0
@@ -140,12 +140,12 @@ FDS.positionHist = {}
 FDS.InfAK = 0
 FDS.InfRPG = 0
 
-FDS.ArmTrucks = 3
+FDS.ArmTrucks = 5
 FDS.ArmBMP1 = 0
 FDS.ArmBMP2 = 0
 FDS.ArmT55 = 0
 FDS.ArmT72 = 3
-FDS.ArmT80 = 3
+FDS.ArmT80 = 5
 
 FDS.AAA = 2
 FDS.AATung = 1

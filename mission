@@ -1710,9 +1710,9 @@ mission =
     }, -- end of ["triggers"]
     ["map"] = 
     {
-        ["centerY"] = 463933.60359216,
-        ["zoom"] = 99662.386191588,
-        ["centerX"] = -164988.93287377,
+        ["centerY"] = 758640.94277819,
+        ["zoom"] = 8184.7636071421,
+        ["centerX"] = -41849.953182199,
     }, -- end of ["map"]
     ["coalitions"] = 
     {
@@ -5956,177 +5956,345 @@ mission =
                                                     {
                                                         [1] = 
                                                         {
-                                                            ["number"] = 1,
+                                                            ["enabled"] = true,
                                                             ["auto"] = false,
                                                             ["id"] = "Bombing",
-                                                            ["enabled"] = true,
+                                                            ["number"] = 1,
                                                             ["params"] = 
                                                             {
-                                                                ["direction"] = 1.5707963267949,
+                                                                ["groupAttack"] = false,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["altitude"] = 7620,
-                                                                ["directionEnabled"] = false,
-                                                                ["groupAttack"] = false,
+                                                                ["expend"] = "Quarter",
                                                                 ["y"] = 472222.3889638,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78940.515081332,
+                                                                ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["x"] = -78940.515081332,
+                                                                ["direction"] = 1.5707963267949,
                                                             }, -- end of ["params"]
                                                         }, -- end of [1]
                                                         [2] = 
                                                         {
-                                                            ["enabled"] = true,
+                                                            ["number"] = 2,
                                                             ["auto"] = false,
                                                             ["id"] = "Bombing",
-                                                            ["number"] = 2,
+                                                            ["enabled"] = true,
                                                             ["params"] = 
                                                             {
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
-                                                                ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["expend"] = "Quarter",
                                                                 ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["groupAttack"] = false,
+                                                                ["x"] = -78940.515081332,
                                                             }, -- end of ["params"]
                                                         }, -- end of [2]
                                                         [3] = 
                                                         {
-                                                            ["enabled"] = true,
+                                                            ["number"] = 3,
                                                             ["auto"] = false,
                                                             ["id"] = "Bombing",
-                                                            ["number"] = 3,
+                                                            ["enabled"] = true,
                                                             ["params"] = 
                                                             {
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
-                                                                ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["expend"] = "Quarter",
                                                                 ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["groupAttack"] = false,
+                                                                ["x"] = -78940.515081332,
                                                             }, -- end of ["params"]
                                                         }, -- end of [3]
                                                         [4] = 
                                                         {
-                                                            ["enabled"] = true,
+                                                            ["number"] = 4,
                                                             ["auto"] = false,
                                                             ["id"] = "Bombing",
-                                                            ["number"] = 4,
+                                                            ["enabled"] = true,
                                                             ["params"] = 
                                                             {
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
-                                                                ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["expend"] = "Quarter",
                                                                 ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["groupAttack"] = false,
+                                                                ["x"] = -78940.515081332,
                                                             }, -- end of ["params"]
                                                         }, -- end of [4]
                                                         [5] = 
                                                         {
-                                                            ["enabled"] = true,
+                                                            ["number"] = 5,
                                                             ["auto"] = false,
                                                             ["id"] = "Bombing",
-                                                            ["number"] = 5,
+                                                            ["enabled"] = true,
                                                             ["params"] = 
                                                             {
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
-                                                                ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["expend"] = "Quarter",
                                                                 ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["groupAttack"] = false,
+                                                                ["x"] = -78940.515081332,
                                                             }, -- end of ["params"]
                                                         }, -- end of [5]
                                                         [6] = 
                                                         {
-                                                            ["enabled"] = true,
+                                                            ["number"] = 6,
                                                             ["auto"] = false,
                                                             ["id"] = "Bombing",
-                                                            ["number"] = 6,
+                                                            ["enabled"] = true,
                                                             ["params"] = 
                                                             {
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
-                                                                ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["expend"] = "Quarter",
                                                                 ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["groupAttack"] = false,
+                                                                ["x"] = -78940.515081332,
                                                             }, -- end of ["params"]
                                                         }, -- end of [6]
                                                         [7] = 
                                                         {
-                                                            ["enabled"] = true,
+                                                            ["number"] = 7,
                                                             ["auto"] = false,
                                                             ["id"] = "Bombing",
-                                                            ["number"] = 7,
+                                                            ["enabled"] = true,
                                                             ["params"] = 
                                                             {
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
-                                                                ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["expend"] = "Quarter",
                                                                 ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["groupAttack"] = false,
+                                                                ["x"] = -78940.515081332,
                                                             }, -- end of ["params"]
                                                         }, -- end of [7]
                                                         [8] = 
                                                         {
-                                                            ["enabled"] = true,
+                                                            ["number"] = 8,
                                                             ["auto"] = false,
                                                             ["id"] = "Bombing",
-                                                            ["number"] = 8,
+                                                            ["enabled"] = true,
                                                             ["params"] = 
                                                             {
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
-                                                                ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["expend"] = "Quarter",
                                                                 ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["groupAttack"] = false,
+                                                                ["x"] = -78940.515081332,
                                                             }, -- end of ["params"]
                                                         }, -- end of [8]
+                                                        [9] = 
+                                                        {
+                                                            ["number"] = 9,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["x"] = -78940.515081332,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [9]
+                                                        [10] = 
+                                                        {
+                                                            ["number"] = 10,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["x"] = -78940.515081332,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [10]
+                                                        [11] = 
+                                                        {
+                                                            ["number"] = 11,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["x"] = -78940.515081332,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [11]
+                                                        [12] = 
+                                                        {
+                                                            ["number"] = 12,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["x"] = -78940.515081332,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [12]
+                                                        [13] = 
+                                                        {
+                                                            ["number"] = 13,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["x"] = -78940.515081332,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [13]
+                                                        [14] = 
+                                                        {
+                                                            ["number"] = 14,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["x"] = -78940.515081332,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [14]
+                                                        [15] = 
+                                                        {
+                                                            ["number"] = 15,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["x"] = -78940.515081332,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [15]
+                                                        [16] = 
+                                                        {
+                                                            ["number"] = 16,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["altitude"] = 7620,
+                                                                ["directionEnabled"] = false,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["x"] = -78940.515081332,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [16]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
                                             ["type"] = "Turning Point",
-                                            ["ETA"] = 609.81667689182,
+                                            ["ETA"] = 915.0393465582,
                                             ["ETA_locked"] = false,
                                             ["y"] = 499011.99675572,
                                             ["x"] = -77988.110880693,
@@ -16579,8 +16747,8 @@ mission =
                                             ["type"] = "Turning Point",
                                             ["ETA"] = 0,
                                             ["ETA_locked"] = true,
-                                            ["y"] = 133317.84878435,
-                                            ["x"] = -143193.59026752,
+                                            ["y"] = 133325.46874667,
+                                            ["x"] = -143167.40162065,
                                             ["formation_template"] = "",
                                             ["speed_locked"] = true,
                                         }, -- end of [1]
@@ -16608,7 +16776,7 @@ mission =
                                                                 ["groupAttack"] = false,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
+                                                                ["expend"] = "Quarter",
                                                                 ["altitude"] = 7620,
                                                                 ["directionEnabled"] = false,
                                                                 ["direction"] = 1.5707963267949,
@@ -16629,10 +16797,10 @@ mission =
                                                                 ["groupAttack"] = false,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -16650,10 +16818,10 @@ mission =
                                                                 ["groupAttack"] = false,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -16671,10 +16839,10 @@ mission =
                                                                 ["groupAttack"] = false,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -16692,10 +16860,10 @@ mission =
                                                                 ["groupAttack"] = false,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -16713,10 +16881,10 @@ mission =
                                                                 ["groupAttack"] = false,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -16734,10 +16902,10 @@ mission =
                                                                 ["groupAttack"] = false,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -16755,21 +16923,189 @@ mission =
                                                                 ["groupAttack"] = false,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
                                                                 ["direction"] = 1.5707963267949,
                                                             }, -- end of ["params"]
                                                         }, -- end of [8]
+                                                        [9] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 9,
+                                                            ["params"] = 
+                                                            {
+                                                                ["groupAttack"] = false,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["direction"] = 1.5707963267949,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [9]
+                                                        [10] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 10,
+                                                            ["params"] = 
+                                                            {
+                                                                ["groupAttack"] = false,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["direction"] = 1.5707963267949,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [10]
+                                                        [11] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 11,
+                                                            ["params"] = 
+                                                            {
+                                                                ["groupAttack"] = false,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["direction"] = 1.5707963267949,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [11]
+                                                        [12] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 12,
+                                                            ["params"] = 
+                                                            {
+                                                                ["groupAttack"] = false,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["direction"] = 1.5707963267949,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [12]
+                                                        [13] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 13,
+                                                            ["params"] = 
+                                                            {
+                                                                ["groupAttack"] = false,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["direction"] = 1.5707963267949,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [13]
+                                                        [14] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 14,
+                                                            ["params"] = 
+                                                            {
+                                                                ["groupAttack"] = false,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["direction"] = 1.5707963267949,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [14]
+                                                        [15] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 15,
+                                                            ["params"] = 
+                                                            {
+                                                                ["groupAttack"] = false,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["direction"] = 1.5707963267949,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [15]
+                                                        [16] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 16,
+                                                            ["params"] = 
+                                                            {
+                                                                ["groupAttack"] = false,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["direction"] = 1.5707963267949,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [16]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
                                             ["type"] = "Turning Point",
-                                            ["ETA"] = 914.59124939628,
+                                            ["ETA"] = 914.54608371123,
                                             ["ETA_locked"] = false,
                                             ["y"] = 406356.45478539,
                                             ["x"] = -72671.693639018,
@@ -16865,9 +17201,9 @@ mission =
                                         ["speed"] = 308.33333333333,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 838,
-                                        ["psi"] = -1.3180349320083,
-                                        ["y"] = 133317.84878435,
-                                        ["x"] = -143193.59026752,
+                                        ["psi"] = -1.3181180957378,
+                                        ["y"] = 133325.46874667,
+                                        ["x"] = -143167.40162065,
                                         ["name"] = "Blue_Bomber_Zone1_Guiding-1-1",
                                         ["payload"] = 
                                         {
@@ -16883,7 +17219,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = 1.3180349320083,
+                                        ["heading"] = 1.3181180957378,
                                         ["callsign"] = 
                                         {
                                             [1] = 2,
@@ -16902,9 +17238,9 @@ mission =
                                         ["speed"] = 308.33333333333,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 839,
-                                        ["psi"] = -1.3180349320083,
-                                        ["y"] = 133357.84878435,
-                                        ["x"] = -143233.59026752,
+                                        ["psi"] = -1.3181180957378,
+                                        ["y"] = 133365.46874667,
+                                        ["x"] = -143207.40162065,
                                         ["name"] = "Blue_Bomber_Zone1_Guiding-1-2",
                                         ["payload"] = 
                                         {
@@ -16920,7 +17256,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = 1.3180349320083,
+                                        ["heading"] = 1.3181180957378,
                                         ["callsign"] = 
                                         {
                                             [1] = 2,
@@ -16939,9 +17275,9 @@ mission =
                                         ["speed"] = 308.33333333333,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 840,
-                                        ["psi"] = -1.3180349320083,
-                                        ["y"] = 133397.84878435,
-                                        ["x"] = -143273.59026752,
+                                        ["psi"] = -1.3181180957378,
+                                        ["y"] = 133405.46874667,
+                                        ["x"] = -143247.40162065,
                                         ["name"] = "Blue_Bomber_Zone1_Guiding-1-3",
                                         ["payload"] = 
                                         {
@@ -16957,7 +17293,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = 1.3180349320083,
+                                        ["heading"] = 1.3181180957378,
                                         ["callsign"] = 
                                         {
                                             [1] = 2,
@@ -16976,9 +17312,9 @@ mission =
                                         ["speed"] = 308.33333333333,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 841,
-                                        ["psi"] = -1.3180349320083,
-                                        ["y"] = 133437.84878435,
-                                        ["x"] = -143313.59026752,
+                                        ["psi"] = -1.3181180957378,
+                                        ["y"] = 133445.46874667,
+                                        ["x"] = -143287.40162065,
                                         ["name"] = "Blue_Bomber_Zone1_Guiding-1-4",
                                         ["payload"] = 
                                         {
@@ -16994,7 +17330,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = 1.3180349320083,
+                                        ["heading"] = 1.3181180957378,
                                         ["callsign"] = 
                                         {
                                             [1] = 2,
@@ -17005,8 +17341,8 @@ mission =
                                         ["onboard_num"] = "030",
                                     }, -- end of [4]
                                 }, -- end of ["units"]
-                                ["y"] = 133317.84878435,
-                                ["x"] = -143193.59026752,
+                                ["y"] = 133325.46874667,
+                                ["x"] = -143167.40162065,
                                 ["name"] = "Blue_Bomber_Zone1_Guiding",
                                 ["communication"] = true,
                                 ["start_time"] = 0,
@@ -52602,7 +52938,7 @@ mission =
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
+                                                                ["expend"] = "Quarter",
                                                                 ["altitude"] = 7620,
                                                                 ["directionEnabled"] = false,
                                                                 ["groupAttack"] = false,
@@ -52623,10 +52959,10 @@ mission =
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -52644,10 +52980,10 @@ mission =
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -52665,10 +53001,10 @@ mission =
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -52686,10 +53022,10 @@ mission =
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -52707,10 +53043,10 @@ mission =
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -52728,10 +53064,10 @@ mission =
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
@@ -52749,21 +53085,189 @@ mission =
                                                                 ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["y"] = 472222.3889638,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
                                                                 ["directionEnabled"] = false,
-                                                                ["x"] = -78940.515081332,
+                                                                ["x"] = -78953.416165446,
                                                                 ["altitude"] = 7620,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
                                                                 ["groupAttack"] = false,
                                                             }, -- end of ["params"]
                                                         }, -- end of [8]
+                                                        [9] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 9,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [9]
+                                                        [10] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 10,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [10]
+                                                        [11] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 11,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [11]
+                                                        [12] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 12,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [12]
+                                                        [13] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 13,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [13]
+                                                        [14] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 14,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [14]
+                                                        [15] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 15,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [15]
+                                                        [16] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 16,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472261.42072799,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78953.416165446,
+                                                                ["altitude"] = 7620,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [16]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
                                             ["type"] = "Turning Point",
-                                            ["ETA"] = 907.35303647638,
+                                            ["ETA"] = 907.64970893878,
                                             ["ETA_locked"] = false,
                                             ["y"] = 406889.70233602,
                                             ["x"] = -103158.57684173,
@@ -53217,17 +53721,17 @@ mission =
                                                             ["enabled"] = true,
                                                             ["params"] = 
                                                             {
-                                                                ["groupAttack"] = false,
+                                                                ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
-                                                                ["altitude"] = 7620,
+                                                                ["expend"] = "Quarter",
+                                                                ["altitude"] = 8839.2,
                                                                 ["directionEnabled"] = false,
-                                                                ["direction"] = 1.5707963267949,
-                                                                ["y"] = 472261.42072799,
+                                                                ["groupAttack"] = false,
+                                                                ["y"] = 472222.3889638,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["x"] = -78953.416165446,
+                                                                ["x"] = -78940.515081332,
                                                             }, -- end of ["params"]
                                                         }, -- end of [1]
                                                         [2] = 
@@ -53238,17 +53742,17 @@ mission =
                                                             ["number"] = 2,
                                                             ["params"] = 
                                                             {
-                                                                ["groupAttack"] = false,
+                                                                ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
+                                                                ["expend"] = "Quarter",
                                                                 ["y"] = 472222.3889638,
                                                                 ["directionEnabled"] = false,
                                                                 ["x"] = -78940.515081332,
-                                                                ["altitude"] = 7620,
+                                                                ["altitude"] = 8839.2,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["direction"] = 1.5707963267949,
+                                                                ["groupAttack"] = false,
                                                             }, -- end of ["params"]
                                                         }, -- end of [2]
                                                         [3] = 
@@ -53259,17 +53763,17 @@ mission =
                                                             ["number"] = 3,
                                                             ["params"] = 
                                                             {
-                                                                ["groupAttack"] = false,
+                                                                ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
+                                                                ["expend"] = "Quarter",
                                                                 ["y"] = 472222.3889638,
                                                                 ["directionEnabled"] = false,
                                                                 ["x"] = -78940.515081332,
-                                                                ["altitude"] = 7620,
+                                                                ["altitude"] = 8839.2,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["direction"] = 1.5707963267949,
+                                                                ["groupAttack"] = false,
                                                             }, -- end of ["params"]
                                                         }, -- end of [3]
                                                         [4] = 
@@ -53280,17 +53784,17 @@ mission =
                                                             ["number"] = 4,
                                                             ["params"] = 
                                                             {
-                                                                ["groupAttack"] = false,
+                                                                ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
+                                                                ["expend"] = "Quarter",
                                                                 ["y"] = 472222.3889638,
                                                                 ["directionEnabled"] = false,
                                                                 ["x"] = -78940.515081332,
-                                                                ["altitude"] = 7620,
+                                                                ["altitude"] = 8839.2,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["direction"] = 1.5707963267949,
+                                                                ["groupAttack"] = false,
                                                             }, -- end of ["params"]
                                                         }, -- end of [4]
                                                         [5] = 
@@ -53301,17 +53805,17 @@ mission =
                                                             ["number"] = 5,
                                                             ["params"] = 
                                                             {
-                                                                ["groupAttack"] = false,
+                                                                ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
+                                                                ["expend"] = "Quarter",
                                                                 ["y"] = 472222.3889638,
                                                                 ["directionEnabled"] = false,
                                                                 ["x"] = -78940.515081332,
-                                                                ["altitude"] = 7620,
+                                                                ["altitude"] = 8839.2,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["direction"] = 1.5707963267949,
+                                                                ["groupAttack"] = false,
                                                             }, -- end of ["params"]
                                                         }, -- end of [5]
                                                         [6] = 
@@ -53322,17 +53826,17 @@ mission =
                                                             ["number"] = 6,
                                                             ["params"] = 
                                                             {
-                                                                ["groupAttack"] = false,
+                                                                ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
+                                                                ["expend"] = "Quarter",
                                                                 ["y"] = 472222.3889638,
                                                                 ["directionEnabled"] = false,
                                                                 ["x"] = -78940.515081332,
-                                                                ["altitude"] = 7620,
+                                                                ["altitude"] = 8839.2,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["direction"] = 1.5707963267949,
+                                                                ["groupAttack"] = false,
                                                             }, -- end of ["params"]
                                                         }, -- end of [6]
                                                         [7] = 
@@ -53343,17 +53847,17 @@ mission =
                                                             ["number"] = 7,
                                                             ["params"] = 
                                                             {
-                                                                ["groupAttack"] = false,
+                                                                ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
+                                                                ["expend"] = "Quarter",
                                                                 ["y"] = 472222.3889638,
                                                                 ["directionEnabled"] = false,
                                                                 ["x"] = -78940.515081332,
-                                                                ["altitude"] = 7620,
+                                                                ["altitude"] = 8839.2,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["direction"] = 1.5707963267949,
+                                                                ["groupAttack"] = false,
                                                             }, -- end of ["params"]
                                                         }, -- end of [7]
                                                         [8] = 
@@ -53364,24 +53868,192 @@ mission =
                                                             ["number"] = 8,
                                                             ["params"] = 
                                                             {
-                                                                ["groupAttack"] = false,
+                                                                ["direction"] = 1.5707963267949,
                                                                 ["attackQtyLimit"] = false,
                                                                 ["attackQty"] = 1,
-                                                                ["expend"] = "Half",
+                                                                ["expend"] = "Quarter",
                                                                 ["y"] = 472222.3889638,
                                                                 ["directionEnabled"] = false,
                                                                 ["x"] = -78940.515081332,
-                                                                ["altitude"] = 7620,
+                                                                ["altitude"] = 8839.2,
                                                                 ["altitudeEnabled"] = false,
                                                                 ["weaponType"] = 14,
-                                                                ["direction"] = 1.5707963267949,
+                                                                ["groupAttack"] = false,
                                                             }, -- end of ["params"]
                                                         }, -- end of [8]
+                                                        [9] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 9,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472222.3889638,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78940.515081332,
+                                                                ["altitude"] = 8839.2,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [9]
+                                                        [10] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 10,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472222.3889638,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78940.515081332,
+                                                                ["altitude"] = 8839.2,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [10]
+                                                        [11] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 11,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472222.3889638,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78940.515081332,
+                                                                ["altitude"] = 8839.2,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [11]
+                                                        [12] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 12,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472222.3889638,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78940.515081332,
+                                                                ["altitude"] = 8839.2,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [12]
+                                                        [13] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 13,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472222.3889638,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78940.515081332,
+                                                                ["altitude"] = 8839.2,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [13]
+                                                        [14] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 14,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472222.3889638,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78940.515081332,
+                                                                ["altitude"] = 8839.2,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [14]
+                                                        [15] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 15,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472222.3889638,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78940.515081332,
+                                                                ["altitude"] = 8839.2,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [15]
+                                                        [16] = 
+                                                        {
+                                                            ["enabled"] = true,
+                                                            ["auto"] = false,
+                                                            ["id"] = "Bombing",
+                                                            ["number"] = 16,
+                                                            ["params"] = 
+                                                            {
+                                                                ["direction"] = 1.5707963267949,
+                                                                ["attackQtyLimit"] = false,
+                                                                ["attackQty"] = 1,
+                                                                ["expend"] = "Quarter",
+                                                                ["y"] = 472222.3889638,
+                                                                ["directionEnabled"] = false,
+                                                                ["x"] = -78940.515081332,
+                                                                ["altitude"] = 8839.2,
+                                                                ["altitudeEnabled"] = false,
+                                                                ["weaponType"] = 14,
+                                                                ["groupAttack"] = false,
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [16]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
                                             ["type"] = "Turning Point",
-                                            ["ETA"] = 919.59715804749,
+                                            ["ETA"] = 919.5971580475,
                                             ["ETA_locked"] = false,
                                             ["y"] = 506788.40196131,
                                             ["x"] = -105854.67898397,
@@ -54126,7 +54798,7 @@ mission =
             ["predicate"] = "triggerOnce",
         }, -- end of [9]
     }, -- end of ["trigrules"]
-    ["currentKey"] = 2322305,
+    ["currentKey"] = 2322529,
     ["start_time"] = 43200,
     ["forcedOptions"] = 
     {
@@ -54157,15 +54829,15 @@ mission =
     }, -- end of ["forcedOptions"]
     ["failures"] = 
     {
-        ["CMS_FAILURE_RIGHT_DISPENSER"] = 
+        ["CADC_WING_SWEEP_INDICATOR"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CMS_FAILURE_RIGHT_DISPENSER",
+            ["id"] = "CADC_WING_SWEEP_INDICATOR",
             ["mm"] = 0,
-        }, -- end of ["CMS_FAILURE_RIGHT_DISPENSER"]
+        }, -- end of ["CADC_WING_SWEEP_INDICATOR"]
         ["ILS_FAILURE_ANTENNA"] = 
         {
             ["hh"] = 0,
@@ -54220,15 +54892,15 @@ mission =
             ["id"] = "CADC_WING_SWEEP_COMMAND_CHANNEL_1",
             ["mm"] = 0,
         }, -- end of ["CADC_WING_SWEEP_COMMAND_CHANNEL_1"]
-        ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY"] = 
+        ["rws"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "UHF_ARC_159_FAILURE_REMOTE_DISPLAY",
+            ["id"] = "rws",
             ["mm"] = 0,
-        }, -- end of ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY"]
+        }, -- end of ["rws"]
         ["Failure_Comp_MC2"] = 
         {
             ["hh"] = 0,
@@ -54247,15 +54919,15 @@ mission =
             ["id"] = "Failure_Hyd_IsolatedHYD2BSystem_Leak",
             ["mm"] = 0,
         }, -- end of ["Failure_Hyd_IsolatedHYD2BSystem_Leak"]
-        ["RWR_FAILURE_COMPUTER"] = 
+        ["RWR_FAILURE_CONTROL_BOX"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_COMPUTER",
+            ["id"] = "RWR_FAILURE_CONTROL_BOX",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_COMPUTER"]
+        }, -- end of ["RWR_FAILURE_CONTROL_BOX"]
         ["VHF_ARC_182_FAILURE_TRANSCEIVER"] = 
         {
             ["hh"] = 0,
@@ -54265,15 +54937,15 @@ mission =
             ["id"] = "VHF_ARC_182_FAILURE_TRANSCEIVER",
             ["mm"] = 0,
         }, -- end of ["VHF_ARC_182_FAILURE_TRANSCEIVER"]
-        ["Failure_Fuel_ExtTankTransferC"] = 
+        ["Failure_Hyd_HYD2A_Leak"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Fuel_ExtTankTransferC",
+            ["id"] = "Failure_Hyd_HYD2A_Leak",
             ["mm"] = 0,
-        }, -- end of ["Failure_Fuel_ExtTankTransferC"]
+        }, -- end of ["Failure_Hyd_HYD2A_Leak"]
         ["Failure_PP_EngL_AB_FFCS"] = 
         {
             ["hh"] = 0,
@@ -54292,15 +54964,15 @@ mission =
             ["id"] = "ecm",
             ["mm"] = 0,
         }, -- end of ["ecm"]
-        ["CADC_STABILIZER_AUTHORITY_COMMAND"] = 
+        ["Failure_Gear_WOW"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_STABILIZER_AUTHORITY_COMMAND",
+            ["id"] = "Failure_Gear_WOW",
             ["mm"] = 0,
-        }, -- end of ["CADC_STABILIZER_AUTHORITY_COMMAND"]
+        }, -- end of ["Failure_Gear_WOW"]
         ["HYD_Combined"] = 
         {
             ["hh"] = 0,
@@ -54319,15 +54991,15 @@ mission =
             ["id"] = "VHF_ARC_182_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["VHF_ARC_182_FAILURE_TOTAL"]
-        ["Failure_Hyd_HYD2A_Leak"] = 
+        ["Failure_Fuel_ExtTankTransferC"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Hyd_HYD2A_Leak",
+            ["id"] = "Failure_Fuel_ExtTankTransferC",
             ["mm"] = 0,
-        }, -- end of ["Failure_Hyd_HYD2A_Leak"]
+        }, -- end of ["Failure_Fuel_ExtTankTransferC"]
         ["INS_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
@@ -54436,42 +55108,15 @@ mission =
             ["id"] = "TID_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["TID_FAILURE_TOTAL"]
-        ["Failure_Gear_WOW"] = 
+        ["CADC_STABILIZER_AUTHORITY_COMMAND"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Gear_WOW",
+            ["id"] = "CADC_STABILIZER_AUTHORITY_COMMAND",
             ["mm"] = 0,
-        }, -- end of ["Failure_Gear_WOW"]
-        ["autopilot"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "autopilot",
-            ["mm"] = 0,
-        }, -- end of ["autopilot"]
-        ["Failure_Sens_LeftPitotHeater"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "Failure_Sens_LeftPitotHeater",
-            ["mm"] = 0,
-        }, -- end of ["Failure_Sens_LeftPitotHeater"]
-        ["Failure_Fuel_ExtTankTransferL"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "Failure_Fuel_ExtTankTransferL",
-            ["mm"] = 0,
-        }, -- end of ["Failure_Fuel_ExtTankTransferL"]
+        }, -- end of ["CADC_STABILIZER_AUTHORITY_COMMAND"]
         ["UHF_ARC_159_FAILURE_INTERNAL_MODULE"] = 
         {
             ["hh"] = 0,
@@ -54481,6 +55126,15 @@ mission =
             ["id"] = "UHF_ARC_159_FAILURE_INTERNAL_MODULE",
             ["mm"] = 0,
         }, -- end of ["UHF_ARC_159_FAILURE_INTERNAL_MODULE"]
+        ["Failure_Sens_LeftPitotHeater"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "Failure_Sens_LeftPitotHeater",
+            ["mm"] = 0,
+        }, -- end of ["Failure_Sens_LeftPitotHeater"]
         ["RWR_FAILURE_LOW_BAND"] = 
         {
             ["hh"] = 0,
@@ -54490,6 +55144,24 @@ mission =
             ["id"] = "RWR_FAILURE_LOW_BAND",
             ["mm"] = 0,
         }, -- end of ["RWR_FAILURE_LOW_BAND"]
+        ["Failure_Fuel_ExtTankTransferL"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "Failure_Fuel_ExtTankTransferL",
+            ["mm"] = 0,
+        }, -- end of ["Failure_Fuel_ExtTankTransferL"]
+        ["RWR_FAILURE_COMPUTER"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "RWR_FAILURE_COMPUTER",
+            ["mm"] = 0,
+        }, -- end of ["RWR_FAILURE_COMPUTER"]
         ["HUD_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
@@ -54553,15 +55225,6 @@ mission =
             ["id"] = "RWR_FAILURE_BLANKER",
             ["mm"] = 0,
         }, -- end of ["RWR_FAILURE_BLANKER"]
-        ["Failure_Fuel_QuantityGaging"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "Failure_Fuel_QuantityGaging",
-            ["mm"] = 0,
-        }, -- end of ["Failure_Fuel_QuantityGaging"]
         ["UHF_ARC_159_FAILURE_ANTENNA"] = 
         {
             ["hh"] = 0,
@@ -54571,6 +55234,15 @@ mission =
             ["id"] = "UHF_ARC_159_FAILURE_ANTENNA",
             ["mm"] = 0,
         }, -- end of ["UHF_ARC_159_FAILURE_ANTENNA"]
+        ["Failure_Ctrl_Aileron"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "Failure_Ctrl_Aileron",
+            ["mm"] = 0,
+        }, -- end of ["Failure_Ctrl_Aileron"]
         ["JESTER"] = 
         {
             ["hh"] = 0,
@@ -54580,24 +55252,24 @@ mission =
             ["id"] = "JESTER",
             ["mm"] = 0,
         }, -- end of ["JESTER"]
-        ["TACAN_FAILURE_RECEIVER"] = 
+        ["Failure_Ctrl_FCS_Ch1"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "TACAN_FAILURE_RECEIVER",
+            ["id"] = "Failure_Ctrl_FCS_Ch1",
             ["mm"] = 0,
-        }, -- end of ["TACAN_FAILURE_RECEIVER"]
-        ["RWR_FAILURE_CONTROL_BOX"] = 
+        }, -- end of ["Failure_Ctrl_FCS_Ch1"]
+        ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_CONTROL_BOX",
+            ["id"] = "UHF_ARC_159_FAILURE_REMOTE_DISPLAY",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_CONTROL_BOX"]
+        }, -- end of ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY"]
         ["Failure_PP_EngL_Main_FFCS"] = 
         {
             ["hh"] = 0,
@@ -54652,33 +55324,15 @@ mission =
             ["id"] = "CMS_FAILURE_LEFT_DISPENSER",
             ["mm"] = 0,
         }, -- end of ["CMS_FAILURE_LEFT_DISPENSER"]
-        ["rws"] = 
+        ["TACAN_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "rws",
+            ["id"] = "TACAN_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["rws"]
-        ["Failure_Ctrl_Aileron"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_Aileron",
-            ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_Aileron"]
-        ["ICS_FAILURE_AMPLIFIER_PILOT_NORM"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "ICS_FAILURE_AMPLIFIER_PILOT_NORM",
-            ["mm"] = 0,
-        }, -- end of ["ICS_FAILURE_AMPLIFIER_PILOT_NORM"]
+        }, -- end of ["TACAN_FAILURE_TOTAL"]
         ["Failure_Comp_ADC"] = 
         {
             ["hh"] = 0,
@@ -54688,15 +55342,33 @@ mission =
             ["id"] = "Failure_Comp_ADC",
             ["mm"] = 0,
         }, -- end of ["Failure_Comp_ADC"]
-        ["Failure_Fuel_Tank1Transfer"] = 
+        ["ICS_FAILURE_AMPLIFIER_PILOT_NORM"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Fuel_Tank1Transfer",
+            ["id"] = "ICS_FAILURE_AMPLIFIER_PILOT_NORM",
             ["mm"] = 0,
-        }, -- end of ["Failure_Fuel_Tank1Transfer"]
+        }, -- end of ["ICS_FAILURE_AMPLIFIER_PILOT_NORM"]
+        ["RWR_FAILURE_QUAD225"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "RWR_FAILURE_QUAD225",
+            ["mm"] = 0,
+        }, -- end of ["RWR_FAILURE_QUAD225"]
+        ["TACAN_FAILURE_RECEIVER"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "TACAN_FAILURE_RECEIVER",
+            ["mm"] = 0,
+        }, -- end of ["TACAN_FAILURE_RECEIVER"]
         ["ILS_FAILURE_DECODER"] = 
         {
             ["hh"] = 0,
@@ -54715,24 +55387,24 @@ mission =
             ["id"] = "VDI_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["VDI_FAILURE_TOTAL"]
-        ["TACAN_FAILURE_TOTAL"] = 
+        ["ICS_FAILURE_AMPLIFIER_RIO_NORM"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "TACAN_FAILURE_TOTAL",
+            ["id"] = "ICS_FAILURE_AMPLIFIER_RIO_NORM",
             ["mm"] = 0,
-        }, -- end of ["TACAN_FAILURE_TOTAL"]
-        ["CADC_WING_SWEEP_INDICATOR"] = 
+        }, -- end of ["ICS_FAILURE_AMPLIFIER_RIO_NORM"]
+        ["CMS_FAILURE_RIGHT_DISPENSER"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_WING_SWEEP_INDICATOR",
+            ["id"] = "CMS_FAILURE_RIGHT_DISPENSER",
             ["mm"] = 0,
-        }, -- end of ["CADC_WING_SWEEP_INDICATOR"]
+        }, -- end of ["CMS_FAILURE_RIGHT_DISPENSER"]
         ["Failure_Elec_UtilityBattery"] = 
         {
             ["hh"] = 0,
@@ -54778,15 +55450,15 @@ mission =
             ["id"] = "Failure_Hyd_HYD2B_Leak",
             ["mm"] = 0,
         }, -- end of ["Failure_Hyd_HYD2B_Leak"]
-        ["DDD_FAILURE_TOTAL"] = 
+        ["TACAN_FAILURE_TRANSMITTER"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "DDD_FAILURE_TOTAL",
+            ["id"] = "TACAN_FAILURE_TRANSMITTER",
             ["mm"] = 0,
-        }, -- end of ["DDD_FAILURE_TOTAL"]
+        }, -- end of ["TACAN_FAILURE_TRANSMITTER"]
         ["mlws"] = 
         {
             ["hh"] = 0,
@@ -54841,15 +55513,15 @@ mission =
             ["id"] = "Failure_PP_EngL_Nozzle_CS",
             ["mm"] = 0,
         }, -- end of ["Failure_PP_EngL_Nozzle_CS"]
-        ["TACAN_FAILURE_TRANSMITTER"] = 
+        ["Failure_Ctrl_FCS_Ch2"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "TACAN_FAILURE_TRANSMITTER",
+            ["id"] = "Failure_Ctrl_FCS_Ch2",
             ["mm"] = 0,
-        }, -- end of ["TACAN_FAILURE_TRANSMITTER"]
+        }, -- end of ["Failure_Ctrl_FCS_Ch2"]
         ["Failure_PP_EngR_Nozzle_CS"] = 
         {
             ["hh"] = 0,
@@ -54877,24 +55549,24 @@ mission =
             ["id"] = "UHF_ARC_159_FAILURE_DISPLAY",
             ["mm"] = 0,
         }, -- end of ["UHF_ARC_159_FAILURE_DISPLAY"]
-        ["Failure_Ctrl_FCS_Ch2"] = 
+        ["DDD_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_FCS_Ch2",
+            ["id"] = "DDD_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_FCS_Ch2"]
-        ["RWR_FAILURE_QUAD135"] = 
+        }, -- end of ["DDD_FAILURE_TOTAL"]
+        ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_QUAD135",
+            ["id"] = "UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_QUAD135"]
+        }, -- end of ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"]
         ["RWR_FAILURE_DISPLAY_PILOT"] = 
         {
             ["hh"] = 0,
@@ -54931,15 +55603,15 @@ mission =
             ["id"] = "ILS_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["ILS_FAILURE_TOTAL"]
-        ["Failure_Elec_EmergencyBattery"] = 
+        ["RWR_FAILURE_QUAD135"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Elec_EmergencyBattery",
+            ["id"] = "RWR_FAILURE_QUAD135",
             ["mm"] = 0,
-        }, -- end of ["Failure_Elec_EmergencyBattery"]
+        }, -- end of ["RWR_FAILURE_QUAD135"]
         ["W_S_R"] = 
         {
             ["hh"] = 0,
@@ -54985,15 +55657,15 @@ mission =
             ["id"] = "CMS_FAILURE_PROGRAMMER",
             ["mm"] = 0,
         }, -- end of ["CMS_FAILURE_PROGRAMMER"]
-        ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"] = 
+        ["Failure_Elec_EmergencyBattery"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO",
+            ["id"] = "Failure_Elec_EmergencyBattery",
             ["mm"] = 0,
-        }, -- end of ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"]
+        }, -- end of ["Failure_Elec_EmergencyBattery"]
         ["CADC_PRESSURE_SENSOR"] = 
         {
             ["hh"] = 0,
@@ -55102,15 +55774,15 @@ mission =
             ["id"] = "IMU_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["IMU_FAILURE_TOTAL"]
-        ["RWR_FAILURE_QUAD225"] = 
+        ["Failure_Fuel_Tank1Transfer"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_QUAD225",
+            ["id"] = "Failure_Fuel_Tank1Transfer",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_QUAD225"]
+        }, -- end of ["Failure_Fuel_Tank1Transfer"]
         ["Failure_Comp_MC1"] = 
         {
             ["hh"] = 0,
@@ -55129,15 +55801,6 @@ mission =
             ["id"] = "UHF_ARC_159_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["UHF_ARC_159_FAILURE_TOTAL"]
-        ["Failure_Ctrl_FCS_Ch1"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_FCS_Ch1",
-            ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_FCS_Ch1"]
         ["CADC_RUDDER_AUTHORITY_COMMAND"] = 
         {
             ["hh"] = 0,
@@ -55147,6 +55810,15 @@ mission =
             ["id"] = "CADC_RUDDER_AUTHORITY_COMMAND",
             ["mm"] = 0,
         }, -- end of ["CADC_RUDDER_AUTHORITY_COMMAND"]
+        ["Failure_Fuel_QuantityGaging"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "Failure_Fuel_QuantityGaging",
+            ["mm"] = 0,
+        }, -- end of ["Failure_Fuel_QuantityGaging"]
         ["Failure_Hyd_HYD1A_Leak"] = 
         {
             ["hh"] = 0,
@@ -55183,15 +55855,15 @@ mission =
             ["id"] = "l_engine",
             ["mm"] = 0,
         }, -- end of ["l_engine"]
-        ["ICS_FAILURE_AMPLIFIER_RIO_NORM"] = 
+        ["autopilot"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "ICS_FAILURE_AMPLIFIER_RIO_NORM",
+            ["id"] = "autopilot",
             ["mm"] = 0,
-        }, -- end of ["ICS_FAILURE_AMPLIFIER_RIO_NORM"]
+        }, -- end of ["autopilot"]
         ["INS_FAILURE_NAV_COMPUTER"] = 
         {
             ["hh"] = 0,
