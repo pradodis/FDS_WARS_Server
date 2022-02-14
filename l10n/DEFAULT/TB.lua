@@ -445,19 +445,21 @@ function getPlayersStats()
 	local jogList = {}
 	local jog = net.get_player_list()
 	local enumSide = {[1] = 'red', [2] = 'blue'}
-	for _,i in pairs(jog) do
+    for _,i in pairs(jog) do
         jogInfo = net.get_player_info(i)
         jogStats = net.get_stat(i)
-		jogStats['points'] = FDS.teamPoints[enumSide[jogInfo['side']]]['Players'][jogInfo['name']]
-		listaViva = mist.DBs.humansByName
-        local playerUnits = {}
-		for k,z in pairs(listaViva) do
-			table.insert(playerUnits, Unit.getByName(k))
-        end
-        for _, k in pairs(playerUnits) do
-            if jogInfo['name'] == k:getPlayerName() then
-                jogInfo['unit'] = k:getDesc().typeName
-            end     
+        if jogInfo['side'] ~= 0 then 
+            jogStats['points'] = FDS.teamPoints[enumSide[jogInfo['side']]]['Players'][jogInfo['name']]
+            listaViva = mist.DBs.humansByName
+            local playerUnits = {}
+            for k,z in pairs(listaViva) do
+                table.insert(playerUnits, Unit.getByName(k))
+            end
+            for _, k in pairs(playerUnits) do
+                if jogInfo['name'] == k:getPlayerName() then
+                    jogInfo['unit'] = k:getDesc().typeName
+                end     
+            end
         end
         table.insert(jogList, {['information'] = jogInfo, ['stats'] = jogStats})
     end
