@@ -1437,7 +1437,7 @@ function createRandomDrop()
 		msgRandom.sound = 'Msg.ogg'
 		trigger.action.outText(msgRandom.text, msgRandom.displayTime)
 		trigger.action.outSound(msgRandom.sound) 
-		trigger.action.smoke(createPoint,3)
+		trigger.action.smoke(point3,3)
 	end
 end
 
@@ -2222,7 +2222,7 @@ mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTi
 mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 -- Export mission data
 if FDS.exportDataSite then
-	mist.scheduleFunction(exportMisData, {}, timer.getTime()+6, FDS.sendDataFreq)
+	mist.scheduleFunction(exportMisData, {}, timer.getTime()+10, FDS.sendDataFreq)
 end
 
 for _,i in pairs(FDS.coalitionCode) do
