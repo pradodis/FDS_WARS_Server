@@ -1464,14 +1464,14 @@ function recordLandPoints(_initEnt, coa)
 				if i.ucid == data.ucid then
 					newID = false
 					if FDS.recordDeliveredPoints[index]['deliveries'] ~= nil then
-						table.insert(FDS.recordDeliveredPoints[index]['deliveries'], {['name']= i.name,['value']= FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()]})
+						table.insert(FDS.recordDeliveredPoints[index]['deliveries'], {['name']= i.name,['value']= FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()], ['aircraft'] = _initEnt:getDesc().typeName})
 					else
 						FDS.recordDeliveredPoints[index]['deliveries'] = {}
 					end
 				end
 			end
             if newID then 
-                table.insert(FDS.recordDeliveredPoints, {['ucid'] = i.ucid, ['deliveries'] = {['name']= i.name,['value']= FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()], ['aircraft'] = _initEnt:getDesc().typeName}})
+                table.insert(FDS.recordDeliveredPoints, {['ucid'] = i.ucid, ['deliveries'] = {{['name']= i.name,['value']= FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()], ['aircraft'] = _initEnt:getDesc().typeName}}})
             end            
 		end
 	end
