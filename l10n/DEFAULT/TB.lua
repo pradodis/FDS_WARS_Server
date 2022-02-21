@@ -259,7 +259,7 @@ function creatingBases()
 					gpPN = k:getPlayerName()
 					gpName = k:getName()
 					local msg = {}
-					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n\n - Killing enemy players in the process is always a good idea!'
+					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.'
 					msg.displayTime = 60
 					msg.sound = 'Welcome.ogg'
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Current War Status',nil, FDS.warStatus, {gpId, gpCoa, gpPN}},timer.getTime()+FDS.wtime)
@@ -280,7 +280,7 @@ function creatingBases()
 					gpPN = k:getPlayerName()
 					gpName = k:getName()
 					local msg = {}
-					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n\n - Killing enemy players in the process is always a good idea!'
+					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.'
 					msg.displayTime = 60
 					msg.sound = 'Welcome.ogg'
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Current War Status',nil, FDS.warStatus, {gpId, gpCoa, gpPN}},timer.getTime()+FDS.wtime)
@@ -744,24 +744,49 @@ function guidedBombingRun(coa)
 	}
 	
     for bomber = 1, 1 do
-		gp = Group.getByName(bombingRunTable[zone][2])
-		gPData = mist.getGroupData(bombingRunTable[zone][2],true)
-		gpR = mist.getGroupRoute(gp:getName(),true)
-		new_GPR = mist.utils.deepCopy(gpR)
-		new_gPData = mist.utils.deepCopy(gPData)
-		randomTgt = {}
+		local gp = Group.getByName(bombingRunTable[zone][2])
+		local gPData = mist.getGroupData(bombingRunTable[zone][2],true)
+		local gpR = mist.getGroupRoute(gp:getName(),true)
+		local new_GPR = mist.utils.deepCopy(gpR)
+		local new_gPData = mist.utils.deepCopy(gPData)
+		local randomTgt = {}
+		local randomTgtStr = {}
+		local numberUnit = 0
+		local strutNumber = 0
 		for elementos = 1, #tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]] do 
-			randomTgt[elementos] = elementos
+			if tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]][elementos][4] == 3 then
+				strutNumber = strutNumber + 1
+				randomTgtStr[strutNumber] = elementos
+			elseif tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]][elementos][4] == 2 then
+				numberUnit = numberUnit + 1
+				randomTgt[numberUnit] = elementos
+			end
 		end
 		for multiTgt = 1, FDS.bomberTargetsNumber do
-			if #randomTgt == 0 then
+			if #randomTgt + #randomTgtStr == 0 then
+				numberUnit = 0
+				strutNumber = 0
 				for elementos = 1, #tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]] do 
-					randomTgt[elementos] = elementos
+					if tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]][elementos][4] == 3 then
+						strutNumber = strutNumber + 1
+						randomTgtStr[strutNumber] = elementos
+					elseif tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]][elementos][4] == 2 then
+						numberUnit = numberUnit + 1
+						randomTgt[numberUnit] = elementos
+					end
 				end
 			end
-			local selection = math.random(1, #randomTgt)
-			local selTgt = tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]][randomTgt[selection]][2]
-			table.remove(randomTgt,selection)
+			local selection = ''
+			local selTgt = ''
+			if #randomTgtStr > 0 then
+				selection = math.random(1, #randomTgtStr)
+				selTgt = tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]][randomTgtStr[selection]][2]
+				table.remove(randomTgtStr,selection)
+			else
+				selection = math.random(1, #randomTgt)
+				selTgt = tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]][randomTgt[selection]][2]
+				table.remove(randomTgt,selection)	
+			end			
 			new_GPR[2].task.params.tasks[multiTgt].params.x = selTgt.x
 			new_GPR[2].task.params.tasks[multiTgt].params.y = selTgt.y
 		end
@@ -1625,7 +1650,7 @@ FDS.eventActions = FDS.switch {
 		
 		if _initEnt:getCategory() == Object.Category.UNIT and _initEnt:getPlayerName() ~= nil then 
 			local msg = {}
-			msg.text = _initEnt:getPlayerName() .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n\n - Killing enemy players in the process is always a good idea!'
+			msg.text = _initEnt:getPlayerName() .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.'
 			msg.displayTime = 60
 			msg.sound = 'Welcome.ogg'
 			

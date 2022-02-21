@@ -222,13 +222,13 @@ mission =
                         ["layerName"] = "Red",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -59400.136570572,
                         ["name"] = "Friendly Helipa",
                         ["fillColorString"] = "0xff00002b",
                         ["text"] = "Friendly Helipad",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0xff0000ff",
-                        ["mapX"] = -59400.136570572,
                     }, -- end of [2]
                 }, -- end of ["objects"]
             }, -- end of [2]
@@ -261,13 +261,13 @@ mission =
                         ["layerName"] = "Blue",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -116214.47765954,
                         ["name"] = "Friendly Helipad_Blue",
                         ["fillColorString"] = "0x0000ff26",
                         ["text"] = "Friendly Helipad",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0x0000ffff",
-                        ["mapX"] = -116214.47765954,
                     }, -- end of [2]
                 }, -- end of ["objects"]
             }, -- end of [3]
@@ -285,13 +285,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -77961.617376473,
                         ["name"] = "Red Zone 2",
                         ["fillColorString"] = "0xff000028",
                         ["text"] = "Red Zone 2",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0xff0000ff",
-                        ["mapX"] = -77961.617376473,
                     }, -- end of [1]
                     [2] = 
                     {
@@ -301,13 +301,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -70988.950291188,
                         ["name"] = "Red Zone 1",
                         ["fillColorString"] = "0xff000028",
                         ["text"] = "Red Zone 1",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0xff0000ff",
-                        ["mapX"] = -70988.950291188,
                     }, -- end of [2]
                     [4] = 
                     {
@@ -317,13 +317,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -102537.80666805,
                         ["name"] = "Blue Zone 1",
                         ["fillColorString"] = "0x0000ff28",
                         ["text"] = "Blue Zone 1",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0x0000ffff",
-                        ["mapX"] = -102537.80666805,
                     }, -- end of [4]
                     [8] = 
                     {
@@ -333,13 +333,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 30,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -204577.52662623,
                         ["name"] = "InvWarn2",
                         ["fillColorString"] = "0xffff8080",
                         ["text"] = "Base and Helipad SAMs are invulnerable",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0xff0000ff",
-                        ["mapX"] = -204577.52662623,
                     }, -- end of [8]
                     [16] = 
                     {
@@ -403,13 +403,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 20,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -56753.415210799,
                         ["name"] = "Bombing Run 2",
                         ["fillColorString"] = "0xffffff67",
                         ["text"] = "Bombing Corridor",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0x000000ff",
-                        ["mapX"] = -56753.415210799,
                     }, -- end of [9]
                     [18] = 
                     {
@@ -446,13 +446,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 35,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -176123.90681101,
                         ["name"] = "Air Base Blue",
                         ["fillColorString"] = "0x0000ff28",
                         ["text"] = "Air Base Blue",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0x0000ffff",
-                        ["mapX"] = -176123.90681101,
                     }, -- end of [5]
                     [10] = 
                     {
@@ -546,16 +546,16 @@ mission =
                         ["layerName"] = "Common",
                         ["mapY"] = 306423.79137359,
                         ["primitiveType"] = "Polygon",
-                        ["colorString"] = "0xff0000ff",
+                        ["polygonMode"] = "rect",
                         ["width"] = 19989.390358528,
                         ["thickness"] = 8,
-                        ["polygonMode"] = "rect",
+                        ["mapX"] = -124931.88024766,
                         ["style"] = "solid",
                         ["angle"] = 2,
                         ["height"] = 484076.39375115,
                         ["fillColorString"] = "0xff000028",
                         ["name"] = "Polygon 4",
-                        ["mapX"] = -124931.88024766,
+                        ["colorString"] = "0xff0000ff",
                     }, -- end of [21]
                     [11] = 
                     {
@@ -565,13 +565,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 20,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -60751.134354888,
                         ["name"] = "Bombing Run",
                         ["fillColorString"] = "0xffffff67",
                         ["text"] = "Bombing Corridor",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0x000000ff",
-                        ["mapX"] = -60751.134354888,
                     }, -- end of [11]
                     [22] = 
                     {
@@ -581,13 +581,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = 77149.846581468,
                         ["name"] = "Red_Supply",
                         ["fillColorString"] = "0xff000026",
                         ["text"] = "Red Air Supply Route",
                         ["angle"] = 2,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0xff0000ff",
-                        ["mapX"] = 77149.846581468,
                     }, -- end of [22]
                     [3] = 
                     {
@@ -597,13 +597,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 35,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -23599.133018794,
                         ["name"] = "Air Base Red",
                         ["fillColorString"] = "0xff000028",
                         ["text"] = "Air Base Red",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0xff0000ff",
-                        ["mapX"] = -23599.133018794,
                     }, -- end of [3]
                     [6] = 
                     {
@@ -613,13 +613,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -106987.48449485,
                         ["name"] = "Blue Zone 2",
                         ["fillColorString"] = "0x0000ff28",
                         ["text"] = "Blue Zone 2",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0x0000ffff",
-                        ["mapX"] = -106987.48449485,
                     }, -- end of [6]
                     [12] = 
                     {
@@ -686,16 +686,16 @@ mission =
                         ["layerName"] = "Common",
                         ["mapY"] = 613719.73684455,
                         ["primitiveType"] = "Polygon",
-                        ["colorString"] = "0x0000ffff",
+                        ["polygonMode"] = "rect",
                         ["width"] = 20183.010209757,
                         ["thickness"] = 8,
-                        ["polygonMode"] = "rect",
+                        ["mapX"] = -67880.711889334,
                         ["style"] = "solid",
                         ["angle"] = 2,
                         ["height"] = 491240.2375252,
                         ["fillColorString"] = "0x0000ff28",
                         ["name"] = "Polygon 3",
-                        ["mapX"] = -67880.711889334,
+                        ["colorString"] = "0x0000ffff",
                     }, -- end of [24]
                     [25] = 
                     {
@@ -850,13 +850,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 30,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = 5114.8667487062,
                         ["name"] = "InvWarn1",
                         ["fillColorString"] = "0xffff8080",
                         ["text"] = "Base and Helipad SAMs are invulnerable",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0xff0000ff",
-                        ["mapX"] = 5114.8667487062,
                     }, -- end of [7]
                     [14] = 
                     {
@@ -947,13 +947,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = 61813.023838351,
                         ["name"] = "Blue_Supply",
                         ["fillColorString"] = "0x0000ff33",
                         ["text"] = "Blue Air Supply Route",
                         ["angle"] = 2,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0x0000ffff",
-                        ["mapX"] = 61813.023838351,
                     }, -- end of [23]
                 }, -- end of ["objects"]
             }, -- end of [1]
@@ -979,13 +979,13 @@ mission =
                         ["layerName"] = "Author",
                         ["fontSize"] = 75,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -94567.545805181,
                         ["name"] = "Sector 1",
                         ["fillColorString"] = "0x00000028",
                         ["text"] = "Sector 1",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0x00000096",
-                        ["mapX"] = -94567.545805181,
                     }, -- end of [6]
                     [2] = 
                     {
@@ -1110,13 +1110,13 @@ mission =
                         ["layerName"] = "Author",
                         ["fontSize"] = 75,
                         ["primitiveType"] = "TextBox",
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
+                        ["mapX"] = -96895.321066952,
                         ["name"] = "Sector 2",
                         ["fillColorString"] = "0x0000002d",
                         ["text"] = "Sector 2",
                         ["angle"] = 0,
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["colorString"] = "0x00000096",
-                        ["mapX"] = -96895.321066952,
                     }, -- end of [5]
                     [7] = 
                     {
@@ -1401,8 +1401,8 @@ mission =
                 {
                 }, -- end of ["properties"]
                 ["hidden"] = false,
-                ["y"] = 758581.47556975,
-                ["x"] = -42009.150405429,
+                ["y"] = 760365.78921514,
+                ["x"] = -41658.831243563,
                 ["name"] = "Red_Bomber_A2_Spaw",
                 ["type"] = 0,
             }, -- end of [8]
@@ -1421,8 +1421,8 @@ mission =
                 {
                 }, -- end of ["properties"]
                 ["hidden"] = false,
-                ["y"] = 158439.83078664,
-                ["x"] = -39180.231488444,
+                ["y"] = 156872.89325623,
+                ["x"] = -38792.154243057,
                 ["name"] = "Red_Bomber_A1_Spaw",
                 ["type"] = 0,
             }, -- end of [9]
@@ -1710,9 +1710,9 @@ mission =
     }, -- end of ["triggers"]
     ["map"] = 
     {
-        ["centerY"] = 462884.85200811,
-        ["zoom"] = 8184.7636071421,
-        ["centerX"] = -164477.80421011,
+        ["centerY"] = 445689.99450877,
+        ["zoom"] = 6665.3555496712,
+        ["centerX"] = -118419.1274181,
     }, -- end of ["map"]
     ["coalitions"] = 
     {
@@ -1994,7 +1994,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "AWACS",
                                 ["uncontrolled"] = false,
                                 ["taskSelected"] = true,
@@ -2271,7 +2271,7 @@ mission =
                                 ["name"] = "Blue_AWACS_1",
                                 ["communication"] = true,
                                 ["start_time"] = 0,
-                                ["frequency"] = 251,
+                                ["frequency"] = 252,
                             }, -- end of [1]
                             [2] = 
                             {
@@ -5047,7 +5047,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Ground Attack",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -5333,7 +5333,7 @@ mission =
                                                     [37] = 267,
                                                     [45] = 121,
                                                     [35] = 263,
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [19] = 253,
                                                     [23] = 265,
                                                     [47] = 121.5,
@@ -5402,7 +5402,7 @@ mission =
                                 ["uncontrollable"] = false,
                                 ["start_time"] = 0,
                                 ["modulation"] = 0,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [14]
                             [15] = 
                             {
@@ -5410,7 +5410,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Ground Attack",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -5696,7 +5696,7 @@ mission =
                                                     [37] = 267,
                                                     [45] = 121,
                                                     [35] = 263,
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [19] = 253,
                                                     [23] = 265,
                                                     [47] = 121.5,
@@ -5765,7 +5765,7 @@ mission =
                                 ["uncontrollable"] = false,
                                 ["start_time"] = 0,
                                 ["modulation"] = 0,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [15]
                             [16] = 
                             {
@@ -6927,7 +6927,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -7158,7 +7158,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -7304,7 +7304,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [18]
                             [19] = 
                             {
@@ -7312,7 +7312,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -7543,7 +7543,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -7689,7 +7689,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [19]
                             [20] = 
                             {
@@ -7697,7 +7697,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -7928,7 +7928,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -8074,7 +8074,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [20]
                             [21] = 
                             {
@@ -8082,7 +8082,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -8313,7 +8313,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -8459,7 +8459,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [21]
                             [22] = 
                             {
@@ -8467,7 +8467,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -8698,7 +8698,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -8844,7 +8844,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [22]
                             [23] = 
                             {
@@ -8852,7 +8852,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -9083,7 +9083,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -9229,7 +9229,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [23]
                             [24] = 
                             {
@@ -9237,7 +9237,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -9468,7 +9468,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -9614,7 +9614,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [24]
                             [25] = 
                             {
@@ -9622,7 +9622,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -9853,7 +9853,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -9999,7 +9999,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [25]
                             [26] = 
                             {
@@ -10007,7 +10007,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -10236,7 +10236,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -10411,7 +10411,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [26]
                             [27] = 
                             {
@@ -10419,7 +10419,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -10648,7 +10648,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -10823,7 +10823,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [27]
                             [28] = 
                             {
@@ -10831,7 +10831,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -11060,7 +11060,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -11235,7 +11235,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [28]
                             [29] = 
                             {
@@ -11243,7 +11243,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -11472,7 +11472,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -11647,7 +11647,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [29]
                             [30] = 
                             {
@@ -11655,7 +11655,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -11884,7 +11884,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -12059,7 +12059,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [30]
                             [31] = 
                             {
@@ -12067,7 +12067,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -12296,7 +12296,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -12471,7 +12471,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [31]
                             [32] = 
                             {
@@ -12479,7 +12479,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -12708,7 +12708,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -12883,7 +12883,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [32]
                             [33] = 
                             {
@@ -12891,7 +12891,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -13120,7 +13120,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -13295,7 +13295,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [33]
                             [34] = 
                             {
@@ -13303,7 +13303,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -13497,10 +13497,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode1"] = 8,
-                                            ["LaserCode100"] = 6,
                                             ["AARProbe"] = false,
+                                            ["LaserCode100"] = 6,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode1"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -13616,7 +13616,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [34]
                             [35] = 
                             {
@@ -13881,7 +13881,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -14075,10 +14075,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["AARProbe"] = false,
-                                            ["LaserCode100"] = 6,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
+                                            ["AARProbe"] = false,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -14194,7 +14194,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [36]
                             [37] = 
                             {
@@ -14202,7 +14202,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -14396,10 +14396,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["AARProbe"] = false,
-                                            ["LaserCode100"] = 6,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
+                                            ["AARProbe"] = false,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -14515,7 +14515,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [37]
                             [38] = 
                             {
@@ -14523,7 +14523,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -14717,10 +14717,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["AARProbe"] = false,
-                                            ["LaserCode100"] = 6,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
+                                            ["AARProbe"] = false,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -14836,7 +14836,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [38]
                             [39] = 
                             {
@@ -18245,7 +18245,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Transport",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -18310,7 +18310,7 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -18375,7 +18375,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [7]
                             [8] = 
                             {
@@ -18383,7 +18383,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Transport",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -18448,7 +18448,7 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -18513,7 +18513,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [8]
                             [9] = 
                             {
@@ -19383,7 +19383,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Transport",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -19448,7 +19448,7 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -19513,7 +19513,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [15]
                             [16] = 
                             {
@@ -19521,7 +19521,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Transport",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -19586,7 +19586,7 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -19651,7 +19651,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [16]
                         }, -- end of ["group"]
                     }, -- end of ["helicopter"]
@@ -21282,6 +21282,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -21351,6 +21369,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -21420,6 +21456,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -21489,6 +21543,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -21558,6 +21630,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -21627,6 +21717,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -21696,6 +21804,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -21765,6 +21891,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -21834,6 +21978,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -21903,6 +22065,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -21972,6 +22152,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -22041,6 +22239,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -22110,6 +22326,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -22179,6 +22413,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -23718,6 +23970,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -25994,7 +26264,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -26082,7 +26352,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -26181,7 +26451,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [1]
                             [2] = 
                             {
@@ -26189,7 +26459,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -26277,7 +26547,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -26376,7 +26646,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [2]
                         }, -- end of ["group"]
                     }, -- end of ["helicopter"]
@@ -27011,7 +27281,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -27093,12 +27363,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["ClockTime"] = 1,
-                                            ["RocketBurst"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["EWDispenserBL"] = 2,
                                             ["EWDispenserTFL"] = 1,
+                                            ["EWDispenserBL"] = 2,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -27138,7 +27408,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 243,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -27362,7 +27632,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [1]
                             [2] = 
                             {
@@ -27370,7 +27640,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -27452,12 +27722,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["EWDispenserTFL"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["RocketBurst"] = 1,
+                                            ["EWDispenserBL"] = 2,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -27497,7 +27767,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 243,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -27721,7 +27991,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [2]
                             [3] = 
                             {
@@ -27729,7 +27999,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -27811,12 +28081,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["WpBullseye"] = 0,
+                                            ["EWDispenserBL"] = 2,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -27856,7 +28126,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 243,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -28080,7 +28350,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [3]
                             [4] = 
                             {
@@ -28088,7 +28358,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -28170,12 +28440,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["WpBullseye"] = 0,
+                                            ["EWDispenserBL"] = 2,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -28215,7 +28485,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 243,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -28439,7 +28709,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [4]
                         }, -- end of ["group"]
                     }, -- end of ["plane"]
@@ -29384,7 +29654,7 @@ mission =
                                 ["name"] = "Red_AWACS_1",
                                 ["communication"] = true,
                                 ["start_time"] = 0,
-                                ["frequency"] = 252,
+                                ["frequency"] = 253,
                             }, -- end of [5]
                             [6] = 
                             {
@@ -29392,7 +29662,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -29623,7 +29893,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -29769,7 +30039,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [6]
                             [7] = 
                             {
@@ -29777,7 +30047,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -30008,7 +30278,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -30154,7 +30424,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [7]
                             [8] = 
                             {
@@ -30162,7 +30432,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -30393,7 +30663,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -30539,7 +30809,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [8]
                             [9] = 
                             {
@@ -30547,7 +30817,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -30778,7 +31048,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -30924,7 +31194,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [9]
                             [10] = 
                             {
@@ -30932,7 +31202,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -31163,7 +31433,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -31309,7 +31579,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [10]
                             [11] = 
                             {
@@ -31317,7 +31587,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -31548,7 +31818,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -31694,7 +31964,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [11]
                             [12] = 
                             {
@@ -31702,7 +31972,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -31933,7 +32203,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -32079,7 +32349,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [12]
                             [13] = 
                             {
@@ -32087,7 +32357,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -32318,7 +32588,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -32464,7 +32734,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [13]
                             [14] = 
                             {
@@ -34587,7 +34857,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Transport",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -34652,7 +34922,7 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -34717,7 +34987,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [11]
                             [12] = 
                             {
@@ -34725,7 +34995,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Transport",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -34790,7 +35060,7 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -34855,7 +35125,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [12]
                             [13] = 
                             {
@@ -35101,7 +35371,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Transport",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -35166,7 +35436,7 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -35231,7 +35501,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [15]
                             [16] = 
                             {
@@ -35239,7 +35509,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Transport",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -35304,7 +35574,7 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -35369,7 +35639,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [16]
                             [18] = 
                             {
@@ -35377,7 +35647,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -35465,7 +35735,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -35558,7 +35828,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [18]
                             [17] = 
                             {
@@ -35566,7 +35836,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -35654,7 +35924,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 127.5,
+                                                    [1] = 124,
                                                     [2] = 135,
                                                     [4] = 127,
                                                     [8] = 128,
@@ -35747,7 +36017,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 127.5,
+                                ["frequency"] = 124,
                             }, -- end of [17]
                         }, -- end of ["group"]
                     }, -- end of ["helicopter"]
@@ -37293,6 +37563,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -37362,6 +37650,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -37413,13 +37719,13 @@ mission =
                                     {
                                         [1] = 
                                         {
-                                            ["alt"] = 165,
+                                            ["alt"] = 178,
                                             ["type"] = "Turning Point",
                                             ["ETA"] = 0,
                                             ["alt_type"] = "BARO",
                                             ["formation_template"] = "",
-                                            ["y"] = 272657.42857145,
-                                            ["x"] = -35259.999999999,
+                                            ["y"] = 272655.40294435,
+                                            ["x"] = -35274.375944908,
                                             ["name"] = "",
                                             ["ETA_locked"] = true,
                                             ["speed"] = 5.5555555555556,
@@ -37431,6 +37737,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -37452,15 +37776,15 @@ mission =
                                         ["skill"] = "Excellent",
                                         ["type"] = "Strela-1 9P31",
                                         ["unitId"] = 28,
-                                        ["y"] = 272657.42857145,
-                                        ["x"] = -35259.999999999,
+                                        ["y"] = 272655.40294435,
+                                        ["x"] = -35274.375944908,
                                         ["name"] = "Unit #013",
                                         ["heading"] = 5.5850536063819,
                                         ["playerCanDrive"] = false,
                                     }, -- end of [1]
                                 }, -- end of ["units"]
-                                ["y"] = 272657.42857145,
-                                ["x"] = -35259.999999999,
+                                ["y"] = 272655.40294435,
+                                ["x"] = -35274.375944908,
                                 ["name"] = "Red_AA_Strela1",
                                 ["start_time"] = 0,
                             }, -- end of [13]
@@ -37500,6 +37824,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -37569,6 +37911,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -37638,6 +37998,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -37707,6 +38085,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -37776,6 +38172,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -37845,6 +38259,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -37914,6 +38346,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -37983,6 +38433,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -38052,6 +38520,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -38121,6 +38607,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -38190,6 +38694,24 @@ mission =
                                                 {
                                                     ["tasks"] = 
                                                     {
+                                                        [1] = 
+                                                        {
+                                                            ["number"] = 1,
+                                                            ["auto"] = false,
+                                                            ["id"] = "WrappedAction",
+                                                            ["enabled"] = true,
+                                                            ["params"] = 
+                                                            {
+                                                                ["action"] = 
+                                                                {
+                                                                    ["id"] = "Option",
+                                                                    ["params"] = 
+                                                                    {
+                                                                        ["name"] = 8,
+                                                                    }, -- end of ["params"]
+                                                                }, -- end of ["action"]
+                                                            }, -- end of ["params"]
+                                                        }, -- end of [1]
                                                     }, -- end of ["tasks"]
                                                 }, -- end of ["params"]
                                             }, -- end of ["task"]
@@ -42915,7 +43437,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -42997,12 +43519,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["ClockTime"] = 1,
-                                            ["WpBullseye"] = 0,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["EWDispenserTFL"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["RocketBurst"] = 1,
+                                            ["EWDispenserBL"] = 2,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -43042,7 +43564,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 243,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -43260,7 +43782,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [19]
                             [20] = 
                             {
@@ -43268,7 +43790,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -43387,7 +43909,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -43556,7 +44078,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [20]
                             [21] = 
                             {
@@ -43564,7 +44086,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -43646,12 +44168,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["WpBullseye"] = 0,
+                                            ["EWDispenserBL"] = 2,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -43691,7 +44213,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 243,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -43909,7 +44431,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [21]
                             [22] = 
                             {
@@ -43917,7 +44439,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -43999,12 +44521,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["WpBullseye"] = 0,
+                                            ["EWDispenserBL"] = 2,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -44044,7 +44566,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 243,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -44262,7 +44784,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [22]
                             [23] = 
                             {
@@ -44270,7 +44792,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAS",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -44352,12 +44874,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["WpBullseye"] = 0,
+                                            ["EWDispenserBL"] = 2,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -44397,7 +44919,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 243,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -44615,7 +45137,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [23]
                             [24] = 
                             {
@@ -44623,7 +45145,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -44742,7 +45264,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -44911,7 +45433,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [24]
                             [25] = 
                             {
@@ -44919,7 +45441,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -45038,7 +45560,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -45207,7 +45729,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [25]
                             [26] = 
                             {
@@ -45215,7 +45737,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -45334,7 +45856,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -45503,7 +46025,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [26]
                             [27] = 
                             {
@@ -45511,7 +46033,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -45630,7 +46152,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -45799,7 +46321,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [27]
                             [28] = 
                             {
@@ -45807,7 +46329,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -45926,7 +46448,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -46095,7 +46617,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [28]
                             [29] = 
                             {
@@ -46103,7 +46625,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -46222,7 +46744,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -46391,7 +46913,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [29]
                             [30] = 
                             {
@@ -46399,7 +46921,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -46518,7 +47040,7 @@ mission =
                                                 }, -- end of ["modulations"]
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [2] = 264,
                                                     [4] = 256,
                                                     [8] = 257,
@@ -46687,7 +47209,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [30]
                             [31] = 
                             {
@@ -47365,7 +47887,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Ground Attack",
                                 ["uncontrolled"] = false,
                                 ["taskSelected"] = true,
@@ -47651,7 +48173,7 @@ mission =
                                                     [37] = 267,
                                                     [45] = 121,
                                                     [35] = 263,
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [19] = 253,
                                                     [23] = 265,
                                                     [47] = 121.5,
@@ -47713,7 +48235,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [33]
                             [34] = 
                             {
@@ -48223,7 +48745,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "Ground Attack",
                                 ["uncontrolled"] = false,
                                 ["taskSelected"] = true,
@@ -48509,7 +49031,7 @@ mission =
                                                     [37] = 267,
                                                     [45] = 121,
                                                     [35] = 263,
-                                                    [1] = 305,
+                                                    [1] = 251,
                                                     [19] = 253,
                                                     [23] = 265,
                                                     [31] = 259,
@@ -48571,7 +49093,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 305,
+                                ["frequency"] = 251,
                             }, -- end of [36]
                             [37] = 
                             {
@@ -51460,7 +51982,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -51654,10 +52176,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode10"] = 8,
-                                            ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
+                                            ["LaserCode100"] = 6,
                                             ["AARProbe"] = false,
+                                            ["LaserCode10"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -51767,7 +52289,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [1]
                             [2] = 
                             {
@@ -51775,7 +52297,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -51969,10 +52491,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode1"] = 8,
-                                            ["LaserCode100"] = 6,
                                             ["AARProbe"] = false,
+                                            ["LaserCode100"] = 6,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode1"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -52082,7 +52604,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [2]
                             [3] = 
                             {
@@ -52090,7 +52612,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -52284,10 +52806,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode1"] = 8,
-                                            ["LaserCode100"] = 6,
                                             ["AARProbe"] = false,
+                                            ["LaserCode100"] = 6,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode1"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -52397,7 +52919,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [3]
                             [4] = 
                             {
@@ -52405,7 +52927,7 @@ mission =
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
-                                ["radioSet"] = false,
+                                ["radioSet"] = true,
                                 ["task"] = "CAP",
                                 ["uncontrolled"] = false,
                                 ["route"] = 
@@ -52599,10 +53121,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode1"] = 8,
-                                            ["LaserCode100"] = 6,
                                             ["AARProbe"] = false,
+                                            ["LaserCode100"] = 6,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode1"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -52712,7 +53234,7 @@ mission =
                                 ["communication"] = true,
                                 ["start_time"] = 0,
                                 ["uncontrollable"] = false,
-                                ["frequency"] = 243,
+                                ["frequency"] = 251,
                             }, -- end of [4]
                         }, -- end of ["group"]
                     }, -- end of ["plane"]
@@ -52909,8 +53431,8 @@ mission =
                                             ["type"] = "Turning Point",
                                             ["ETA"] = 0,
                                             ["ETA_locked"] = true,
-                                            ["y"] = 158505.54210556,
-                                            ["x"] = -38997.877742906,
+                                            ["y"] = 158434.46578979,
+                                            ["x"] = -39155.361937524,
                                             ["formation_template"] = "",
                                             ["speed_locked"] = true,
                                         }, -- end of [1]
@@ -53363,9 +53885,9 @@ mission =
                                         ["speed"] = 282.63888888889,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 842,
-                                        ["psi"] = -1.8235829592,
-                                        ["y"] = 158505.54210556,
-                                        ["x"] = -38997.877742906,
+                                        ["psi"] = -1.8229193668064,
+                                        ["y"] = 158434.46578979,
+                                        ["x"] = -39155.361937524,
                                         ["name"] = "Blue_Bomber_Zone1_Guiding-1-5",
                                         ["payload"] = 
                                         {
@@ -53381,7 +53903,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = 1.8235829592,
+                                        ["heading"] = 1.8229193668064,
                                         ["callsign"] = 
                                         {
                                             [1] = 3,
@@ -53400,9 +53922,9 @@ mission =
                                         ["speed"] = 282.63888888889,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 843,
-                                        ["psi"] = -1.8235829592,
-                                        ["y"] = 158545.54210556,
-                                        ["x"] = -39037.877742906,
+                                        ["psi"] = -1.8229193668064,
+                                        ["y"] = 158474.46578979,
+                                        ["x"] = -39195.361937524,
                                         ["name"] = "Blue_Bomber_Zone1_Guiding-1-6",
                                         ["payload"] = 
                                         {
@@ -53418,7 +53940,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = 1.8235829592,
+                                        ["heading"] = 1.8229193668064,
                                         ["callsign"] = 
                                         {
                                             [1] = 3,
@@ -53437,9 +53959,9 @@ mission =
                                         ["speed"] = 282.63888888889,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 844,
-                                        ["psi"] = -1.8235829592,
-                                        ["y"] = 158585.54210556,
-                                        ["x"] = -39077.877742906,
+                                        ["psi"] = -1.8229193668064,
+                                        ["y"] = 158517.48160409,
+                                        ["x"] = -39238.444746954,
                                         ["name"] = "Blue_Bomber_Zone1_Guiding-1-7",
                                         ["payload"] = 
                                         {
@@ -53455,7 +53977,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = 1.8235829592,
+                                        ["heading"] = 1.8229193668064,
                                         ["callsign"] = 
                                         {
                                             [1] = 3,
@@ -53474,9 +53996,9 @@ mission =
                                         ["speed"] = 282.63888888889,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 845,
-                                        ["psi"] = -1.8235829592,
-                                        ["y"] = 158625.54210556,
-                                        ["x"] = -39117.877742906,
+                                        ["psi"] = -1.8229193668064,
+                                        ["y"] = 158554.46578979,
+                                        ["x"] = -39275.361937524,
                                         ["name"] = "Blue_Bomber_Zone1_Guiding-1-8",
                                         ["payload"] = 
                                         {
@@ -53492,7 +54014,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = 1.8235829592,
+                                        ["heading"] = 1.8229193668064,
                                         ["callsign"] = 
                                         {
                                             [1] = 3,
@@ -53503,8 +54025,8 @@ mission =
                                         ["onboard_num"] = "035",
                                     }, -- end of [4]
                                 }, -- end of ["units"]
-                                ["y"] = 158505.54210556,
-                                ["x"] = -38997.877742906,
+                                ["y"] = 158434.46578979,
+                                ["x"] = -39155.361937524,
                                 ["name"] = "Red_Bomber_Zone1_Guiding",
                                 ["communication"] = true,
                                 ["start_time"] = 0,
@@ -53695,8 +54217,8 @@ mission =
                                             ["type"] = "Turning Point",
                                             ["ETA"] = 0,
                                             ["ETA_locked"] = true,
-                                            ["y"] = 758579.81426083,
-                                            ["x"] = -41385.073977914,
+                                            ["y"] = 758634.71853293,
+                                            ["x"] = -42193.322326845,
                                             ["formation_template"] = "",
                                             ["speed_locked"] = true,
                                         }, -- end of [1]
@@ -54149,9 +54671,9 @@ mission =
                                         ["speed"] = 282.63888888889,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 846,
-                                        ["psi"] = 1.8214550403298,
-                                        ["y"] = 758579.81426083,
-                                        ["x"] = -41385.073977914,
+                                        ["psi"] = 1.8183884183424,
+                                        ["y"] = 758634.71853293,
+                                        ["x"] = -42193.322326845,
                                         ["name"] = "Red_Bomber_Zone1_Guiding-1-1",
                                         ["payload"] = 
                                         {
@@ -54167,7 +54689,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = -1.8214550403298,
+                                        ["heading"] = -1.8183884183424,
                                         ["callsign"] = 
                                         {
                                             [1] = 1,
@@ -54186,9 +54708,9 @@ mission =
                                         ["speed"] = 282.63888888889,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 847,
-                                        ["psi"] = 1.8214550403298,
-                                        ["y"] = 758619.81426083,
-                                        ["x"] = -41425.073977914,
+                                        ["psi"] = 1.8183884183424,
+                                        ["y"] = 758674.71853293,
+                                        ["x"] = -42233.322326845,
                                         ["name"] = "Red_Bomber_Zone1_Guiding-1-2",
                                         ["payload"] = 
                                         {
@@ -54204,7 +54726,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = -1.8214550403298,
+                                        ["heading"] = -1.8183884183424,
                                         ["callsign"] = 
                                         {
                                             [1] = 1,
@@ -54223,9 +54745,9 @@ mission =
                                         ["speed"] = 282.63888888889,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 848,
-                                        ["psi"] = 1.8214550403298,
-                                        ["y"] = 758659.81426083,
-                                        ["x"] = -41465.073977914,
+                                        ["psi"] = 1.8183884183424,
+                                        ["y"] = 758714.71853293,
+                                        ["x"] = -42273.322326845,
                                         ["name"] = "Red_Bomber_Zone1_Guiding-1-3",
                                         ["payload"] = 
                                         {
@@ -54241,7 +54763,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = -1.8214550403298,
+                                        ["heading"] = -1.8183884183424,
                                         ["callsign"] = 
                                         {
                                             [1] = 1,
@@ -54260,9 +54782,9 @@ mission =
                                         ["speed"] = 282.63888888889,
                                         ["type"] = "B-1B",
                                         ["unitId"] = 849,
-                                        ["psi"] = 1.8214550403298,
-                                        ["y"] = 758699.81426083,
-                                        ["x"] = -41505.073977914,
+                                        ["psi"] = 1.8183884183424,
+                                        ["y"] = 758754.71853293,
+                                        ["x"] = -42313.322326845,
                                         ["name"] = "Red_Bomber_Zone1_Guiding-1-4",
                                         ["payload"] = 
                                         {
@@ -54278,7 +54800,7 @@ mission =
                                             ["chaff"] = 60,
                                             ["gun"] = 100,
                                         }, -- end of ["payload"]
-                                        ["heading"] = -1.8214550403298,
+                                        ["heading"] = -1.8183884183424,
                                         ["callsign"] = 
                                         {
                                             [1] = 1,
@@ -54289,8 +54811,8 @@ mission =
                                         ["onboard_num"] = "013",
                                     }, -- end of [4]
                                 }, -- end of ["units"]
-                                ["y"] = 758579.81426083,
-                                ["x"] = -41385.073977914,
+                                ["y"] = 758634.71853293,
+                                ["x"] = -42193.322326845,
                                 ["name"] = "Red_Bomber_Zone2_Guiding",
                                 ["communication"] = true,
                                 ["start_time"] = 0,
@@ -54798,7 +55320,7 @@ mission =
             ["comment"] = "Restart_Red",
         }, -- end of [9]
     }, -- end of ["trigrules"]
-    ["currentKey"] = 2359117,
+    ["currentKey"] = 2398538,
     ["start_time"] = 43200,
     ["forcedOptions"] = 
     {
