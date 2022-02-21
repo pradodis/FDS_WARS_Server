@@ -15,7 +15,7 @@ FDS = {}
 env.info('FDS started')
 
 FDS.exportVector = {}
-FDS.recordDeliveredPoints = {}
+FDS.recordDeliveredPoints = nil
 FDS.teamPoints = {}
 FDS.zoneSts = {}
 FDS.redZones = {'Red Zone 1','Red Zone 2'}
@@ -527,8 +527,8 @@ function exportMisData()
 		['initial'] = math.floor(timer.getTime0())
 	}
 	if FDS.exportDataSite then
-		local file = io.open(FDS.exportPath .. "currentStats.json", "w")
 		jsonExport = net.lua2json(FDS.exportVector)
+		local file = io.open(FDS.exportPath .. "currentStats.json", "w")
 		file:write(jsonExport)
 		file:close()
 	end
@@ -1460,6 +1460,9 @@ function recordLandPoints(_initEnt, coa)
 	local newID = true
 	for _, i in pairs(activePlayerListTable) do
 		if i.name == _initEnt:getPlayerName() then 
+			if FDS.recordDeliveredPoints == nil then
+				FDS.recordDeliveredPoints = {}
+			end
 			for index, data in pairs(FDS.recordDeliveredPoints) do
 				if i.ucid == data.ucid then
 					newID = false
