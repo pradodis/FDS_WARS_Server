@@ -24,6 +24,9 @@ FDS.randomDropZones = {'randomDrop_1','randomDrop_2','randomDrop_3','randomDrop_
 FDS.dropZones = {}
 FDS.activeHovers = {}
 FDS.retrievedZones = {}
+FDS.entityKills = {}
+FDS.killedByEntity = {}
+FDS.playersKillRecord = nil 
 FDS.dropHeliTypes = {'UH-1H','Mi-8MT'}
 FDS.blueRelieveZones = {'Sochi-Adler', 'Kalitka', 'Shpora', 'Yunga', 'Vetka', 'Otkrytka'}
 FDS.redRelieveZones = {'Maykop-Khanskaya', 'London', 'Dallas', 'Paris', 'Moscow', 'Berlin'}
@@ -412,6 +415,8 @@ function creatingBases()
 					for vert = 0,3,1 do 
 						table.insert(boxPos,{x=addUni.units[1].x+40.0*math.cos(mist.utils.toRadian(addUni.units[1].heading+45.0+90.0*vert)), y=addUni.units[1].y+40.0*math.sin(addUni.units[1].heading+45.0+90.0*vert)})
 					end
+					FDS.entityKills[addUni.name] = nil
+					FDS.killedByEntity[addUni.name] = nil
 					if cc == 1 then
 						table.insert(tgtObj.blue[tz],{addUni.name,{x = addUni.units[1].x, y = addUni.units[1].y},boxPos,Group.getByName(addUni.name):getCategory()})
 					else
@@ -480,7 +485,7 @@ function createJSONEntities()
 						isAlive = true
 					end
 				end
-				table.insert(auxListName, {['name'] = y[1], ['type'] = y[4], ['unitName'] = y[5], ['isAlive'] = isAlive})
+				table.insert(auxListName, {['name'] = y[1], ['type'] = y[4], ['unitName'] = y[5], ['isAlive'] = isAlive, ['kills'] = FDS.entityKills[y[1]], ['killedBy'] = FDS.killedByEntity[y[1]]})
 			end
 			table.insert(entStart[i], {
 					['name'] = k,
@@ -521,6 +526,7 @@ function exportMisData()
 	}
 	FDS.exportVector['playerStats'] = getPlayersStats()
 	FDS.exportVector['deliveredPoints'] = FDS.recordDeliveredPoints
+	FDS.exportVector['playersKillRecord'] = FDS.playersKillRecord
 	FDS.exportVector['missionTime'] = {
 		['elapsed'] = math.floor(timer.getTime()), 
 		['current'] = math.floor(timer.getAbsTime()), 
@@ -1633,6 +1639,28 @@ function clearRetrieved(id)
 	end
 end
 
+function endMission()
+	if FDS.exportDataSite then
+		--local infile = io.open(FDS.exportPath .. "killRecord.json", "r")
+		--local instr = infile:read("*a")
+		--infile:close()
+		
+		--local outfile = io.open(FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
+		--outfile:write(instr)
+		--outfile:close()
+
+		--local infile = io.open(FDS.exportPath .. "currentStats.json", "r")
+		--local instr = infile:read("*a")
+		--infile:close()
+		
+		--local outfile = io.open(FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
+		--outfile:write(instr)
+		--outfile:close()
+
+		pcall(killDCSProcess,{})
+	end
+end
+
 function ping(a)
 	local msgPing = {}
 	msgPing.text = 'Debug -> argument ' .. a
@@ -1798,7 +1826,6 @@ FDS.eventActions = FDS.switch {
 
 				--Exporting event record
 				if FDS.exportDataSite then
-					local file = io.open(FDS.exportPath .. "killRecord.json", "w")
 					FDS.killEventNumber = FDS.killEventNumber + 1
 					eventExport = {}
 					eventExport['initiator'] = FDS.lastHits[_initEnt:getPlayerName()][1]
@@ -1806,6 +1833,7 @@ FDS.eventActions = FDS.switch {
 					eventExport['weapon'] = '** LEFT **'
 					FDS.killEventVector[FDS.killEventNumber] = eventExport
 					jsonExport = net.lua2json(FDS.killEventVector)
+					local file = io.open(FDS.exportPath .. "killRecord.json", "w")
 					file:write(jsonExport)
 					file:close()
 				end
@@ -1958,29 +1986,93 @@ FDS.eventActions = FDS.switch {
 
 		--Exporting event record
 		if FDS.exportDataSite then
-			local file = io.open(FDS.exportPath .. "killRecord.json", "w")
 			FDS.killEventNumber = FDS.killEventNumber + 1
-			eventExport = mist.utils.deepCopy(_event)
-			if initCheck and eventExport['initiator'] ~= nil and eventExport['initiator']:getPlayerName() ~= nil then 
-				eventExport['initiatorPlayerName'] = eventExport['initiator']:getPlayerName()
+			--eventExport = mist.utils.deepCopy(_event)
+			eventExport = {}
+			eventExport['Time'] = _event.time
+			eventExport['eventID'] = _event.id 
+			eventExport['initiatorUcid'] = nil
+			eventExport['initiatorPlayerName'] = nil
+			eventExport['initiatorName'] = nil
+			eventExport['targetUcid'] = nil
+			eventExport['targetPlayerName'] = nil
+			eventExport['targetName'] = nil
+			eventExport['weaponCategory'] = nil 
+			eventExport['weaponDisplayName'] = nil 
+			if initCheck and _event['initiator'] ~= nil and _event['initiator']:getPlayerName() ~= nil then 
+				local activePlayerList = net.get_player_list()
+				local activePlayerListTable = {}
+				for _, i in pairs(activePlayerList) do
+					table.insert(activePlayerListTable, net.get_player_info(i))
+				end
+				eventExport['initiatorUcid'] = nil
+				for _, i in pairs(activePlayerListTable) do
+					if i.name == _event['initiator']:getPlayerName() then 
+						eventExport['initiatorUcid'] = i.ucid
+						eventExport['initiatorPlayerName'] = _event['initiator']:getPlayerName()
+					end
+				end
 			end
-			if eventExport['initiator'] ~= nil and eventExport['initiator']:getDesc() then 
-				eventExport['initiatorDesc'] = eventExport['initiator']:getDesc()
-				eventExport['initiatorName'] = eventExport['initiator']:getName()
+			if _event['initiator'] ~= nil and _event['initiator']:getDesc() then 
+				--eventExport['initiatorDesc'] = eventExport['initiator']:getDesc()
+				eventExport['initiatorName'] = _event['initiator']:getName()
+				eventExport['initiatorCoalition'] = _event['initiator']:getCoalition()
+				eventExport['initiatorType'] = _event['initiator']:getDesc().typeName
 			end
-			if targetCheck and eventExport['target'] ~= nil and eventExport['target']:getPlayerName() ~= nil then 
-				eventExport['targetPlayerName'] = eventExport['target']:getPlayerName()
+			if targetCheck and _event['target'] ~= nil and _event['target']:getPlayerName() ~= nil then 
+				eventExport['targetPlayerName'] = _event['target']:getPlayerName()
+				local activePlayerList = net.get_player_list()
+				local activePlayerListTable = {}
+				for _, i in pairs(activePlayerList) do
+					table.insert(activePlayerListTable, net.get_player_info(i))
+				end
+				for _, i in pairs(activePlayerListTable) do
+					if i.name == _event['initiator']:getPlayerName() then 
+						eventExport['targetUcid'] = i.ucid
+						eventExport['targetPlayerName'] = _event['initiator']:getPlayerName()
+					end
+				end
 			end
-			if eventExport['target'] ~= nil and eventExport['target']:getDesc() then 
-				eventExport['targetDesc'] = eventExport['target']:getDesc()
-				eventExport['targetName'] = eventExport['target']:getName()
+			if _event['target'] ~= nil and _event['target']:getDesc() then 
+				--eventExport['targetDesc'] = eventExport['target']:getDesc()
+				eventExport['targetName'] = _event['target']:getName()
+				eventExport['targetCoalition'] = _event['target']:getCoalition()
+				eventExport['targetType'] = _event['target']:getDesc().typeName
 			end
-			if eventExport['weapon'] ~= nil and eventExport['weapon']:getDesc() then 
-				eventExport['weaponDesc'] = eventExport['weapon']:getDesc()
-				eventExport['weaponName'] = eventExport['weapon']:getName()
+			if _event['weapon'] ~= nil and _event['weapon']:getDesc() then 
+				eventExport['weaponCategory'] = _event['weapon']:getDesc().category
+				eventExport['weaponDisplayName'] = _event['weapon']:getDesc().displayName
 			end
+			-- Integrating with missionStats
+			if eventExport['initiatorPlayerName'] == nil then
+				if _event['initiator'] ~= nil then
+					FDS.entityKills[_event['initiator']:getGroup():getName()] = eventExport
+				end
+			end
+			if eventExport['targetPlayerName'] == nil then
+				if _event['target'] ~= nil then
+					if _event['target']:getCategory() == 3 then
+						FDS.killedByEntity[eventExport['targetName']] = eventExport
+					else
+						FDS.killedByEntity[_event['target']:getGroup():getName()] = eventExport
+					end
+				end
+			end
+			if eventExport['initiatorPlayerName'] ~= nil then
+				if eventExport['initiatorCoalition'] ~= eventExport['targetCoalition'] then
+					if FDS.playersKillRecord == nil then 
+						FDS.playersKillRecord = {}
+					end
+					if FDS.playersKillRecord[eventExport['initiatorPlayerName']] == nil then
+						FDS.playersKillRecord[eventExport['initiatorPlayerName']] = {}
+					end
+					table.insert(FDS.playersKillRecord[eventExport['initiatorPlayerName']],eventExport)
+				end
+			end
+
 			FDS.killEventVector[FDS.killEventNumber] = eventExport
 			jsonExport = net.lua2json(FDS.killEventVector)
+			local file = io.open(FDS.exportPath .. "killRecord.json", "w")
 			file:write(jsonExport)
 			file:close()
 		end
@@ -2054,7 +2146,7 @@ FDS.eventActions = FDS.switch {
 			outfile:write(instr)
 			outfile:close()
 
-			pcall(killDCSProcess,{})
+			--pcall(killDCSProcess,{})
 		end
 	end,
 	[world.event.S_EVENT_DEAD] = function(x, param)
@@ -2116,7 +2208,7 @@ FDS.eventActions = FDS.switch {
 								trigger.action.outSoundForCoalition(1,msgclear.sound)
 								if allClearFlag then
 									local msgfinal = {}
-									trigger.action.setUserFlag(901, true)
+									--trigger.action.setUserFlag(901, true)
 									msgfinal.text = 'Red Team is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 									msgfinal.displayTime = 20  
 									msgfinal.sound = 'victory_Lane.ogg'
@@ -2124,6 +2216,7 @@ FDS.eventActions = FDS.switch {
 									trigger.action.outSoundForCoalition(1,msgfinal.sound)
 									trigger.action.outSoundForCoalition(2,'zone_killed.ogg')
 									playWarning = false
+									endMission()
 								end	
 							end
 							if playWarning then
@@ -2177,7 +2270,7 @@ FDS.eventActions = FDS.switch {
 								trigger.action.outSoundForCoalition(2,msgclear.sound)	
 								if allClearFlag then
 									local msgfinal = {}
-									trigger.action.setUserFlag(900, true)
+									--trigger.action.setUserFlag(900, true)
 									msgfinal.text = 'Blue Team is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 									msgfinal.displayTime = 20
 									msgfinal.sound = 'victory_Lane.ogg'
@@ -2185,6 +2278,7 @@ FDS.eventActions = FDS.switch {
 									trigger.action.outSoundForCoalition(2,msgfinal.sound)
 									trigger.action.outSoundForCoalition(1,'zone_killed.ogg')
 									playWarning = false
+									endMission()
 								end
 							end
 							if playWarning then
