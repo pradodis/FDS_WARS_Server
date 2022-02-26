@@ -2027,7 +2027,7 @@ FDS.eventActions = FDS.switch {
 					table.insert(activePlayerListTable, net.get_player_info(i))
 				end
 				for _, i in pairs(activePlayerListTable) do
-					if i.name == _event['initiator']:getPlayerName() then 
+					if _event['initiator'] ~= nil and i.name == _event['initiator']:getPlayerName() then 
 						eventExport['targetUcid'] = i.ucid
 						eventExport['targetPlayerName'] = _event['initiator']:getPlayerName()
 					end
@@ -2063,10 +2063,11 @@ FDS.eventActions = FDS.switch {
 					if FDS.playersKillRecord == nil then 
 						FDS.playersKillRecord = {}
 					end
-					if FDS.playersKillRecord[eventExport['initiatorPlayerName']] == nil then
-						FDS.playersKillRecord[eventExport['initiatorPlayerName']] = {}
+					local isPVP = false
+					if eventExport['initiatorUcid'] ~= nil and eventExport['targetUcid'] ~= nil then
+						isPVP = true
 					end
-					table.insert(FDS.playersKillRecord[eventExport['initiatorPlayerName']],eventExport)
+					table.insert(FDS.playersKillRecord,{['ucidInit'] = eventExport['initiatorUcid'], ['isPvP'] = isPVP, ['event'] = eventExport})
 				end
 			end
 
