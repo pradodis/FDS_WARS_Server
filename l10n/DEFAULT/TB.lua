@@ -2046,7 +2046,10 @@ FDS.eventActions = FDS.switch {
 			-- Integrating with missionStats
 			if eventExport['initiatorPlayerName'] == nil then
 				if _event['initiator'] ~= nil then
-					FDS.entityKills[_event['initiator']:getGroup():getName()] = eventExport
+					if FDS.entityKills[_event['initiator']:getGroup():getName()] == nil then
+						FDS.entityKills[_event['initiator']:getGroup():getName()] = {}
+					end
+					table.insert(FDS.entityKills[_event['initiator']:getGroup():getName()], eventExport)
 				end
 			end
 			if eventExport['targetPlayerName'] == nil then
