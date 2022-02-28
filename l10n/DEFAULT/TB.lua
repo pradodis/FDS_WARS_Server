@@ -2007,7 +2007,7 @@ FDS.eventActions = FDS.switch {
 				end
 				eventExport['initiatorUcid'] = nil
 				for _, i in pairs(activePlayerListTable) do
-					if if _event['initiator'] ~= nil and i.name == _event['initiator']:getPlayerName() then 
+					if _event['initiator'] ~= nil and i.name == _event['initiator']:getPlayerName() then 
 						eventExport['initiatorUcid'] = i.ucid
 						eventExport['initiatorPlayerName'] = _event['initiator']:getPlayerName()
 					end

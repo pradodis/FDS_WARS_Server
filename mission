@@ -220,9 +220,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 461661.37959101,
                         ["layerName"] = "Red",
+                        ["mapX"] = -59400.136570572,
                         ["colorString"] = "0xff0000ff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -59400.136570572,
                         ["name"] = "Friendly Helipa",
                         ["angle"] = 0,
                         ["text"] = "Friendly Helipad",
@@ -259,9 +259,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 445702.855445,
                         ["layerName"] = "Blue",
+                        ["mapX"] = -116214.47765954,
                         ["colorString"] = "0x0000ffff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -116214.47765954,
                         ["name"] = "Friendly Helipad_Blue",
                         ["angle"] = 0,
                         ["text"] = "Friendly Helipad",
@@ -283,9 +283,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 472359.75180008,
                         ["layerName"] = "Common",
+                        ["mapX"] = -77961.617376473,
                         ["colorString"] = "0xff0000ff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -77961.617376473,
                         ["name"] = "Red Zone 2",
                         ["angle"] = 0,
                         ["text"] = "Red Zone 2",
@@ -299,9 +299,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 426399.81218617,
                         ["layerName"] = "Common",
+                        ["mapX"] = -70988.950291188,
                         ["colorString"] = "0xff0000ff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -70988.950291188,
                         ["name"] = "Red Zone 1",
                         ["angle"] = 0,
                         ["text"] = "Red Zone 1",
@@ -315,9 +315,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 432041.772252,
                         ["layerName"] = "Common",
+                        ["mapX"] = -102537.80666805,
                         ["colorString"] = "0x0000ffff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -102537.80666805,
                         ["name"] = "Blue Zone 1",
                         ["angle"] = 0,
                         ["text"] = "Blue Zone 1",
@@ -331,9 +331,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 428082.43252004,
                         ["layerName"] = "Common",
+                        ["mapX"] = -204577.52662623,
                         ["colorString"] = "0xff0000ff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -204577.52662623,
                         ["name"] = "InvWarn2",
                         ["angle"] = 0,
                         ["text"] = "Base and Helipad SAMs are invulnerable",
@@ -401,9 +401,9 @@ mission =
                         ["borderThickness"] = 2,
                         ["mapY"] = 341848.19724073,
                         ["layerName"] = "Common",
+                        ["mapX"] = -56753.415210799,
                         ["colorString"] = "0x000000ff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -56753.415210799,
                         ["name"] = "Bombing Run 2",
                         ["angle"] = 0,
                         ["text"] = "Bombing Corridor",
@@ -444,9 +444,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 462302.93067554,
                         ["layerName"] = "Common",
+                        ["mapX"] = -176123.90681101,
                         ["colorString"] = "0x0000ffff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -176123.90681101,
                         ["name"] = "Air Base Blue",
                         ["angle"] = 0,
                         ["text"] = "Air Base Blue",
@@ -543,18 +543,18 @@ mission =
                     [21] = 
                     {
                         ["visible"] = true,
-                        ["colorString"] = "0xff0000ff",
+                        ["mapX"] = -124931.88024766,
                         ["mapY"] = 306423.79137359,
                         ["layerName"] = "Common",
                         ["name"] = "Polygon 4",
                         ["width"] = 19989.390358528,
                         ["thickness"] = 8,
-                        ["polygonMode"] = "rect",
+                        ["colorString"] = "0xff0000ff",
                         ["style"] = "solid",
                         ["fillColorString"] = "0xff000028",
                         ["height"] = 484076.39375115,
                         ["angle"] = 2,
-                        ["mapX"] = -124931.88024766,
+                        ["polygonMode"] = "rect",
                         ["primitiveType"] = "Polygon",
                     }, -- end of [21]
                     [11] = 
@@ -563,9 +563,9 @@ mission =
                         ["borderThickness"] = 2,
                         ["mapY"] = 540870.29015724,
                         ["layerName"] = "Common",
+                        ["mapX"] = -60751.134354888,
                         ["colorString"] = "0x000000ff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -60751.134354888,
                         ["name"] = "Bombing Run",
                         ["angle"] = 0,
                         ["text"] = "Bombing Corridor",
@@ -579,9 +579,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 333535.60874724,
                         ["layerName"] = "Common",
+                        ["mapX"] = 77149.846581468,
                         ["colorString"] = "0xff0000ff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = 77149.846581468,
                         ["name"] = "Red_Supply",
                         ["angle"] = 2,
                         ["text"] = "Red Air Supply Route",
@@ -595,9 +595,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 457512.54926675,
                         ["layerName"] = "Common",
+                        ["mapX"] = -23599.133018794,
                         ["colorString"] = "0xff0000ff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -23599.133018794,
                         ["name"] = "Air Base Red",
                         ["angle"] = 0,
                         ["text"] = "Air Base Red",
@@ -611,9 +611,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 480758.11551184,
                         ["layerName"] = "Common",
+                        ["mapX"] = -106987.48449485,
                         ["colorString"] = "0x0000ffff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -106987.48449485,
                         ["name"] = "Blue Zone 2",
                         ["angle"] = 0,
                         ["text"] = "Blue Zone 2",
@@ -683,18 +683,18 @@ mission =
                     [24] = 
                     {
                         ["visible"] = true,
-                        ["colorString"] = "0x0000ffff",
+                        ["mapX"] = -67880.711889334,
                         ["mapY"] = 613719.73684455,
                         ["layerName"] = "Common",
                         ["name"] = "Polygon 3",
                         ["width"] = 20183.010209757,
                         ["thickness"] = 8,
-                        ["polygonMode"] = "rect",
+                        ["colorString"] = "0x0000ffff",
                         ["style"] = "solid",
                         ["fillColorString"] = "0x0000ff28",
                         ["height"] = 491240.2375252,
                         ["angle"] = 2,
-                        ["mapX"] = -67880.711889334,
+                        ["polygonMode"] = "rect",
                         ["primitiveType"] = "Polygon",
                     }, -- end of [24]
                     [25] = 
@@ -848,9 +848,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 425328.32378444,
                         ["layerName"] = "Common",
+                        ["mapX"] = 5114.8667487062,
                         ["colorString"] = "0xff0000ff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = 5114.8667487062,
                         ["name"] = "InvWarn1",
                         ["angle"] = 0,
                         ["text"] = "Base and Helipad SAMs are invulnerable",
@@ -891,9 +891,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 640162.66648241,
                         ["layerName"] = "Common",
+                        ["mapX"] = 61813.023838351,
                         ["colorString"] = "0x0000ffff",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = 61813.023838351,
                         ["name"] = "Blue_Supply",
                         ["angle"] = 2,
                         ["text"] = "Blue Air Supply Route",
@@ -977,9 +977,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 404112.60292616,
                         ["layerName"] = "Author",
+                        ["mapX"] = -94567.545805181,
                         ["colorString"] = "0x00000096",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -94567.545805181,
                         ["name"] = "Sector 1",
                         ["angle"] = 0,
                         ["text"] = "Sector 1",
@@ -1108,9 +1108,9 @@ mission =
                         ["borderThickness"] = 4,
                         ["mapY"] = 470570.69617693,
                         ["layerName"] = "Author",
+                        ["mapX"] = -96895.321066952,
                         ["colorString"] = "0x00000096",
                         ["font"] = "DejaVuLGCSansCondensed.ttf",
-                        ["mapX"] = -96895.321066952,
                         ["name"] = "Sector 2",
                         ["angle"] = 0,
                         ["text"] = "Sector 2",
@@ -1710,9 +1710,9 @@ mission =
     }, -- end of ["triggers"]
     ["map"] = 
     {
-        ["centerY"] = 401871.68333157,
-        ["zoom"] = 2030636.7397128,
-        ["centerX"] = -17714.710020884,
+        ["centerY"] = 484674.17864534,
+        ["zoom"] = 158604.40404442,
+        ["centerX"] = -119882.30371495,
     }, -- end of ["map"]
     ["coalitions"] = 
     {
@@ -1849,6 +1849,288 @@ mission =
             {
                 [1] = 
                 {
+                    ["helicopter"] = 
+                    {
+                        ["group"] = 
+                        {
+                            [1] = 
+                            {
+                                ["modulation"] = 0,
+                                ["tasks"] = 
+                                {
+                                }, -- end of ["tasks"]
+                                ["radioSet"] = false,
+                                ["task"] = "Transport",
+                                ["uncontrolled"] = false,
+                                ["route"] = 
+                                {
+                                    ["points"] = 
+                                    {
+                                        [1] = 
+                                        {
+                                            ["alt"] = 500,
+                                            ["action"] = "From Ground Area Hot",
+                                            ["alt_type"] = "BARO",
+                                            ["speed"] = 46.25,
+                                            ["task"] = 
+                                            {
+                                                ["id"] = "ComboTask",
+                                                ["params"] = 
+                                                {
+                                                    ["tasks"] = 
+                                                    {
+                                                    }, -- end of ["tasks"]
+                                                }, -- end of ["params"]
+                                            }, -- end of ["task"]
+                                            ["type"] = "TakeOffGroundHot",
+                                            ["ETA"] = 0,
+                                            ["ETA_locked"] = true,
+                                            ["y"] = 462631.65616423,
+                                            ["x"] = -163802.19462537,
+                                            ["formation_template"] = "",
+                                            ["speed_locked"] = true,
+                                        }, -- end of [1]
+                                    }, -- end of ["points"]
+                                }, -- end of ["route"]
+                                ["groupId"] = 513,
+                                ["hidden"] = false,
+                                ["units"] = 
+                                {
+                                    [1] = 
+                                    {
+                                        ["alt"] = 500,
+                                        ["hardpoint_racks"] = false,
+                                        ["alt_type"] = "BARO",
+                                        ["livery_id"] = "[Civilian] Medical",
+                                        ["skill"] = "Client",
+                                        ["ropeLength"] = 15,
+                                        ["speed"] = 46.25,
+                                        ["AddPropAircraft"] = 
+                                        {
+                                            ["SoloFlight"] = false,
+                                            ["ExhaustScreen"] = true,
+                                            ["GunnersAISkill"] = 90,
+                                            ["NetCrewControlPriority"] = 0,
+                                            ["EngineResource"] = 90,
+                                        }, -- end of ["AddPropAircraft"]
+                                        ["type"] = "UH-1H",
+                                        ["Radio"] = 
+                                        {
+                                            [1] = 
+                                            {
+                                                ["modulations"] = 
+                                                {
+                                                }, -- end of ["modulations"]
+                                                ["channels"] = 
+                                                {
+                                                    [1] = 251,
+                                                    [2] = 264,
+                                                    [4] = 256,
+                                                    [8] = 257,
+                                                    [16] = 261,
+                                                    [17] = 267,
+                                                    [9] = 255,
+                                                    [18] = 251,
+                                                    [5] = 254,
+                                                    [10] = 262,
+                                                    [20] = 266,
+                                                    [11] = 259,
+                                                    [3] = 265,
+                                                    [6] = 250,
+                                                    [12] = 268,
+                                                    [13] = 269,
+                                                    [7] = 270,
+                                                    [14] = 260,
+                                                    [15] = 263,
+                                                    [19] = 253,
+                                                }, -- end of ["channels"]
+                                            }, -- end of [1]
+                                        }, -- end of ["Radio"]
+                                        ["unitId"] = 854,
+                                        ["psi"] = -0,
+                                        ["y"] = 462631.65616423,
+                                        ["x"] = -163802.19462537,
+                                        ["name"] = "Blue_Rescue_Base_UH1H",
+                                        ["payload"] = 
+                                        {
+                                            ["pylons"] = 
+                                            {
+                                            }, -- end of ["pylons"]
+                                            ["fuel"] = "631",
+                                            ["flare"] = 60,
+                                            ["chaff"] = 0,
+                                            ["gun"] = 100,
+                                        }, -- end of ["payload"]
+                                        ["heading"] = 0,
+                                        ["callsign"] = 
+                                        {
+                                            [1] = 3,
+                                            [2] = 1,
+                                            [3] = 1,
+                                            ["name"] = "Uzi11",
+                                        }, -- end of ["callsign"]
+                                        ["onboard_num"] = "032",
+                                    }, -- end of [1]
+                                }, -- end of ["units"]
+                                ["y"] = 462631.65616423,
+                                ["x"] = -163802.19462537,
+                                ["name"] = "Blue_Rescue_Base_UH1H",
+                                ["communication"] = true,
+                                ["start_time"] = 0,
+                                ["uncontrollable"] = false,
+                                ["frequency"] = 251,
+                            }, -- end of [1]
+                            [2] = 
+                            {
+                                ["modulation"] = 0,
+                                ["tasks"] = 
+                                {
+                                }, -- end of ["tasks"]
+                                ["radioSet"] = true,
+                                ["task"] = "Transport",
+                                ["uncontrolled"] = false,
+                                ["route"] = 
+                                {
+                                    ["points"] = 
+                                    {
+                                        [1] = 
+                                        {
+                                            ["alt"] = 500,
+                                            ["action"] = "From Ground Area Hot",
+                                            ["alt_type"] = "BARO",
+                                            ["speed"] = 46.25,
+                                            ["task"] = 
+                                            {
+                                                ["id"] = "ComboTask",
+                                                ["params"] = 
+                                                {
+                                                    ["tasks"] = 
+                                                    {
+                                                    }, -- end of ["tasks"]
+                                                }, -- end of ["params"]
+                                            }, -- end of ["task"]
+                                            ["type"] = "TakeOffGroundHot",
+                                            ["ETA"] = 0,
+                                            ["ETA_locked"] = true,
+                                            ["y"] = 462749.93629817,
+                                            ["x"] = -163740.63078516,
+                                            ["formation_template"] = "",
+                                            ["speed_locked"] = true,
+                                        }, -- end of [1]
+                                    }, -- end of ["points"]
+                                }, -- end of ["route"]
+                                ["groupId"] = 514,
+                                ["hidden"] = false,
+                                ["units"] = 
+                                {
+                                    [1] = 
+                                    {
+                                        ["alt"] = 500,
+                                        ["hardpoint_racks"] = false,
+                                        ["alt_type"] = "BARO",
+                                        ["livery_id"] = "USA_AFG",
+                                        ["skill"] = "Client",
+                                        ["ropeLength"] = 15,
+                                        ["speed"] = 46.25,
+                                        ["AddPropAircraft"] = 
+                                        {
+                                            ["LeftEngineResource"] = 90,
+                                            ["RightEngineResource"] = 90,
+                                            ["NetCrewControlPriority"] = 1,
+                                            ["ExhaustScreen"] = true,
+                                            ["CargoHalfdoor"] = true,
+                                            ["GunnersAISkill"] = 90,
+                                            ["AdditionalArmor"] = true,
+                                            ["NS430allow"] = true,
+                                        }, -- end of ["AddPropAircraft"]
+                                        ["type"] = "Mi-8MT",
+                                        ["Radio"] = 
+                                        {
+                                            [1] = 
+                                            {
+                                                ["modulations"] = 
+                                                {
+                                                }, -- end of ["modulations"]
+                                                ["channels"] = 
+                                                {
+                                                    [1] = 124,
+                                                    [2] = 135,
+                                                    [4] = 127,
+                                                    [8] = 128,
+                                                    [16] = 132,
+                                                    [17] = 138,
+                                                    [9] = 126,
+                                                    [18] = 122,
+                                                    [5] = 125,
+                                                    [10] = 133,
+                                                    [20] = 137,
+                                                    [11] = 130,
+                                                    [3] = 136,
+                                                    [6] = 121,
+                                                    [12] = 129,
+                                                    [13] = 123,
+                                                    [7] = 141,
+                                                    [14] = 131,
+                                                    [15] = 134,
+                                                    [19] = 124,
+                                                }, -- end of ["channels"]
+                                            }, -- end of [1]
+                                            [2] = 
+                                            {
+                                                ["modulations"] = 
+                                                {
+                                                }, -- end of ["modulations"]
+                                                ["channels"] = 
+                                                {
+                                                    [7] = 40,
+                                                    [1] = 21.5,
+                                                    [2] = 25.7,
+                                                    [4] = 28,
+                                                    [8] = 50,
+                                                    [9] = 55.5,
+                                                    [5] = 30,
+                                                    [10] = 59.9,
+                                                    [3] = 27,
+                                                    [6] = 32,
+                                                }, -- end of ["channels"]
+                                            }, -- end of [2]
+                                        }, -- end of ["Radio"]
+                                        ["unitId"] = 855,
+                                        ["psi"] = -0,
+                                        ["y"] = 462749.93629817,
+                                        ["x"] = -163740.63078516,
+                                        ["name"] = "Blue_Rescue_Base_Mi8",
+                                        ["payload"] = 
+                                        {
+                                            ["pylons"] = 
+                                            {
+                                            }, -- end of ["pylons"]
+                                            ["fuel"] = "1929",
+                                            ["flare"] = 128,
+                                            ["chaff"] = 0,
+                                            ["gun"] = 100,
+                                        }, -- end of ["payload"]
+                                        ["heading"] = 0,
+                                        ["callsign"] = 
+                                        {
+                                            [1] = 6,
+                                            [2] = 1,
+                                            [3] = 1,
+                                            ["name"] = "Ford11",
+                                        }, -- end of ["callsign"]
+                                        ["onboard_num"] = "033",
+                                    }, -- end of [1]
+                                }, -- end of ["units"]
+                                ["y"] = 462749.93629817,
+                                ["x"] = -163740.63078516,
+                                ["name"] = "Blue_Rescue_Base_Mi8",
+                                ["communication"] = true,
+                                ["start_time"] = 0,
+                                ["uncontrollable"] = false,
+                                ["frequency"] = 124,
+                            }, -- end of [2]
+                        }, -- end of ["group"]
+                    }, -- end of ["helicopter"]
                     ["name"] = "USA",
                     ["id"] = 2,
                     ["vehicle"] = 
@@ -13482,10 +13764,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode1"] = 8,
-                                            ["LaserCode100"] = 6,
-                                            ["AARProbe"] = false,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode100"] = 6,
+                                            ["LaserCode1"] = 8,
+                                            ["AARProbe"] = false,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -14060,10 +14342,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["AARProbe"] = false,
-                                            ["LaserCode100"] = 6,
-                                            ["LaserCode10"] = 8,
                                             ["LaserCode1"] = 8,
+                                            ["LaserCode100"] = 6,
+                                            ["AARProbe"] = false,
+                                            ["LaserCode10"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -27010,12 +27292,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["ClockTime"] = 1,
-                                            ["RocketBurst"] = 1,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
+                                            ["RocketBurst"] = 1,
                                             ["EWDispenserBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["MountNVG"] = false,
                                         }, -- end of ["AddPropAircraft"]
@@ -27369,12 +27651,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["EWDispenserBL"] = 2,
-                                            ["RocketBurst"] = 1,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["MountNVG"] = false,
                                         }, -- end of ["AddPropAircraft"]
@@ -27728,12 +28010,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
+                                            ["EWDispenserTFL"] = 1,
                                             ["EWDispenserBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["MountNVG"] = false,
                                         }, -- end of ["AddPropAircraft"]
@@ -28087,12 +28369,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
+                                            ["EWDispenserTFL"] = 1,
                                             ["EWDispenserBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["MountNVG"] = false,
                                         }, -- end of ["AddPropAircraft"]
@@ -35492,6 +35774,127 @@ mission =
                                 ["uncontrollable"] = false,
                                 ["frequency"] = 124,
                             }, -- end of [18]
+                            [19] = 
+                            {
+                                ["modulation"] = 0,
+                                ["tasks"] = 
+                                {
+                                }, -- end of ["tasks"]
+                                ["radioSet"] = false,
+                                ["task"] = "Transport",
+                                ["uncontrolled"] = false,
+                                ["route"] = 
+                                {
+                                    ["points"] = 
+                                    {
+                                        [1] = 
+                                        {
+                                            ["alt"] = 500,
+                                            ["action"] = "From Ground Area Hot",
+                                            ["alt_type"] = "BARO",
+                                            ["speed"] = 46.25,
+                                            ["task"] = 
+                                            {
+                                                ["id"] = "ComboTask",
+                                                ["params"] = 
+                                                {
+                                                    ["tasks"] = 
+                                                    {
+                                                    }, -- end of ["tasks"]
+                                                }, -- end of ["params"]
+                                            }, -- end of ["task"]
+                                            ["type"] = "TakeOffGroundHot",
+                                            ["ETA"] = 0,
+                                            ["ETA_locked"] = true,
+                                            ["y"] = 458668.8090947,
+                                            ["x"] = -27030.76666225,
+                                            ["formation_template"] = "",
+                                            ["speed_locked"] = true,
+                                        }, -- end of [1]
+                                    }, -- end of ["points"]
+                                }, -- end of ["route"]
+                                ["groupId"] = 515,
+                                ["hidden"] = false,
+                                ["units"] = 
+                                {
+                                    [1] = 
+                                    {
+                                        ["alt"] = 500,
+                                        ["hardpoint_racks"] = false,
+                                        ["alt_type"] = "BARO",
+                                        ["livery_id"] = "RF Air Force Grey",
+                                        ["skill"] = "Client",
+                                        ["ropeLength"] = 15,
+                                        ["speed"] = 46.25,
+                                        ["AddPropAircraft"] = 
+                                        {
+                                            ["SoloFlight"] = false,
+                                            ["ExhaustScreen"] = true,
+                                            ["GunnersAISkill"] = 90,
+                                            ["NetCrewControlPriority"] = 0,
+                                            ["EngineResource"] = 90,
+                                        }, -- end of ["AddPropAircraft"]
+                                        ["type"] = "UH-1H",
+                                        ["Radio"] = 
+                                        {
+                                            [1] = 
+                                            {
+                                                ["modulations"] = 
+                                                {
+                                                }, -- end of ["modulations"]
+                                                ["channels"] = 
+                                                {
+                                                    [1] = 251,
+                                                    [2] = 264,
+                                                    [4] = 256,
+                                                    [8] = 257,
+                                                    [16] = 261,
+                                                    [17] = 267,
+                                                    [9] = 255,
+                                                    [18] = 251,
+                                                    [5] = 254,
+                                                    [10] = 262,
+                                                    [20] = 266,
+                                                    [11] = 259,
+                                                    [3] = 265,
+                                                    [6] = 250,
+                                                    [12] = 268,
+                                                    [13] = 269,
+                                                    [7] = 270,
+                                                    [14] = 260,
+                                                    [19] = 253,
+                                                    [15] = 263,
+                                                }, -- end of ["channels"]
+                                            }, -- end of [1]
+                                        }, -- end of ["Radio"]
+                                        ["unitId"] = 856,
+                                        ["psi"] = -0,
+                                        ["y"] = 458668.8090947,
+                                        ["x"] = -27030.76666225,
+                                        ["name"] = "Red_Rescue_Base_UH1H",
+                                        ["payload"] = 
+                                        {
+                                            ["pylons"] = 
+                                            {
+                                            }, -- end of ["pylons"]
+                                            ["fuel"] = "631",
+                                            ["flare"] = 60,
+                                            ["chaff"] = 0,
+                                            ["gun"] = 100,
+                                        }, -- end of ["payload"]
+                                        ["heading"] = 0,
+                                        ["callsign"] = 123,
+                                        ["onboard_num"] = "034",
+                                    }, -- end of [1]
+                                }, -- end of ["units"]
+                                ["y"] = 458668.8090947,
+                                ["x"] = -27030.76666225,
+                                ["name"] = "Red_Rescue_Base_UH1H",
+                                ["communication"] = true,
+                                ["start_time"] = 0,
+                                ["uncontrollable"] = false,
+                                ["frequency"] = 251,
+                            }, -- end of [19]
                             [17] = 
                             {
                                 ["modulation"] = 0,
@@ -35681,6 +36084,149 @@ mission =
                                 ["uncontrollable"] = false,
                                 ["frequency"] = 124,
                             }, -- end of [17]
+                            [20] = 
+                            {
+                                ["modulation"] = 0,
+                                ["tasks"] = 
+                                {
+                                }, -- end of ["tasks"]
+                                ["radioSet"] = true,
+                                ["task"] = "Transport",
+                                ["uncontrolled"] = false,
+                                ["route"] = 
+                                {
+                                    ["points"] = 
+                                    {
+                                        [1] = 
+                                        {
+                                            ["alt"] = 500,
+                                            ["action"] = "From Ground Area Hot",
+                                            ["alt_type"] = "BARO",
+                                            ["speed"] = 46.25,
+                                            ["task"] = 
+                                            {
+                                                ["id"] = "ComboTask",
+                                                ["params"] = 
+                                                {
+                                                    ["tasks"] = 
+                                                    {
+                                                    }, -- end of ["tasks"]
+                                                }, -- end of ["params"]
+                                            }, -- end of ["task"]
+                                            ["type"] = "TakeOffGroundHot",
+                                            ["ETA"] = 0,
+                                            ["ETA_locked"] = true,
+                                            ["y"] = 458712.94221918,
+                                            ["x"] = -26953.352820956,
+                                            ["formation_template"] = "",
+                                            ["speed_locked"] = true,
+                                        }, -- end of [1]
+                                    }, -- end of ["points"]
+                                }, -- end of ["route"]
+                                ["groupId"] = 516,
+                                ["hidden"] = false,
+                                ["units"] = 
+                                {
+                                    [1] = 
+                                    {
+                                        ["alt"] = 500,
+                                        ["hardpoint_racks"] = false,
+                                        ["alt_type"] = "BARO",
+                                        ["livery_id"] = "Russia_VVS_Grey",
+                                        ["skill"] = "Client",
+                                        ["ropeLength"] = 15,
+                                        ["speed"] = 46.25,
+                                        ["AddPropAircraft"] = 
+                                        {
+                                            ["LeftEngineResource"] = 90,
+                                            ["RightEngineResource"] = 90,
+                                            ["GunnersAISkill"] = 90,
+                                            ["ExhaustScreen"] = true,
+                                            ["CargoHalfdoor"] = true,
+                                            ["NetCrewControlPriority"] = 1,
+                                            ["AdditionalArmor"] = true,
+                                            ["NS430allow"] = true,
+                                        }, -- end of ["AddPropAircraft"]
+                                        ["type"] = "Mi-8MT",
+                                        ["Radio"] = 
+                                        {
+                                            [1] = 
+                                            {
+                                                ["modulations"] = 
+                                                {
+                                                }, -- end of ["modulations"]
+                                                ["channels"] = 
+                                                {
+                                                    [1] = 124,
+                                                    [2] = 135,
+                                                    [4] = 127,
+                                                    [8] = 128,
+                                                    [16] = 132,
+                                                    [17] = 138,
+                                                    [9] = 126,
+                                                    [18] = 122,
+                                                    [5] = 125,
+                                                    [10] = 133,
+                                                    [20] = 137,
+                                                    [11] = 130,
+                                                    [3] = 136,
+                                                    [6] = 121,
+                                                    [12] = 129,
+                                                    [13] = 123,
+                                                    [7] = 141,
+                                                    [14] = 131,
+                                                    [19] = 124,
+                                                    [15] = 134,
+                                                }, -- end of ["channels"]
+                                            }, -- end of [1]
+                                            [2] = 
+                                            {
+                                                ["modulations"] = 
+                                                {
+                                                }, -- end of ["modulations"]
+                                                ["channels"] = 
+                                                {
+                                                    [7] = 40,
+                                                    [1] = 21.5,
+                                                    [2] = 25.7,
+                                                    [4] = 28,
+                                                    [8] = 50,
+                                                    [9] = 55.5,
+                                                    [5] = 30,
+                                                    [10] = 59.9,
+                                                    [3] = 27,
+                                                    [6] = 32,
+                                                }, -- end of ["channels"]
+                                            }, -- end of [2]
+                                        }, -- end of ["Radio"]
+                                        ["unitId"] = 857,
+                                        ["psi"] = -4.7647488579445,
+                                        ["y"] = 458712.94221918,
+                                        ["x"] = -26953.352820956,
+                                        ["name"] = "Red_Rescue_Base_Mi8",
+                                        ["payload"] = 
+                                        {
+                                            ["pylons"] = 
+                                            {
+                                            }, -- end of ["pylons"]
+                                            ["fuel"] = "1929",
+                                            ["flare"] = 128,
+                                            ["chaff"] = 0,
+                                            ["gun"] = 100,
+                                        }, -- end of ["payload"]
+                                        ["heading"] = 4.7647488579445,
+                                        ["callsign"] = 125,
+                                        ["onboard_num"] = "019",
+                                    }, -- end of [1]
+                                }, -- end of ["units"]
+                                ["y"] = 458712.94221918,
+                                ["x"] = -26953.352820956,
+                                ["name"] = "Red_Rescue_Base_Mi8",
+                                ["communication"] = true,
+                                ["start_time"] = 0,
+                                ["uncontrollable"] = false,
+                                ["frequency"] = 124,
+                            }, -- end of [20]
                         }, -- end of ["group"]
                     }, -- end of ["helicopter"]
                     ["name"] = "Russia",
@@ -43181,12 +43727,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["ClockTime"] = 1,
-                                            ["WpBullseye"] = 0,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["EWDispenserBL"] = 2,
-                                            ["RocketBurst"] = 1,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["MountNVG"] = false,
                                         }, -- end of ["AddPropAircraft"]
@@ -43830,12 +44376,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
+                                            ["EWDispenserTFL"] = 1,
                                             ["EWDispenserBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["MountNVG"] = false,
                                         }, -- end of ["AddPropAircraft"]
@@ -44183,12 +44729,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
+                                            ["EWDispenserTFL"] = 1,
                                             ["EWDispenserBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["MountNVG"] = false,
                                         }, -- end of ["AddPropAircraft"]
@@ -44536,12 +45082,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
+                                            ["EWDispenserTFL"] = 1,
                                             ["EWDispenserBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["MountNVG"] = false,
                                         }, -- end of ["AddPropAircraft"]
@@ -52132,10 +52678,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode10"] = 8,
-                                            ["LaserCode100"] = 6,
-                                            ["LaserCode1"] = 8,
                                             ["AARProbe"] = false,
+                                            ["LaserCode100"] = 6,
+                                            ["LaserCode10"] = 8,
+                                            ["LaserCode1"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -52447,10 +52993,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode1"] = 8,
-                                            ["LaserCode100"] = 6,
-                                            ["AARProbe"] = false,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode100"] = 6,
+                                            ["LaserCode1"] = 8,
+                                            ["AARProbe"] = false,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -54646,7 +55192,7 @@ mission =
             ["predicate"] = "triggerOnce",
         }, -- end of [9]
     }, -- end of ["trigrules"]
-    ["currentKey"] = 2468457,
+    ["currentKey"] = 2476140,
     ["start_time"] = 43200,
     ["forcedOptions"] = 
     {
@@ -54677,15 +55223,15 @@ mission =
     }, -- end of ["forcedOptions"]
     ["failures"] = 
     {
-        ["CADC_WING_SWEEP_INDICATOR"] = 
+        ["CMS_FAILURE_RIGHT_DISPENSER"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_WING_SWEEP_INDICATOR",
+            ["id"] = "CMS_FAILURE_RIGHT_DISPENSER",
             ["mm"] = 0,
-        }, -- end of ["CADC_WING_SWEEP_INDICATOR"]
+        }, -- end of ["CMS_FAILURE_RIGHT_DISPENSER"]
         ["ILS_FAILURE_ANTENNA"] = 
         {
             ["hh"] = 0,
@@ -54731,15 +55277,15 @@ mission =
             ["id"] = "Failure_Gear_NWS",
             ["mm"] = 0,
         }, -- end of ["Failure_Gear_NWS"]
-        ["CADC_WING_SWEEP_COMMAND_CHANNEL_1"] = 
+        ["Failure_Comp_ADC"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_WING_SWEEP_COMMAND_CHANNEL_1",
+            ["id"] = "Failure_Comp_ADC",
             ["mm"] = 0,
-        }, -- end of ["CADC_WING_SWEEP_COMMAND_CHANNEL_1"]
+        }, -- end of ["Failure_Comp_ADC"]
         ["rws"] = 
         {
             ["hh"] = 0,
@@ -54767,15 +55313,15 @@ mission =
             ["id"] = "Failure_Hyd_IsolatedHYD2BSystem_Leak",
             ["mm"] = 0,
         }, -- end of ["Failure_Hyd_IsolatedHYD2BSystem_Leak"]
-        ["RWR_FAILURE_COMPUTER"] = 
+        ["Failure_Ctrl_FCS_Ch1"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_COMPUTER",
+            ["id"] = "Failure_Ctrl_FCS_Ch1",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_COMPUTER"]
+        }, -- end of ["Failure_Ctrl_FCS_Ch1"]
         ["VHF_ARC_182_FAILURE_TRANSCEIVER"] = 
         {
             ["hh"] = 0,
@@ -54785,15 +55331,15 @@ mission =
             ["id"] = "VHF_ARC_182_FAILURE_TRANSCEIVER",
             ["mm"] = 0,
         }, -- end of ["VHF_ARC_182_FAILURE_TRANSCEIVER"]
-        ["Failure_Hyd_HYD2A_Leak"] = 
+        ["Failure_Fuel_ExtTankTransferC"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Hyd_HYD2A_Leak",
+            ["id"] = "Failure_Fuel_ExtTankTransferC",
             ["mm"] = 0,
-        }, -- end of ["Failure_Hyd_HYD2A_Leak"]
+        }, -- end of ["Failure_Fuel_ExtTankTransferC"]
         ["Failure_PP_EngL_AB_FFCS"] = 
         {
             ["hh"] = 0,
@@ -54812,15 +55358,15 @@ mission =
             ["id"] = "ecm",
             ["mm"] = 0,
         }, -- end of ["ecm"]
-        ["CADC_STABILIZER_AUTHORITY_COMMAND"] = 
+        ["CADC_RUDDER_AUTHORITY_COMMAND"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_STABILIZER_AUTHORITY_COMMAND",
+            ["id"] = "CADC_RUDDER_AUTHORITY_COMMAND",
             ["mm"] = 0,
-        }, -- end of ["CADC_STABILIZER_AUTHORITY_COMMAND"]
+        }, -- end of ["CADC_RUDDER_AUTHORITY_COMMAND"]
         ["HYD_Combined"] = 
         {
             ["hh"] = 0,
@@ -54830,42 +55376,42 @@ mission =
             ["id"] = "HYD_Combined",
             ["mm"] = 0,
         }, -- end of ["HYD_Combined"]
-        ["VHF_ARC_182_FAILURE_TOTAL"] = 
+        ["UHF_ARC_159_FAILURE_ANTENNA"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "VHF_ARC_182_FAILURE_TOTAL",
+            ["id"] = "UHF_ARC_159_FAILURE_ANTENNA",
             ["mm"] = 0,
-        }, -- end of ["VHF_ARC_182_FAILURE_TOTAL"]
-        ["Failure_Fuel_ExtTankTransferC"] = 
+        }, -- end of ["UHF_ARC_159_FAILURE_ANTENNA"]
+        ["Failure_Hyd_HYD2A_Leak"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Fuel_ExtTankTransferC",
+            ["id"] = "Failure_Hyd_HYD2A_Leak",
             ["mm"] = 0,
-        }, -- end of ["Failure_Fuel_ExtTankTransferC"]
-        ["TACAN_FAILURE_TOTAL"] = 
+        }, -- end of ["Failure_Hyd_HYD2A_Leak"]
+        ["INS_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "TACAN_FAILURE_TOTAL",
+            ["id"] = "INS_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["TACAN_FAILURE_TOTAL"]
-        ["hud"] = 
+        }, -- end of ["INS_FAILURE_TOTAL"]
+        ["RWR_FAILURE_LOW_BAND"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "hud",
+            ["id"] = "RWR_FAILURE_LOW_BAND",
             ["mm"] = 0,
-        }, -- end of ["hud"]
+        }, -- end of ["RWR_FAILURE_LOW_BAND"]
         ["Failure_Fuel_Tank4Transfer"] = 
         {
             ["hh"] = 0,
@@ -54956,51 +55502,24 @@ mission =
             ["id"] = "TID_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["TID_FAILURE_TOTAL"]
-        ["Failure_Gear_WOW"] = 
+        ["hud"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Gear_WOW",
+            ["id"] = "hud",
             ["mm"] = 0,
-        }, -- end of ["Failure_Gear_WOW"]
-        ["Failure_Ctrl_FCS_Ch4"] = 
+        }, -- end of ["hud"]
+        ["Failure_ECS_OBOGS"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_FCS_Ch4",
+            ["id"] = "Failure_ECS_OBOGS",
             ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_FCS_Ch4"]
-        ["Failure_Sens_LeftPitotHeater"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "Failure_Sens_LeftPitotHeater",
-            ["mm"] = 0,
-        }, -- end of ["Failure_Sens_LeftPitotHeater"]
-        ["Failure_Fuel_ExtTankTransferL"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "Failure_Fuel_ExtTankTransferL",
-            ["mm"] = 0,
-        }, -- end of ["Failure_Fuel_ExtTankTransferL"]
-        ["UHF_ARC_159_FAILURE_TOTAL"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "UHF_ARC_159_FAILURE_TOTAL",
-            ["mm"] = 0,
-        }, -- end of ["UHF_ARC_159_FAILURE_TOTAL"]
+        }, -- end of ["Failure_ECS_OBOGS"]
         ["HUD_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
@@ -55010,6 +55529,33 @@ mission =
             ["id"] = "HUD_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["HUD_FAILURE_TOTAL"]
+        ["Failure_Fuel_ExtTankTransferL"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "Failure_Fuel_ExtTankTransferL",
+            ["mm"] = 0,
+        }, -- end of ["Failure_Fuel_ExtTankTransferL"]
+        ["UHF_ARC_159_FAILURE_INTERNAL_MODULE"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "UHF_ARC_159_FAILURE_INTERNAL_MODULE",
+            ["mm"] = 0,
+        }, -- end of ["UHF_ARC_159_FAILURE_INTERNAL_MODULE"]
+        ["Failure_Sens_LeftPitotHeater"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "Failure_Sens_LeftPitotHeater",
+            ["mm"] = 0,
+        }, -- end of ["Failure_Sens_LeftPitotHeater"]
         ["RWR_FAILURE_QUAD225"] = 
         {
             ["hh"] = 0,
@@ -55037,15 +55583,15 @@ mission =
             ["id"] = "CADC_CSDC_CONNECTION",
             ["mm"] = 0,
         }, -- end of ["CADC_CSDC_CONNECTION"]
-        ["Failure_ECS_OBOGS"] = 
+        ["Failure_Ctrl_FCS_Ch4"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_ECS_OBOGS",
+            ["id"] = "Failure_Ctrl_FCS_Ch4",
             ["mm"] = 0,
-        }, -- end of ["Failure_ECS_OBOGS"]
+        }, -- end of ["Failure_Ctrl_FCS_Ch4"]
         ["Failure_Fuel_RightBoostPump"] = 
         {
             ["hh"] = 0,
@@ -55073,24 +55619,24 @@ mission =
             ["id"] = "RWR_FAILURE_BLANKER",
             ["mm"] = 0,
         }, -- end of ["RWR_FAILURE_BLANKER"]
-        ["INS_FAILURE_TOTAL"] = 
+        ["VHF_ARC_182_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "INS_FAILURE_TOTAL",
+            ["id"] = "VHF_ARC_182_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["INS_FAILURE_TOTAL"]
-        ["UHF_ARC_159_FAILURE_ANTENNA"] = 
+        }, -- end of ["VHF_ARC_182_FAILURE_TOTAL"]
+        ["TACAN_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "UHF_ARC_159_FAILURE_ANTENNA",
+            ["id"] = "TACAN_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["UHF_ARC_159_FAILURE_ANTENNA"]
+        }, -- end of ["TACAN_FAILURE_TOTAL"]
         ["JESTER"] = 
         {
             ["hh"] = 0,
@@ -55109,15 +55655,15 @@ mission =
             ["id"] = "Failure_Fuel_Tank1Transfer",
             ["mm"] = 0,
         }, -- end of ["Failure_Fuel_Tank1Transfer"]
-        ["Failure_Ctrl_FCS_Ch1"] = 
+        ["RWR_FAILURE_CONTROL_BOX"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_FCS_Ch1",
+            ["id"] = "RWR_FAILURE_CONTROL_BOX",
             ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_FCS_Ch1"]
+        }, -- end of ["RWR_FAILURE_CONTROL_BOX"]
         ["Failure_PP_EngL_Main_FFCS"] = 
         {
             ["hh"] = 0,
@@ -55145,15 +55691,15 @@ mission =
             ["id"] = "AHRS_FAILURE_MAD",
             ["mm"] = 0,
         }, -- end of ["AHRS_FAILURE_MAD"]
-        ["UHF_ARC_159_FAILURE_INTERNAL_MODULE"] = 
+        ["CADC_WING_SWEEP_COMMAND_CHANNEL_2"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "UHF_ARC_159_FAILURE_INTERNAL_MODULE",
+            ["id"] = "CADC_WING_SWEEP_COMMAND_CHANNEL_2",
             ["mm"] = 0,
-        }, -- end of ["UHF_ARC_159_FAILURE_INTERNAL_MODULE"]
+        }, -- end of ["CADC_WING_SWEEP_COMMAND_CHANNEL_2"]
         ["asc"] = 
         {
             ["hh"] = 0,
@@ -55181,15 +55727,15 @@ mission =
             ["id"] = "UHF_ARC_159_FAILURE_REMOTE_DISPLAY",
             ["mm"] = 0,
         }, -- end of ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY"]
-        ["Failure_Sens_RightPitotHeater"] = 
+        ["Failure_Ctrl_Aileron"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Sens_RightPitotHeater",
+            ["id"] = "Failure_Ctrl_Aileron",
             ["mm"] = 0,
-        }, -- end of ["Failure_Sens_RightPitotHeater"]
+        }, -- end of ["Failure_Ctrl_Aileron"]
         ["ICS_FAILURE_AMPLIFIER_PILOT_NORM"] = 
         {
             ["hh"] = 0,
@@ -55199,15 +55745,15 @@ mission =
             ["id"] = "ICS_FAILURE_AMPLIFIER_PILOT_NORM",
             ["mm"] = 0,
         }, -- end of ["ICS_FAILURE_AMPLIFIER_PILOT_NORM"]
-        ["Failure_Comp_ADC"] = 
+        ["CADC_WING_SWEEP_COMMAND_CHANNEL_1"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Comp_ADC",
+            ["id"] = "CADC_WING_SWEEP_COMMAND_CHANNEL_1",
             ["mm"] = 0,
-        }, -- end of ["Failure_Comp_ADC"]
+        }, -- end of ["CADC_WING_SWEEP_COMMAND_CHANNEL_1"]
         ["TACAN_FAILURE_RECEIVER"] = 
         {
             ["hh"] = 0,
@@ -55244,15 +55790,15 @@ mission =
             ["id"] = "ICS_FAILURE_AMPLIFIER_RIO_NORM",
             ["mm"] = 0,
         }, -- end of ["ICS_FAILURE_AMPLIFIER_RIO_NORM"]
-        ["CMS_FAILURE_RIGHT_DISPENSER"] = 
+        ["CADC_WING_SWEEP_INDICATOR"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CMS_FAILURE_RIGHT_DISPENSER",
+            ["id"] = "CADC_WING_SWEEP_INDICATOR",
             ["mm"] = 0,
-        }, -- end of ["CMS_FAILURE_RIGHT_DISPENSER"]
+        }, -- end of ["CADC_WING_SWEEP_INDICATOR"]
         ["Failure_Elec_UtilityBattery"] = 
         {
             ["hh"] = 0,
@@ -55298,15 +55844,15 @@ mission =
             ["id"] = "Failure_Hyd_HYD2B_Leak",
             ["mm"] = 0,
         }, -- end of ["Failure_Hyd_HYD2B_Leak"]
-        ["DDD_FAILURE_TOTAL"] = 
+        ["TACAN_FAILURE_TRANSMITTER"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "DDD_FAILURE_TOTAL",
+            ["id"] = "TACAN_FAILURE_TRANSMITTER",
             ["mm"] = 0,
-        }, -- end of ["DDD_FAILURE_TOTAL"]
+        }, -- end of ["TACAN_FAILURE_TRANSMITTER"]
         ["mlws"] = 
         {
             ["hh"] = 0,
@@ -55361,15 +55907,15 @@ mission =
             ["id"] = "Failure_PP_EngL_Nozzle_CS",
             ["mm"] = 0,
         }, -- end of ["Failure_PP_EngL_Nozzle_CS"]
-        ["TACAN_FAILURE_TRANSMITTER"] = 
+        ["Failure_Ctrl_FCS_Ch2"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "TACAN_FAILURE_TRANSMITTER",
+            ["id"] = "Failure_Ctrl_FCS_Ch2",
             ["mm"] = 0,
-        }, -- end of ["TACAN_FAILURE_TRANSMITTER"]
+        }, -- end of ["Failure_Ctrl_FCS_Ch2"]
         ["Failure_PP_EngR_Nozzle_CS"] = 
         {
             ["hh"] = 0,
@@ -55397,24 +55943,24 @@ mission =
             ["id"] = "UHF_ARC_159_FAILURE_DISPLAY",
             ["mm"] = 0,
         }, -- end of ["UHF_ARC_159_FAILURE_DISPLAY"]
-        ["Failure_Ctrl_FCS_Ch2"] = 
+        ["DDD_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_FCS_Ch2",
+            ["id"] = "DDD_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_FCS_Ch2"]
-        ["RWR_FAILURE_QUAD135"] = 
+        }, -- end of ["DDD_FAILURE_TOTAL"]
+        ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_QUAD135",
+            ["id"] = "UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_QUAD135"]
+        }, -- end of ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"]
         ["RWR_FAILURE_DISPLAY_PILOT"] = 
         {
             ["hh"] = 0,
@@ -55451,15 +55997,15 @@ mission =
             ["id"] = "ILS_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["ILS_FAILURE_TOTAL"]
-        ["Failure_Elec_EmergencyBattery"] = 
+        ["RWR_FAILURE_QUAD135"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Elec_EmergencyBattery",
+            ["id"] = "RWR_FAILURE_QUAD135",
             ["mm"] = 0,
-        }, -- end of ["Failure_Elec_EmergencyBattery"]
+        }, -- end of ["RWR_FAILURE_QUAD135"]
         ["W_S_R"] = 
         {
             ["hh"] = 0,
@@ -55505,15 +56051,15 @@ mission =
             ["id"] = "CMS_FAILURE_PROGRAMMER",
             ["mm"] = 0,
         }, -- end of ["CMS_FAILURE_PROGRAMMER"]
-        ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"] = 
+        ["Failure_Elec_EmergencyBattery"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO",
+            ["id"] = "Failure_Elec_EmergencyBattery",
             ["mm"] = 0,
-        }, -- end of ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"]
+        }, -- end of ["Failure_Elec_EmergencyBattery"]
         ["CADC_PRESSURE_SENSOR"] = 
         {
             ["hh"] = 0,
@@ -55622,15 +56168,15 @@ mission =
             ["id"] = "IMU_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["IMU_FAILURE_TOTAL"]
-        ["Failure_Ctrl_Aileron"] = 
+        ["Failure_Sens_RightPitotHeater"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_Aileron",
+            ["id"] = "Failure_Sens_RightPitotHeater",
             ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_Aileron"]
+        }, -- end of ["Failure_Sens_RightPitotHeater"]
         ["Failure_Comp_MC1"] = 
         {
             ["hh"] = 0,
@@ -55640,33 +56186,33 @@ mission =
             ["id"] = "Failure_Comp_MC1",
             ["mm"] = 0,
         }, -- end of ["Failure_Comp_MC1"]
-        ["CADC_WING_SWEEP_COMMAND_CHANNEL_2"] = 
+        ["UHF_ARC_159_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_WING_SWEEP_COMMAND_CHANNEL_2",
+            ["id"] = "UHF_ARC_159_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["CADC_WING_SWEEP_COMMAND_CHANNEL_2"]
-        ["RWR_FAILURE_CONTROL_BOX"] = 
+        }, -- end of ["UHF_ARC_159_FAILURE_TOTAL"]
+        ["RWR_FAILURE_COMPUTER"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_CONTROL_BOX",
+            ["id"] = "RWR_FAILURE_COMPUTER",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_CONTROL_BOX"]
-        ["CADC_RUDDER_AUTHORITY_COMMAND"] = 
+        }, -- end of ["RWR_FAILURE_COMPUTER"]
+        ["Failure_Gear_WOW"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_RUDDER_AUTHORITY_COMMAND",
+            ["id"] = "Failure_Gear_WOW",
             ["mm"] = 0,
-        }, -- end of ["CADC_RUDDER_AUTHORITY_COMMAND"]
+        }, -- end of ["Failure_Gear_WOW"]
         ["Failure_Hyd_HYD1A_Leak"] = 
         {
             ["hh"] = 0,
@@ -55730,15 +56276,15 @@ mission =
             ["id"] = "ICS_FAILURE_AMPLIFIER_RIO_BU",
             ["mm"] = 0,
         }, -- end of ["ICS_FAILURE_AMPLIFIER_RIO_BU"]
-        ["RWR_FAILURE_LOW_BAND"] = 
+        ["CADC_STABILIZER_AUTHORITY_COMMAND"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_LOW_BAND",
+            ["id"] = "CADC_STABILIZER_AUTHORITY_COMMAND",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_LOW_BAND"]
+        }, -- end of ["CADC_STABILIZER_AUTHORITY_COMMAND"]
         ["AHRS_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
