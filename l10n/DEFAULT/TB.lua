@@ -2007,7 +2007,7 @@ FDS.eventActions = FDS.switch {
 				end
 				eventExport['initiatorUcid'] = nil
 				for _, i in pairs(activePlayerListTable) do
-					if i.name == _event['initiator']:getPlayerName() then 
+					if if _event['initiator'] ~= nil and i.name == _event['initiator']:getPlayerName() then 
 						eventExport['initiatorUcid'] = i.ucid
 						eventExport['initiatorPlayerName'] = _event['initiator']:getPlayerName()
 					end
@@ -2019,17 +2019,17 @@ FDS.eventActions = FDS.switch {
 				eventExport['initiatorCoalition'] = _event['initiator']:getCoalition()
 				eventExport['initiatorType'] = _event['initiator']:getDesc().typeName
 			end
-			if targetCheck and _event['target'] ~= nil and _event['target']:getPlayerName() ~= nil then 
-				eventExport['targetPlayerName'] = _event['target']:getPlayerName()
+			if targetCheck and _event['initiator'] ~= nil and _event['initiator']:getPlayerName() ~= nil then 
+				eventExport['initiatorPlayerName'] = _event['initiator']:getPlayerName()
 				local activePlayerList = net.get_player_list()
 				local activePlayerListTable = {}
 				for _, i in pairs(activePlayerList) do
 					table.insert(activePlayerListTable, net.get_player_info(i))
 				end
 				for _, i in pairs(activePlayerListTable) do
-					if _event['initiator'] ~= nil and i.name == _event['initiator']:getPlayerName() then 
+					if _event['target'] ~= nil and i.name == _event['target']:getPlayerName() then 
 						eventExport['targetUcid'] = i.ucid
-						eventExport['targetPlayerName'] = _event['initiator']:getPlayerName()
+						eventExport['targetPlayerName'] = _event['target']:getPlayerName()
 					end
 				end
 			end
