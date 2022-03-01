@@ -2013,10 +2013,12 @@ FDS.eventActions = FDS.switch {
 					end
 				end
 			end
-			if _event['initiator'] ~= nil and _event['initiator']:getDesc() then 
+			if _event['initiator'] ~= nil and _event['initiator']:getDesc() ~= nil then 
 				--eventExport['initiatorDesc'] = eventExport['initiator']:getDesc()
 				eventExport['initiatorName'] = _event['initiator']:getName()
-				eventExport['initiatorCoalition'] = _event['initiator']:getCoalition()
+				if _event['initiator'] ~= nil and _event['initiator']:getCoalition() ~= nil
+					eventExport['initiatorCoalition'] = _event['initiator']:getCoalition()
+				end
 				eventExport['initiatorType'] = _event['initiator']:getDesc().typeName
 			end
 			if targetCheck and _event['initiator'] ~= nil and _event['initiator']:getPlayerName() ~= nil then 
@@ -2033,10 +2035,12 @@ FDS.eventActions = FDS.switch {
 					end
 				end
 			end
-			if _event['target'] ~= nil and _event['target']:getDesc() then 
+			if _event['target'] ~= nil and _event['target']:getDesc()  ~= nil then 
 				--eventExport['targetDesc'] = eventExport['target']:getDesc()
 				eventExport['targetName'] = _event['target']:getName()
-				eventExport['targetCoalition'] = _event['target']:getCoalition()
+				if _event['target'] ~= nil and _event['target']:getCoalition() ~= nil
+					eventExport['targetCoalition'] = _event['target']:getCoalition()
+				end
 				eventExport['targetType'] = _event['target']:getDesc().typeName
 			end
 			if _event['weapon'] ~= nil and _event['weapon']:getDesc() then 

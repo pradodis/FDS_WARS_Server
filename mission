@@ -55223,15 +55223,15 @@ mission =
     }, -- end of ["forcedOptions"]
     ["failures"] = 
     {
-        ["CADC_WING_SWEEP_INDICATOR"] = 
+        ["CMS_FAILURE_RIGHT_DISPENSER"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_WING_SWEEP_INDICATOR",
+            ["id"] = "CMS_FAILURE_RIGHT_DISPENSER",
             ["mm"] = 0,
-        }, -- end of ["CADC_WING_SWEEP_INDICATOR"]
+        }, -- end of ["CMS_FAILURE_RIGHT_DISPENSER"]
         ["ILS_FAILURE_ANTENNA"] = 
         {
             ["hh"] = 0,
@@ -55277,15 +55277,15 @@ mission =
             ["id"] = "Failure_Gear_NWS",
             ["mm"] = 0,
         }, -- end of ["Failure_Gear_NWS"]
-        ["CADC_WING_SWEEP_COMMAND_CHANNEL_1"] = 
+        ["Failure_Comp_ADC"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_WING_SWEEP_COMMAND_CHANNEL_1",
+            ["id"] = "Failure_Comp_ADC",
             ["mm"] = 0,
-        }, -- end of ["CADC_WING_SWEEP_COMMAND_CHANNEL_1"]
+        }, -- end of ["Failure_Comp_ADC"]
         ["rws"] = 
         {
             ["hh"] = 0,
@@ -55313,15 +55313,15 @@ mission =
             ["id"] = "Failure_Hyd_IsolatedHYD2BSystem_Leak",
             ["mm"] = 0,
         }, -- end of ["Failure_Hyd_IsolatedHYD2BSystem_Leak"]
-        ["RWR_FAILURE_CONTROL_BOX"] = 
+        ["RWR_FAILURE_COMPUTER"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_CONTROL_BOX",
+            ["id"] = "RWR_FAILURE_COMPUTER",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_CONTROL_BOX"]
+        }, -- end of ["RWR_FAILURE_COMPUTER"]
         ["VHF_ARC_182_FAILURE_TRANSCEIVER"] = 
         {
             ["hh"] = 0,
@@ -55331,15 +55331,15 @@ mission =
             ["id"] = "VHF_ARC_182_FAILURE_TRANSCEIVER",
             ["mm"] = 0,
         }, -- end of ["VHF_ARC_182_FAILURE_TRANSCEIVER"]
-        ["Failure_Hyd_HYD2A_Leak"] = 
+        ["Failure_Fuel_ExtTankTransferC"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Hyd_HYD2A_Leak",
+            ["id"] = "Failure_Fuel_ExtTankTransferC",
             ["mm"] = 0,
-        }, -- end of ["Failure_Hyd_HYD2A_Leak"]
+        }, -- end of ["Failure_Fuel_ExtTankTransferC"]
         ["Failure_PP_EngL_AB_FFCS"] = 
         {
             ["hh"] = 0,
@@ -55358,15 +55358,15 @@ mission =
             ["id"] = "ecm",
             ["mm"] = 0,
         }, -- end of ["ecm"]
-        ["CADC_STABILIZER_AUTHORITY_COMMAND"] = 
+        ["Failure_Gear_WOW"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_STABILIZER_AUTHORITY_COMMAND",
+            ["id"] = "Failure_Gear_WOW",
             ["mm"] = 0,
-        }, -- end of ["CADC_STABILIZER_AUTHORITY_COMMAND"]
+        }, -- end of ["Failure_Gear_WOW"]
         ["HYD_Combined"] = 
         {
             ["hh"] = 0,
@@ -55376,42 +55376,42 @@ mission =
             ["id"] = "HYD_Combined",
             ["mm"] = 0,
         }, -- end of ["HYD_Combined"]
-        ["VHF_ARC_182_FAILURE_TOTAL"] = 
+        ["UHF_ARC_159_FAILURE_ANTENNA"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "VHF_ARC_182_FAILURE_TOTAL",
+            ["id"] = "UHF_ARC_159_FAILURE_ANTENNA",
             ["mm"] = 0,
-        }, -- end of ["VHF_ARC_182_FAILURE_TOTAL"]
-        ["Failure_Fuel_ExtTankTransferC"] = 
+        }, -- end of ["UHF_ARC_159_FAILURE_ANTENNA"]
+        ["Failure_Hyd_HYD2A_Leak"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Fuel_ExtTankTransferC",
+            ["id"] = "Failure_Hyd_HYD2A_Leak",
             ["mm"] = 0,
-        }, -- end of ["Failure_Fuel_ExtTankTransferC"]
-        ["TACAN_FAILURE_TOTAL"] = 
+        }, -- end of ["Failure_Hyd_HYD2A_Leak"]
+        ["INS_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "TACAN_FAILURE_TOTAL",
+            ["id"] = "INS_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["TACAN_FAILURE_TOTAL"]
-        ["RWR_FAILURE_LOW_BAND"] = 
+        }, -- end of ["INS_FAILURE_TOTAL"]
+        ["Failure_Fuel_QuantityGaging"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_LOW_BAND",
+            ["id"] = "Failure_Fuel_QuantityGaging",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_LOW_BAND"]
+        }, -- end of ["Failure_Fuel_QuantityGaging"]
         ["Failure_Fuel_Tank4Transfer"] = 
         {
             ["hh"] = 0,
@@ -55502,51 +55502,24 @@ mission =
             ["id"] = "TID_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["TID_FAILURE_TOTAL"]
-        ["CADC_RUDDER_AUTHORITY_COMMAND"] = 
+        ["RWR_FAILURE_LOW_BAND"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CADC_RUDDER_AUTHORITY_COMMAND",
+            ["id"] = "RWR_FAILURE_LOW_BAND",
             ["mm"] = 0,
-        }, -- end of ["CADC_RUDDER_AUTHORITY_COMMAND"]
-        ["Failure_Ctrl_FCS_Ch4"] = 
+        }, -- end of ["RWR_FAILURE_LOW_BAND"]
+        ["Failure_ECS_OBOGS"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_FCS_Ch4",
+            ["id"] = "Failure_ECS_OBOGS",
             ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_FCS_Ch4"]
-        ["Failure_Sens_LeftPitotHeater"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "Failure_Sens_LeftPitotHeater",
-            ["mm"] = 0,
-        }, -- end of ["Failure_Sens_LeftPitotHeater"]
-        ["Failure_Fuel_ExtTankTransferL"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "Failure_Fuel_ExtTankTransferL",
-            ["mm"] = 0,
-        }, -- end of ["Failure_Fuel_ExtTankTransferL"]
-        ["CADC_WING_SWEEP_COMMAND_CHANNEL_2"] = 
-        {
-            ["hh"] = 0,
-            ["prob"] = 100,
-            ["enable"] = false,
-            ["mmint"] = 1,
-            ["id"] = "CADC_WING_SWEEP_COMMAND_CHANNEL_2",
-            ["mm"] = 0,
-        }, -- end of ["CADC_WING_SWEEP_COMMAND_CHANNEL_2"]
+        }, -- end of ["Failure_ECS_OBOGS"]
         ["HUD_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
@@ -55556,6 +55529,33 @@ mission =
             ["id"] = "HUD_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["HUD_FAILURE_TOTAL"]
+        ["Failure_Fuel_ExtTankTransferL"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "Failure_Fuel_ExtTankTransferL",
+            ["mm"] = 0,
+        }, -- end of ["Failure_Fuel_ExtTankTransferL"]
+        ["UHF_ARC_159_FAILURE_TOTAL"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "UHF_ARC_159_FAILURE_TOTAL",
+            ["mm"] = 0,
+        }, -- end of ["UHF_ARC_159_FAILURE_TOTAL"]
+        ["Failure_Sens_LeftPitotHeater"] = 
+        {
+            ["hh"] = 0,
+            ["prob"] = 100,
+            ["enable"] = false,
+            ["mmint"] = 1,
+            ["id"] = "Failure_Sens_LeftPitotHeater",
+            ["mm"] = 0,
+        }, -- end of ["Failure_Sens_LeftPitotHeater"]
         ["RWR_FAILURE_QUAD225"] = 
         {
             ["hh"] = 0,
@@ -55583,15 +55583,15 @@ mission =
             ["id"] = "CADC_CSDC_CONNECTION",
             ["mm"] = 0,
         }, -- end of ["CADC_CSDC_CONNECTION"]
-        ["Failure_ECS_OBOGS"] = 
+        ["Failure_Ctrl_FCS_Ch4"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_ECS_OBOGS",
+            ["id"] = "Failure_Ctrl_FCS_Ch4",
             ["mm"] = 0,
-        }, -- end of ["Failure_ECS_OBOGS"]
+        }, -- end of ["Failure_Ctrl_FCS_Ch4"]
         ["Failure_Fuel_RightBoostPump"] = 
         {
             ["hh"] = 0,
@@ -55619,24 +55619,24 @@ mission =
             ["id"] = "RWR_FAILURE_BLANKER",
             ["mm"] = 0,
         }, -- end of ["RWR_FAILURE_BLANKER"]
-        ["INS_FAILURE_TOTAL"] = 
+        ["VHF_ARC_182_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "INS_FAILURE_TOTAL",
+            ["id"] = "VHF_ARC_182_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["INS_FAILURE_TOTAL"]
-        ["UHF_ARC_159_FAILURE_ANTENNA"] = 
+        }, -- end of ["VHF_ARC_182_FAILURE_TOTAL"]
+        ["TACAN_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "UHF_ARC_159_FAILURE_ANTENNA",
+            ["id"] = "TACAN_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["UHF_ARC_159_FAILURE_ANTENNA"]
+        }, -- end of ["TACAN_FAILURE_TOTAL"]
         ["JESTER"] = 
         {
             ["hh"] = 0,
@@ -55655,15 +55655,15 @@ mission =
             ["id"] = "Failure_Fuel_Tank1Transfer",
             ["mm"] = 0,
         }, -- end of ["Failure_Fuel_Tank1Transfer"]
-        ["RWR_FAILURE_COMPUTER"] = 
+        ["Failure_Ctrl_FCS_Ch1"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_COMPUTER",
+            ["id"] = "Failure_Ctrl_FCS_Ch1",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_COMPUTER"]
+        }, -- end of ["Failure_Ctrl_FCS_Ch1"]
         ["Failure_PP_EngL_Main_FFCS"] = 
         {
             ["hh"] = 0,
@@ -55691,15 +55691,15 @@ mission =
             ["id"] = "AHRS_FAILURE_MAD",
             ["mm"] = 0,
         }, -- end of ["AHRS_FAILURE_MAD"]
-        ["UHF_ARC_159_FAILURE_TOTAL"] = 
+        ["UHF_ARC_159_FAILURE_INTERNAL_MODULE"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "UHF_ARC_159_FAILURE_TOTAL",
+            ["id"] = "UHF_ARC_159_FAILURE_INTERNAL_MODULE",
             ["mm"] = 0,
-        }, -- end of ["UHF_ARC_159_FAILURE_TOTAL"]
+        }, -- end of ["UHF_ARC_159_FAILURE_INTERNAL_MODULE"]
         ["asc"] = 
         {
             ["hh"] = 0,
@@ -55727,15 +55727,15 @@ mission =
             ["id"] = "UHF_ARC_159_FAILURE_REMOTE_DISPLAY",
             ["mm"] = 0,
         }, -- end of ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY"]
-        ["Failure_Sens_RightPitotHeater"] = 
+        ["Failure_Ctrl_Aileron"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Sens_RightPitotHeater",
+            ["id"] = "Failure_Ctrl_Aileron",
             ["mm"] = 0,
-        }, -- end of ["Failure_Sens_RightPitotHeater"]
+        }, -- end of ["Failure_Ctrl_Aileron"]
         ["ICS_FAILURE_AMPLIFIER_PILOT_NORM"] = 
         {
             ["hh"] = 0,
@@ -55745,15 +55745,15 @@ mission =
             ["id"] = "ICS_FAILURE_AMPLIFIER_PILOT_NORM",
             ["mm"] = 0,
         }, -- end of ["ICS_FAILURE_AMPLIFIER_PILOT_NORM"]
-        ["Failure_Comp_ADC"] = 
+        ["CADC_WING_SWEEP_COMMAND_CHANNEL_1"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Comp_ADC",
+            ["id"] = "CADC_WING_SWEEP_COMMAND_CHANNEL_1",
             ["mm"] = 0,
-        }, -- end of ["Failure_Comp_ADC"]
+        }, -- end of ["CADC_WING_SWEEP_COMMAND_CHANNEL_1"]
         ["TACAN_FAILURE_RECEIVER"] = 
         {
             ["hh"] = 0,
@@ -55790,15 +55790,15 @@ mission =
             ["id"] = "ICS_FAILURE_AMPLIFIER_RIO_NORM",
             ["mm"] = 0,
         }, -- end of ["ICS_FAILURE_AMPLIFIER_RIO_NORM"]
-        ["CMS_FAILURE_RIGHT_DISPENSER"] = 
+        ["CADC_WING_SWEEP_INDICATOR"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "CMS_FAILURE_RIGHT_DISPENSER",
+            ["id"] = "CADC_WING_SWEEP_INDICATOR",
             ["mm"] = 0,
-        }, -- end of ["CMS_FAILURE_RIGHT_DISPENSER"]
+        }, -- end of ["CADC_WING_SWEEP_INDICATOR"]
         ["Failure_Elec_UtilityBattery"] = 
         {
             ["hh"] = 0,
@@ -55844,15 +55844,15 @@ mission =
             ["id"] = "Failure_Hyd_HYD2B_Leak",
             ["mm"] = 0,
         }, -- end of ["Failure_Hyd_HYD2B_Leak"]
-        ["Failure_Ctrl_FCS_Ch2"] = 
+        ["DDD_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_FCS_Ch2",
+            ["id"] = "DDD_FAILURE_TOTAL",
             ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_FCS_Ch2"]
+        }, -- end of ["DDD_FAILURE_TOTAL"]
         ["mlws"] = 
         {
             ["hh"] = 0,
@@ -55907,15 +55907,15 @@ mission =
             ["id"] = "Failure_PP_EngL_Nozzle_CS",
             ["mm"] = 0,
         }, -- end of ["Failure_PP_EngL_Nozzle_CS"]
-        ["DDD_FAILURE_TOTAL"] = 
+        ["TACAN_FAILURE_TRANSMITTER"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "DDD_FAILURE_TOTAL",
+            ["id"] = "TACAN_FAILURE_TRANSMITTER",
             ["mm"] = 0,
-        }, -- end of ["DDD_FAILURE_TOTAL"]
+        }, -- end of ["TACAN_FAILURE_TRANSMITTER"]
         ["Failure_PP_EngR_Nozzle_CS"] = 
         {
             ["hh"] = 0,
@@ -55943,24 +55943,24 @@ mission =
             ["id"] = "UHF_ARC_159_FAILURE_DISPLAY",
             ["mm"] = 0,
         }, -- end of ["UHF_ARC_159_FAILURE_DISPLAY"]
-        ["TACAN_FAILURE_TRANSMITTER"] = 
+        ["Failure_Ctrl_FCS_Ch2"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "TACAN_FAILURE_TRANSMITTER",
+            ["id"] = "Failure_Ctrl_FCS_Ch2",
             ["mm"] = 0,
-        }, -- end of ["TACAN_FAILURE_TRANSMITTER"]
-        ["Failure_Elec_EmergencyBattery"] = 
+        }, -- end of ["Failure_Ctrl_FCS_Ch2"]
+        ["RWR_FAILURE_QUAD135"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Elec_EmergencyBattery",
+            ["id"] = "RWR_FAILURE_QUAD135",
             ["mm"] = 0,
-        }, -- end of ["Failure_Elec_EmergencyBattery"]
+        }, -- end of ["RWR_FAILURE_QUAD135"]
         ["RWR_FAILURE_DISPLAY_PILOT"] = 
         {
             ["hh"] = 0,
@@ -55997,15 +55997,15 @@ mission =
             ["id"] = "ILS_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["ILS_FAILURE_TOTAL"]
-        ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"] = 
+        ["Failure_Elec_EmergencyBattery"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO",
+            ["id"] = "Failure_Elec_EmergencyBattery",
             ["mm"] = 0,
-        }, -- end of ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"]
+        }, -- end of ["Failure_Elec_EmergencyBattery"]
         ["W_S_R"] = 
         {
             ["hh"] = 0,
@@ -56051,15 +56051,15 @@ mission =
             ["id"] = "CMS_FAILURE_PROGRAMMER",
             ["mm"] = 0,
         }, -- end of ["CMS_FAILURE_PROGRAMMER"]
-        ["RWR_FAILURE_QUAD135"] = 
+        ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "RWR_FAILURE_QUAD135",
+            ["id"] = "UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO",
             ["mm"] = 0,
-        }, -- end of ["RWR_FAILURE_QUAD135"]
+        }, -- end of ["UHF_ARC_159_FAILURE_REMOTE_DISPLAY_RIO"]
         ["CADC_PRESSURE_SENSOR"] = 
         {
             ["hh"] = 0,
@@ -56168,15 +56168,15 @@ mission =
             ["id"] = "IMU_FAILURE_TOTAL",
             ["mm"] = 0,
         }, -- end of ["IMU_FAILURE_TOTAL"]
-        ["Failure_Ctrl_Aileron"] = 
+        ["Failure_Sens_RightPitotHeater"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_Aileron",
+            ["id"] = "Failure_Sens_RightPitotHeater",
             ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_Aileron"]
+        }, -- end of ["Failure_Sens_RightPitotHeater"]
         ["Failure_Comp_MC1"] = 
         {
             ["hh"] = 0,
@@ -56186,33 +56186,33 @@ mission =
             ["id"] = "Failure_Comp_MC1",
             ["mm"] = 0,
         }, -- end of ["Failure_Comp_MC1"]
-        ["UHF_ARC_159_FAILURE_INTERNAL_MODULE"] = 
+        ["CADC_WING_SWEEP_COMMAND_CHANNEL_2"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "UHF_ARC_159_FAILURE_INTERNAL_MODULE",
+            ["id"] = "CADC_WING_SWEEP_COMMAND_CHANNEL_2",
             ["mm"] = 0,
-        }, -- end of ["UHF_ARC_159_FAILURE_INTERNAL_MODULE"]
-        ["Failure_Ctrl_FCS_Ch1"] = 
+        }, -- end of ["CADC_WING_SWEEP_COMMAND_CHANNEL_2"]
+        ["RWR_FAILURE_CONTROL_BOX"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Ctrl_FCS_Ch1",
+            ["id"] = "RWR_FAILURE_CONTROL_BOX",
             ["mm"] = 0,
-        }, -- end of ["Failure_Ctrl_FCS_Ch1"]
-        ["Failure_Gear_WOW"] = 
+        }, -- end of ["RWR_FAILURE_CONTROL_BOX"]
+        ["CADC_RUDDER_AUTHORITY_COMMAND"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Gear_WOW",
+            ["id"] = "CADC_RUDDER_AUTHORITY_COMMAND",
             ["mm"] = 0,
-        }, -- end of ["Failure_Gear_WOW"]
+        }, -- end of ["CADC_RUDDER_AUTHORITY_COMMAND"]
         ["Failure_Hyd_HYD1A_Leak"] = 
         {
             ["hh"] = 0,
@@ -56276,15 +56276,15 @@ mission =
             ["id"] = "ICS_FAILURE_AMPLIFIER_RIO_BU",
             ["mm"] = 0,
         }, -- end of ["ICS_FAILURE_AMPLIFIER_RIO_BU"]
-        ["Failure_Fuel_QuantityGaging"] = 
+        ["CADC_STABILIZER_AUTHORITY_COMMAND"] = 
         {
             ["hh"] = 0,
             ["prob"] = 100,
             ["enable"] = false,
             ["mmint"] = 1,
-            ["id"] = "Failure_Fuel_QuantityGaging",
+            ["id"] = "CADC_STABILIZER_AUTHORITY_COMMAND",
             ["mm"] = 0,
-        }, -- end of ["Failure_Fuel_QuantityGaging"]
+        }, -- end of ["CADC_STABILIZER_AUTHORITY_COMMAND"]
         ["AHRS_FAILURE_TOTAL"] = 
         {
             ["hh"] = 0,
