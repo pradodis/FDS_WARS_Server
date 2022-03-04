@@ -2016,7 +2016,7 @@ FDS.eventActions = FDS.switch {
 			if _event['initiator'] ~= nil and _event['initiator']:getDesc() ~= nil then 
 				--eventExport['initiatorDesc'] = eventExport['initiator']:getDesc()
 				eventExport['initiatorName'] = _event['initiator']:getName()
-				if _event['initiator'] ~= nil and _event['initiator']:getCoalition() ~= nil then
+				if _event['initiator'] ~= nil and _event['initiator']:getCoalition() and _event['initiator']:getCoalition() ~= nil then
 					eventExport['initiatorCoalition'] = _event['initiator']:getCoalition()
 				end
 				eventExport['initiatorType'] = _event['initiator']:getDesc().typeName
@@ -2038,7 +2038,7 @@ FDS.eventActions = FDS.switch {
 			if _event['target'] ~= nil and _event['target']:getDesc()  ~= nil then 
 				--eventExport['targetDesc'] = eventExport['target']:getDesc()
 				eventExport['targetName'] = _event['target']:getName()
-				if _event['target'] ~= nil and _event['target']:getCoalition() ~= nil then
+				if _event['target'] ~= nil and _event['target']:getCoalition() and _event['target']:getCoalition() ~= nil then
 					eventExport['targetCoalition'] = _event['target']:getCoalition()
 				end
 				eventExport['targetType'] = _event['target']:getDesc().typeName
