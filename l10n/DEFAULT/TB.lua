@@ -1795,9 +1795,10 @@ function exportKill(eventExport)
 	file:close()
 end
 
-function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, targetCheck, _targetEnt, rewardType, forceAward)
+function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
 	if initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa then
 		local plName = _initEnt:getPlayerName()
+		local tgtName = _targetEnt:getPlayerName()
 		local plGrp = _initEnt:getGroup()
 		local plID = plGrp:getID()
 		for i,j in pairs(FDS.teamPoints) do
@@ -1808,7 +1809,7 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 					msgKill.sound = 'Msg.ogg'
 					if FDS.lastHits[_targetEnt:getID()] ~= nil then
 						if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
-							if targetCheck then
+							if tgtName then
 								FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
 								msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
 								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
@@ -1821,7 +1822,7 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 							end
 						end
 					elseif forceAward then
-						if targetCheck then
+						if tgtName then
 							FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
 							msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
 							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
@@ -1902,7 +1903,7 @@ FDS.eventActions = FDS.switch {
 					initCoa = _initEntLocal:getCoalition()
 					targetCoa = _targetEntLocal:getCoalition()
 				end
-				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, targetCheck, _targetEntLocal, rewardType, false)
+				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				FDS.lastHits[_initEnt:getID()][2] = true
 			end
 		end
@@ -2015,7 +2016,7 @@ FDS.eventActions = FDS.switch {
 					initCoa = _initEntLocal:getCoalition()
 					targetCoa = _targetEntLocal:getCoalition()
 				end
-				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, targetCheck, _targetEntLocal, rewardType, false)
+				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				FDS.lastHits[_initEnt:getID()][2] = true
 			end
 		end
@@ -2088,7 +2089,7 @@ FDS.eventActions = FDS.switch {
 						initCoa = _initEntLocal:getCoalition()
 						targetCoa = _targetEntLocal:getCoalition()
 					end
-					awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, targetCheck, _targetEntLocal, rewardType, false)
+					awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 					FDS.lastHits[_initEnt:getID()][2] = true
 				end
 			end
@@ -2248,7 +2249,7 @@ FDS.eventActions = FDS.switch {
 				initCoa = _initEnt:getCoalition()
 				targetCoa = _targetEnt:getCoalition()
 			end
-			awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, targetCheck, _targetEnt, rewardType, true)
+			awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, true)
 			FDS.lastHits[_targetEnt:getID()][2] = true
 			FDS.lastHits[_targetEnt:getID()] = 'DEAD'
 		end
@@ -2469,7 +2470,7 @@ FDS.eventActions = FDS.switch {
 					initCoa = _initEntLocal:getCoalition()
 					targetCoa = _targetEntLocal:getCoalition()
 				end
-				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, targetCheck, _targetEntLocal, rewardType, false)
+				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				FDS.lastHits[_initEnt:getID()][2] = true
 			end
 		end
