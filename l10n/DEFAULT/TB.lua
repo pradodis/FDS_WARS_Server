@@ -1798,10 +1798,11 @@ end
 function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
 	if initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa then
 		local plName = _initEnt:getPlayerName()
+		local tgtName = nil
 		if _targetEnt:getCategory() == 3 then
 			tgtName = nil
 		else
-			local tgtName = _targetEnt:getPlayerName()
+			tgtName = _targetEnt:getPlayerName()
 		end
 		local plGrp = _initEnt:getGroup()
 		local plID = plGrp:getID()
@@ -1813,7 +1814,7 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 					msgKill.sound = 'Msg.ogg'
 					if FDS.lastHits[_targetEnt:getID()] ~= nil then
 						if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
-							if tgtName then
+							if tgtName ~= nil then
 								FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
 								msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
 								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
@@ -1826,7 +1827,7 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 							end
 						end
 					elseif forceAward then
-						if tgtName then
+						if tgtName ~= nil  then
 							FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
 							msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
 							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
