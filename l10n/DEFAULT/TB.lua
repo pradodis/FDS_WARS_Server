@@ -84,7 +84,7 @@ FDS.numberZones = 45
 FDS.exportPath = 'C:\\fdsServerData\\'
 FDS.killEventNumber = 0
 FDS.killEventVector = {}
-FDS.sendDataFreq = 2.0
+FDS.sendDataFreq = 1.0
 FDS.exportDataSite = true -- use false for non-multiplayer games
 
 -- Rewards
@@ -716,10 +716,30 @@ function bombingRun(coa)
     return zone
 end
 
+function updateTgtPositions()
+	for coal, zonas in pairs(tgtObj) do
+		for zona, unids in pairs(zonas) do
+			for unid, data in pairs(unids) do
+				local objecto = Group.getByName(data[1]) or StaticObject.getByName(data[1])
+				local novaPos = {}
+				if objecto:getCategory() == 3 then
+					novaPos = objecto:getPosition()
+				elseif objecto:getCategory() == 2 then
+					novaPos = objecto:getUnits()[1]:getPosition()
+				end
+				novaPos.p.y = novaPos.p.z
+				novaPos.p.z = nil
+				tgtObj[coal][zona][unid][2] = novaPos.p
+			end
+		end
+	end
+end
+
 function guidedBombingRun(coa)
     local zone = ''
 	local qty = 0
 	FDS.bomberQty[coa] = FDS.bomberQty[coa] + 1
+	updateTgtPositions()
 	if coa == 'blue' then
 		local z1,z2 = unpack(FDS.redZones)
 		if #tgtObj['red'][z1] == #tgtObj['red'][z2] then 
@@ -741,14 +761,12 @@ function guidedBombingRun(coa)
 			zone = z2
 		end
 	end
-
 	bombingRunTable = {
 		["Blue Zone 1"] = {"Red_Bomber_A1_Spaw","Red_Bomber_Zone1_Guiding","blue","Blue Zone 1",1,2},
 		["Blue Zone 2"] = {"Red_Bomber_A2_Spaw","Red_Bomber_Zone2_Guiding","blue","Blue Zone 2",1,2},
 		["Red Zone 1"] = {"Blue_Bomber_A1_Spaw","Blue_Bomber_Zone1_Guiding","red","Red Zone 1",2,1},
 		["Red Zone 2"] = {"Blue_Bomber_A2_Spaw","Blue_Bomber_Zone2_Guiding","red","Red Zone 2",2,1}
 	}
-	
     for bomber = 1, 1 do
 		local gp = Group.getByName(bombingRunTable[zone][2])
 		local gPData = mist.getGroupData(bombingRunTable[zone][2],true)
@@ -796,9 +814,7 @@ function guidedBombingRun(coa)
 			new_GPR[2].task.params.tasks[multiTgt].params.x = selTgt.x
 			new_GPR[2].task.params.tasks[multiTgt].params.y = selTgt.y
 		end
-		
 		pontinho = mist.getRandomPointInZone(bombingRunTable[zone][1])
-		
 		new_gPData.route = new_GPR 
 		new_gPData.groupId = nil
 		new_gPData.groupName = nil
@@ -807,7 +823,6 @@ function guidedBombingRun(coa)
 		new_gPData.units[1].y = pontinho.y
 		new_gPData.units[1].alt = new_gPData.units[1].alt + (math.random(1,200)-100.0)
 		new_gPData.clone = true
-		
 		mist.dynAdd(new_gPData)
     end
 
@@ -1439,6 +1454,22 @@ function FDS.playerCheck(_initiator)
 	return checkPl
 end
 
+function isUnitorStructure(_initiator, _target)
+	local initCheck = false
+	local tgtCheck = false
+	if _initiator:getCategory() == 1 or _initiator:getCategory() == 3 then
+		initCheck = true
+	end
+	if _target:getCategory() == 1 or _target:getCategory() == 3 then
+		tgtCheck = true
+	end
+	if initCheck and tgtCheck then
+		return true
+	else
+		return false
+	end
+end
+
 function has_value (tab, val)
 	for index, value in ipairs(tab) do
 		if value == val then
@@ -1641,22 +1672,6 @@ end
 
 function endMission()
 	if FDS.exportDataSite then
-		--local infile = io.open(FDS.exportPath .. "killRecord.json", "r")
-		--local instr = infile:read("*a")
-		--infile:close()
-		
-		--local outfile = io.open(FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
-		--outfile:write(instr)
-		--outfile:close()
-
-		--local infile = io.open(FDS.exportPath .. "currentStats.json", "r")
-		--local instr = infile:read("*a")
-		--infile:close()
-		
-		--local outfile = io.open(FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
-		--outfile:write(instr)
-		--outfile:close()
-
 		pcall(killDCSProcess,{})
 	end
 end
@@ -1670,12 +1685,168 @@ function ping(a)
 	trigger.action.outSound(msgPing.sound)
 end
 
+function assembleKillObject(initCheck, targetCheck, _event, _eventComplementar, editFDS, bypassEvent)
+	FDS.killEventNumber = FDS.killEventNumber + 1
+	eventExport = {}
+	eventExport['time'] = _event.time
+	eventExport['eventID'] = _event.id 
+	eventExport['initiatorUcid'] = _eventComplementar["initiatorUcid"] or nil
+	eventExport['initiatorPlayerName'] = _eventComplementar["initiatorPlayerName"] or nil
+	eventExport['initiatorName'] = _eventComplementar["initiatorName"] or nil
+	eventExport['initiatorCoalition'] = _eventComplementar["initiatorCoalition"] or nil
+	eventExport['targetUcid'] = _eventComplementar["targetUcid"] or nil
+	eventExport['targetPlayerName'] = _eventComplementar["targetPlayerName"] or nil
+	eventExport['targetName'] = _eventComplementar["targetName"] or nil
+	eventExport['targetCoalition'] = _eventComplementar["targetCoalition"] or nil
+	eventExport['weaponCategory'] = _eventComplementar["weaponCategory"] or nil 
+	eventExport['weaponDisplayName'] = _eventComplementar["weaponDisplayName"] or nil 
+	eventExport['isPvP'] = _eventComplementar["isPvP"] or nil
+
+	if not bypassEvent then
+		if initCheck and _event['initiator'] ~= nil and _event['initiator']:getPlayerName() and _event['initiator']:getPlayerName() ~= nil then 
+			local activePlayerList = net.get_player_list()
+			local activePlayerListTable = {}
+			for _, i in pairs(activePlayerList) do
+				table.insert(activePlayerListTable, net.get_player_info(i))
+			end
+			for _, i in pairs(activePlayerListTable) do
+				if _event['initiator'] ~= nil and _event['initiator']:getPlayerName() and i.name == _event['initiator']:getPlayerName() then 
+					eventExport['initiatorUcid'] = i.ucid
+					eventExport['initiatorPlayerName'] = _event['initiator']:getPlayerName()
+				end
+			end
+		end
+		if _event['initiator'] and _event['initiator'] ~= nil and _event['initiator']:getDesc() and _event['initiator']:getDesc() ~= nil then 
+			--eventExport['initiatorDesc'] = eventExport['initiator']:getDesc()
+			eventExport['initiatorName'] = _event['initiator']:getName()
+			if _event['initiator'] and _event['initiator'] ~= nil and _event['initiator']:getCoalition() and _event['initiator']:getCoalition() ~= nil then
+				eventExport['initiatorCoalition'] = _event['initiator']:getCoalition()
+			end
+			if _event['initiator'] and _event['initiator'] ~= nil and _event['initiator']:getDesc() and _event['initiator']:getDesc() ~= nil and _event['initiator']:getDesc().typeName then
+				eventExport['initiatorType'] = _event['initiator']:getDesc().typeName
+			end
+		end
+		if targetCheck and _event['target'] ~= nil and _event['target']:getPlayerName() and _event['target']:getPlayerName() ~= nil then 
+			local activePlayerList = net.get_player_list()
+			local activePlayerListTable = {}
+			for _, i in pairs(activePlayerList) do
+				table.insert(activePlayerListTable, net.get_player_info(i))
+			end
+			for _, i in pairs(activePlayerListTable) do
+				if _event['target'] ~= nil and i.name == _event['target']:getPlayerName() then 
+					eventExport['targetUcid'] = i.ucid
+					eventExport['targetPlayerName'] = _event['target']:getPlayerName()
+				end
+			end
+		end
+		if _event['target'] and _event['target'] ~= nil and _event['target']:getDesc() and _event['target']:getDesc() ~= nil then 
+			--eventExport['targetDesc'] = eventExport['target']:getDesc()
+			eventExport['targetName'] = _event['target']:getName()
+			if _event['target'] ~= nil and _event['target']:getCoalition() and _event['target']:getCoalition() ~= nil then
+				eventExport['targetCoalition'] = _event['target']:getCoalition()
+			end
+			if _event['target'] and _event['target'] ~= nil and _event['target']:getDesc() and _event['target']:getDesc() ~= nil and _event['target']:getDesc().typeName then
+				eventExport['targetType'] = _event['target']:getDesc().typeName
+			end
+		end
+		if _event['weapon'] and _event['weapon'] ~= nil and _event['weapon']:getDesc() and _event['weapon']:getDesc() ~= nil and _event['weapon']:getDesc().category and _event['weapon']:getDesc().displayName then 
+			eventExport['weaponCategory'] = _event['weapon']:getDesc().category
+			eventExport['weaponDisplayName'] = _event['weapon']:getDesc().displayName
+		end
+	end
+	-- Integrating with missionStats
+	if editFDS and eventExport['initiatorPlayerName'] == nil then
+		if _event['initiator'] and _event['initiator'] ~= nil then
+			if FDS.entityKills[_event['initiator']:getGroup():getName()] == nil then
+				FDS.entityKills[_event['initiator']:getGroup():getName()] = {}
+			end
+			table.insert(FDS.entityKills[_event['initiator']:getGroup():getName()], eventExport)
+		end
+	end
+	if editFDS and eventExport['targetPlayerName'] == nil then
+		if _event['target'] and _event['target'] ~= nil then
+			if _event['target']:getCategory() == 3 then
+				FDS.killedByEntity[eventExport['targetName']] = eventExport
+			else
+				FDS.killedByEntity[_event['target']:getGroup():getName()] = eventExport
+			end
+		end
+	end
+	if editFDS and eventExport['initiatorPlayerName'] ~= nil then
+		if eventExport['initiatorCoalition'] ~= eventExport['targetCoalition'] then
+			if FDS.playersKillRecord == nil then 
+				FDS.playersKillRecord = {}
+			end
+			eventExport['isPvP'] = false
+			if eventExport['initiatorUcid'] ~= nil and eventExport['targetUcid'] ~= nil then
+				eventExport['isPvP'] = true
+			end
+			table.insert(FDS.playersKillRecord,eventExport)
+		end
+	end
+	return eventExport
+end
+
+function exportKill(eventExport)
+	FDS.killEventVector[FDS.killEventNumber] = eventExport
+	jsonExport = net.lua2json(FDS.killEventVector)
+	local file = io.open(FDS.exportPath .. "killRecord.json", "w")
+	file:write(jsonExport)
+	file:close()
+end
+
+function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, targetCheck, _targetEnt, rewardType, forceAward)
+	if initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa then
+		local plName = _initEnt:getPlayerName()
+		local plGrp = _initEnt:getGroup()
+		local plID = plGrp:getID()
+		for i,j in pairs(FDS.teamPoints) do
+			for k,w in pairs(FDS.teamPoints[i]['Players']) do
+				if plName == k then
+					local msgKill = {}
+					msgKill.displayTime = 20
+					msgKill.sound = 'Msg.ogg'
+					if FDS.lastHits[_targetEnt:getID()] ~= nil then
+						if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
+							if targetCheck then
+								FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
+								msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
+								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
+								trigger.action.outSoundForGroup(plID,msgKill.sound)
+							else
+								FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.rewardDict[rewardType]
+								msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' points for your kill.'
+								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
+								trigger.action.outSoundForGroup(plID,msgKill.sound)	
+							end
+						end
+					elseif forceAward then
+						if targetCheck then
+							FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
+							msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
+							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
+							trigger.action.outSoundForGroup(plID,msgKill.sound)
+						else
+							FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.rewardDict[rewardType]
+							msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' points for your kill.'
+							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
+							trigger.action.outSoundForGroup(plID,msgKill.sound)
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
 -- Event Handler
 FDS.eventActions = FDS.switch {
 	[world.event.S_EVENT_BIRTH] = function(x, param)
 		local _event = param.event
 		local _initEnt = _event.initiator
-		
+		if FDS.lastHits[_initEnt:getID()] ~= nil then
+			FDS.lastHits[_initEnt:getID()] = nil
+		end
 		if _initEnt:getCategory() == Object.Category.UNIT and _initEnt:getPlayerName() ~= nil then 
 			local msg = {}
 			msg.text = _initEnt:getPlayerName() .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.'
@@ -1697,39 +1868,74 @@ FDS.eventActions = FDS.switch {
 			end
 		end
 	end,
+	[world.event.S_EVENT_PILOT_DEAD] = function(x, param)
+		local _event = param.event
+		local _initEnt = _event.initiator
+		if FDS.lastHits[_initEnt:getID()] ~= nil then
+			local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
+			local _targetEntLocal = _initEnt
+			local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
+			local initCheck = pcall(FDS.playerCheck,_initEntLocal)
+			local initCoa = 0
+			local initCoaCheck = pcall(FDS.coalitionCheck,_initEntLocal)
+			local targetCheck = pcall(FDS.playerCheck,_targetEntLocal)
+			local targetCoa = 0
+			local targetCoaCheck = pcall(FDS.coalitionCheck,_targetEntLocal)
+			local rewardType = ''
+			--Exporting event record
+			if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
+				if FDS.exportDataSite then
+					if FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
+						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, FDS.lastHits[_targetEntLocal:getID()][1], not FDS.lastHits[_targetEntLocal:getID()][2], true)
+						exportKill(killObject)
+					else
+						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, {}, not FDS.lastHits[_targetEntLocal:getID()][2], true)
+						exportKill(killObject)		
+					end
+				end
+				if _targetEntLocal and _targetEntLocal:getDesc() and _targetEntLocal:getDesc().typeName and FDS.rewardDict[_targetEntLocal:getDesc().typeName] then
+					rewardType = _targetEntLocal:getDesc().typeName
+				else
+					rewardType = 'Default'
+				end
+				if initCoaCheck and targetCoaCheck then
+					initCoa = _initEntLocal:getCoalition()
+					targetCoa = _targetEntLocal:getCoalition()
+				end
+				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, targetCheck, _targetEntLocal, rewardType, false)
+				FDS.lastHits[_initEnt:getID()][2] = true
+			end
+		end
+	end,
 	[world.event.S_EVENT_HIT] = function(x, param)
 		local _event = param.event
+		local _eventCopy = mist.utils.deepCopy(_event)
 		local _init = _event.initiator
 		local _currentTgt = _event.target
 		local playerCheck1 = pcall(FDS.playerCheck,_init)
 		local playerCheck2 = pcall(FDS.playerCheck,_currentTgt)
-		if playerCheck1 and playerCheck2 and _init and _init:getPlayerName() and _currentTgt and _currentTgt:getPlayerName() then
-			FDS.lastHits[_currentTgt:getPlayerName()] = {_init:getPlayerName(),_init:getID(),false}
+		local initCheck = pcall(FDS.playerCheck,_init)
+		local targetCheck = pcall(FDS.playerCheck,_currentTgt)
+		if _init and _currentTgt and _init:getCategory() and _currentTgt:getCategory() and  isUnitorStructure(_init,_currentTgt) then 
+			local hitObjectInfo = assembleKillObject(initCheck, targetCheck, _event, {}, false, false)
+			if _init and _init ~= nil and _init:getID() and _init:getID() ~= nil and _currentTgt ~= nil and _currentTgt:getID() and _currentTgt:getID() ~= nil and FDS.lastHits[_currentTgt:getID()] ~= 'DEAD' then
+				FDS.lastHits[_currentTgt:getID()] = {hitObjectInfo, false, _init, _eventCopy}
+			end
 		end
 	end,
-	--[world.event.S_EVENT_SHOT] = function(x, param)
-	--	local _event = param.event
-	--	local _init = _event.initiator
-	--	local _weap = _event.weapon
-	--	local weaponTarget = _weap:getTarget()
-	--	if _weap.Category and _weap.Category == 1 and _init:getPlayerName() and weaponTarget:getPlayerName() then
-	--		FDS.currentEngagements[weaponTarget:getPlayerName()] = {_init:getPlayerName(),0}
-	--		FDS.currentEngagements[weaponTarget:getPlayerName()][2] = mist.scheduleFunction(removeEngagement, {weaponTarget:getPlayerName()},timer.getTime())
-	--	end
-	--end,
 	[world.event.S_EVENT_CRASH] = function(x, param)
 		local _event = param.event
 		local _initEnt = _event.initiator
 		local currV = 0
 		if _initEnt:getPlayerName() then
-			if FDS.lastHits[_initEnt:getPlayerName()] ~= nil then
-				FDS.lastHits[_initEnt:getPlayerName()] = nil
-			end
-			for i,j in pairs(FDS.lastHits) do
-				if _initEnt:getPlayerName() == j[1] then
-					FDS.lastHits[i] = nil
-				end
-			end
+			--if FDS.lastHits[_initEnt:getID()] ~= nil then
+			--	FDS.lastHits[_initEnt:getID()] = nil
+			--end
+			--for i,j in pairs(FDS.lastHits) do
+			--	if _initEnt:getID() == j[1] then
+			--		FDS.lastHits[i] = nil
+			--	end
+			--end
 			for _,i in pairs(FDS.teamPoints) do
 				for name,value in pairs(i['Players']) do
 					if _initEnt:getPlayerName() == name then
@@ -1777,24 +1983,57 @@ FDS.eventActions = FDS.switch {
 			trigger.action.outTextForCoalition(sideAWACS[coalit][2], msgAWACSDown.text, msgAWACSDown.displayTime)
 			trigger.action.outSoundForCoalition(sideAWACS[coalit][2],msgAWACSDown.sound) 
 			mist.scheduleFunction(respawnAWACS, {coalit},timer.getTime()+FDS.respawnAWACSTime)
-
+		end
+		if FDS.lastHits[_initEnt:getID()] ~= nil then
+			local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
+			local _targetEntLocal = _initEnt
+			local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
+			local initCheck = pcall(FDS.playerCheck,_initEntLocal)
+			local initCoa = 0
+			local initCoaCheck = pcall(FDS.coalitionCheck,_initEntLocal)
+			local targetCheck = pcall(FDS.playerCheck,_targetEntLocal)
+			local targetCoa = 0
+			local targetCoaCheck = pcall(FDS.coalitionCheck,_targetEntLocal)
+			local rewardType = ''
+			--Exporting event record
+			if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
+				if FDS.exportDataSite then
+					if FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
+						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, FDS.lastHits[_targetEntLocal:getID()][1], not FDS.lastHits[_targetEntLocal:getID()][2], true)
+						exportKill(killObject)
+					else
+						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, {}, not FDS.lastHits[_targetEntLocal:getID()][2], true)
+						exportKill(killObject)
+					end
+				end
+				if _targetEntLocal and _targetEntLocal:getDesc() and _targetEntLocal:getDesc().typeName and FDS.rewardDict[_targetEntLocal:getDesc().typeName] then
+					rewardType = _targetEntLocal:getDesc().typeName
+				else
+					rewardType = 'Default'
+				end
+				if initCoaCheck and targetCoaCheck then
+					initCoa = _initEntLocal:getCoalition()
+					targetCoa = _targetEntLocal:getCoalition()
+				end
+				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, targetCheck, _targetEntLocal, rewardType, false)
+				FDS.lastHits[_initEnt:getID()][2] = true
+			end
 		end
 	end,
 	[world.event.S_EVENT_PLAYER_LEAVE_UNIT] = function(x, param)
 		local _event = param.event
 		local _initEnt = _event.initiator
 		local currV = 0
+		local initCheck = pcall(FDS.playerCheck,_initEnt)
+		local initCoaCheck = pcall(FDS.coalitionCheck,_initEnt)
+		local initCoa = 0
+		local rewardType = ''
 		if _initEnt and _initEnt:getPlayerName() then
 			for _,i in pairs(FDS.teamPoints) do
 				for name,value in pairs(i['Players']) do
 					if _initEnt:getPlayerName() == name then
 						currV = value
 					end
-				end
-			end
-			for i,j in pairs(FDS.lastHits) do
-				if _initEnt:getPlayerName() == j[1] then
-					FDS.lastHits[i] = nil
 				end
 			end
 			if currV > 0.0 then
@@ -1807,7 +2046,7 @@ FDS.eventActions = FDS.switch {
 						newValue = false
 					end
 				end
-				if newValue then 
+				if newValue then
 					table.insert(FDS.dropZones,{createPoint, currV, _event.initiator:getPlayerName()})
 					local msg = {}
 					msg.text = 'A new drop zone has been created with ' .. tostring(currV) .. ' points.'
@@ -1818,35 +2057,41 @@ FDS.eventActions = FDS.switch {
 					trigger.action.smoke(createPoint,3)
 				end
 			end
-			if FDS.lastHits[_initEnt:getPlayerName()] ~= nil then
-				--if _initEnt:getCoalition() then
-				--	initCoa = _initEnt:getCoalition()
-				--	targetCoa = _targetEnt:getCoalition()
-				--end
-
+			if FDS.lastHits[_initEnt:getID()] ~= nil then
+				local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
+				local _targetEntLocal = _initEnt
+				local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
+				local initCheck = pcall(FDS.playerCheck,_initEntLocal)
+				local initCoa = 0
+				local initCoaCheck = pcall(FDS.coalitionCheck,_initEntLocal)
+				local targetCheck = pcall(FDS.playerCheck,_targetEntLocal)
+				local targetCoa = 0
+				local targetCoaCheck = pcall(FDS.coalitionCheck,_targetEntLocal)
+				local rewardType = ''
 				--Exporting event record
-				if FDS.exportDataSite then
-					FDS.killEventNumber = FDS.killEventNumber + 1
-					eventExport = {}
-					eventExport['initiator'] = FDS.lastHits[_initEnt:getPlayerName()][1]
-					eventExport['target'] = _initEnt:getPlayerName()
-					eventExport['weapon'] = '** LEFT **'
-					FDS.killEventVector[FDS.killEventNumber] = eventExport
-					jsonExport = net.lua2json(FDS.killEventVector)
-					local file = io.open(FDS.exportPath .. "killRecord.json", "w")
-					file:write(jsonExport)
-					file:close()
+				if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
+					if FDS.exportDataSite then
+						if FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
+							local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, FDS.lastHits[_targetEntLocal:getID()][1], not FDS.lastHits[_targetEntLocal:getID()][2], true)
+							exportKill(killObject)
+						else
+							local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, {}, not FDS.lastHits[_targetEntLocal:getID()][2], true)
+							exportKill(killObject)			
+						end
+					end
+					if _targetEntLocal and _targetEntLocal:getDesc() and _targetEntLocal:getDesc().typeName and FDS.rewardDict[_targetEntLocal:getDesc().typeName] then
+						rewardType = _targetEntLocal:getDesc().typeName
+					else
+						rewardType = 'Default'
+					end
+					if initCoaCheck and targetCoaCheck then
+						initCoa = _initEntLocal:getCoalition()
+						targetCoa = _targetEntLocal:getCoalition()
+					end
+					awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, targetCheck, _targetEntLocal, rewardType, false)
+					FDS.lastHits[_initEnt:getID()][2] = true
 				end
-
-				local msgKillLeft = {}
-				msgKillLeft.displayTime = 20
-				msgKillLeft.sound = 'Msg.ogg'
-				FDS.teamPoints[FDS.coalitionCode[_initEnt:getCoalition()]]['Players'][FDS.lastHits[_initEnt:getPlayerName()][1]] = FDS.teamPoints[FDS.coalitionCode[_initEnt:getCoalition()]]['Players'][FDS.lastHits[_initEnt:getPlayerName()][1]] + FDS.playerReward
-				msgKillLeft.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
-				trigger.action.outTextForGroup(FDS.lastHits[_initEnt:getPlayerName()][2], msgKillLeft.text, msgKillLeft.displayTime)
-				trigger.action.outSoundForGroup(FDS.lastHits[_initEnt:getPlayerName()][2],msgKillLeft.sound)
-				FDS.lastHits[_initEnt:getPlayerName()][3] = true
-			end							
+			end
 		end
 	end,
 	[world.event.S_EVENT_LAND] = function(x, param)
@@ -1873,8 +2118,8 @@ FDS.eventActions = FDS.switch {
 						flagBlue = true
 					end
 				end
-				if FDS.lastHits[_initEnt:getPlayerName()] ~= nil and (flagBlue or flagRed) then
-					FDS.lastHits[_initEnt:getPlayerName()] = nil
+				if FDS.lastHits[_initEnt:getID()] ~= nil and (flagBlue or flagRed) then
+					FDS.lastHits[_initEnt:getID()] = nil
 				end
 				if initCheck and initCoaCheck and initCoa == 2 and flagBlue and _initEnt:getPlayerName() and FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] > 0 then
 					local msgLand = {}
@@ -1971,7 +2216,6 @@ FDS.eventActions = FDS.switch {
 			end
 		end
 	end,
-
 	[world.event.S_EVENT_KILL] = function(x, param)
 		local _event = param.event
 		local _initEnt = _event.initiator
@@ -1985,155 +2229,28 @@ FDS.eventActions = FDS.switch {
 		local rewardType = ''
 
 		--Exporting event record
-		if FDS.exportDataSite then
-			FDS.killEventNumber = FDS.killEventNumber + 1
-			--eventExport = mist.utils.deepCopy(_event)
-			eventExport = {}
-			eventExport['Time'] = _event.time
-			eventExport['eventID'] = _event.id 
-			eventExport['initiatorUcid'] = nil
-			eventExport['initiatorPlayerName'] = nil
-			eventExport['initiatorName'] = nil
-			eventExport['targetUcid'] = nil
-			eventExport['targetPlayerName'] = nil
-			eventExport['targetName'] = nil
-			eventExport['weaponCategory'] = nil 
-			eventExport['weaponDisplayName'] = nil 
-			if initCheck and _event['initiator'] ~= nil and _event['initiator']:getPlayerName() ~= nil then 
-				local activePlayerList = net.get_player_list()
-				local activePlayerListTable = {}
-				for _, i in pairs(activePlayerList) do
-					table.insert(activePlayerListTable, net.get_player_info(i))
-				end
-				eventExport['initiatorUcid'] = nil
-				for _, i in pairs(activePlayerListTable) do
-					if _event['initiator'] ~= nil and i.name == _event['initiator']:getPlayerName() then 
-						eventExport['initiatorUcid'] = i.ucid
-						eventExport['initiatorPlayerName'] = _event['initiator']:getPlayerName()
-					end
+		if _initEnt and _targetEnt and _initEnt:getCategory() and _targetEnt:getCategory() and isUnitorStructure(_initEnt,_targetEnt) then
+			if FDS.exportDataSite then
+				if FDS.lastHits[_targetEnt:getID()] ~= nil and FDS.lastHits[_targetEnt:getID()] ~= nil then 
+					local killObject = assembleKillObject(initCheck, targetCheck, _event, FDS.lastHits[_targetEnt:getID()][1], not FDS.lastHits[_targetEnt:getID()][2], false)
+					exportKill(killObject)
+				else
+					local killObject = assembleKillObject(initCheck, targetCheck, _event, {}, not FDS.lastHits[_targetEnt:getID()][2], false)
+					exportKill(killObject)	
 				end
 			end
-			if _event['initiator'] ~= nil and _event['initiator']:getDesc() ~= nil then 
-				--eventExport['initiatorDesc'] = eventExport['initiator']:getDesc()
-				eventExport['initiatorName'] = _event['initiator']:getName()
-				if _event['initiator'] ~= nil and _event['initiator']:getCoalition() ~= nil then
-					eventExport['initiatorCoalition'] = _event['initiator']:getCoalition()
-				end
-				eventExport['initiatorType'] = _event['initiator']:getDesc().typeName
+			if _targetEnt and _targetEnt:getDesc() and _targetEnt:getDesc().typeName and FDS.rewardDict[_targetEnt:getDesc().typeName] then
+				rewardType = _targetEnt:getDesc().typeName
+			else
+				rewardType = 'Default'
 			end
-			if targetCheck and _event['initiator'] ~= nil and _event['initiator']:getPlayerName() ~= nil then 
-				eventExport['initiatorPlayerName'] = _event['initiator']:getPlayerName()
-				local activePlayerList = net.get_player_list()
-				local activePlayerListTable = {}
-				for _, i in pairs(activePlayerList) do
-					table.insert(activePlayerListTable, net.get_player_info(i))
-				end
-				for _, i in pairs(activePlayerListTable) do
-					if _event['target'] ~= nil and i.name == _event['target']:getPlayerName() then 
-						eventExport['targetUcid'] = i.ucid
-						eventExport['targetPlayerName'] = _event['target']:getPlayerName()
-					end
-				end
+			if initCoaCheck and targetCoaCheck then
+				initCoa = _initEnt:getCoalition()
+				targetCoa = _targetEnt:getCoalition()
 			end
-			if _event['target'] ~= nil and _event['target']:getDesc()  ~= nil then 
-				--eventExport['targetDesc'] = eventExport['target']:getDesc()
-				eventExport['targetName'] = _event['target']:getName()
-				if _event['target'] ~= nil and _event['target']:getCoalition() ~= nil then
-					eventExport['targetCoalition'] = _event['target']:getCoalition()
-				end
-				eventExport['targetType'] = _event['target']:getDesc().typeName
-			end
-			if _event['weapon'] ~= nil and _event['weapon']:getDesc() then 
-				eventExport['weaponCategory'] = _event['weapon']:getDesc().category
-				eventExport['weaponDisplayName'] = _event['weapon']:getDesc().displayName
-			end
-			-- Integrating with missionStats
-			if eventExport['initiatorPlayerName'] == nil then
-				if _event['initiator'] ~= nil then
-					if FDS.entityKills[_event['initiator']:getGroup():getName()] == nil then
-						FDS.entityKills[_event['initiator']:getGroup():getName()] = {}
-					end
-					table.insert(FDS.entityKills[_event['initiator']:getGroup():getName()], eventExport)
-				end
-			end
-			if eventExport['targetPlayerName'] == nil then
-				if _event['target'] ~= nil then
-					if _event['target']:getCategory() == 3 then
-						FDS.killedByEntity[eventExport['targetName']] = eventExport
-					else
-						FDS.killedByEntity[_event['target']:getGroup():getName()] = eventExport
-					end
-				end
-			end
-			if eventExport['initiatorPlayerName'] ~= nil then
-				if eventExport['initiatorCoalition'] ~= eventExport['targetCoalition'] then
-					if FDS.playersKillRecord == nil then 
-						FDS.playersKillRecord = {}
-					end
-					local isPVP = false
-					if eventExport['initiatorUcid'] ~= nil and eventExport['targetUcid'] ~= nil then
-						isPVP = true
-					end
-					table.insert(FDS.playersKillRecord,{['ucidInit'] = eventExport['initiatorUcid'], ['isPvP'] = isPVP, ['event'] = eventExport})
-				end
-			end
-
-			FDS.killEventVector[FDS.killEventNumber] = eventExport
-			jsonExport = net.lua2json(FDS.killEventVector)
-			local file = io.open(FDS.exportPath .. "killRecord.json", "w")
-			file:write(jsonExport)
-			file:close()
-		end
-
-		if _targetEnt and _targetEnt:getDesc() and _targetEnt:getDesc().typeName and FDS.rewardDict[_targetEnt:getDesc().typeName] then
-			rewardType = _targetEnt:getDesc().typeName
-		else
-			rewardType = 'Default'
-		end
-		if initCoaCheck and targetCoaCheck then
-			initCoa = _initEnt:getCoalition()
-			targetCoa = _targetEnt:getCoalition()
-		end
-		if initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa then
-			local plName = _initEnt:getPlayerName()
-			local plGrp = _initEnt:getGroup()
-			local plID = plGrp:getID()
-
-			for i,j in pairs(FDS.teamPoints) do
-				for k,w in pairs(FDS.teamPoints[i]['Players']) do
-					if plName == k then
-						local msgKill = {}
-						msgKill.displayTime = 20
-						msgKill.sound = 'Msg.ogg'
-						if targetCheck == false then
-							FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.rewardDict[rewardType]
-							msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' points for your kill.'							
-						elseif _targetEnt:getPlayerName() ~= nil then 
-							if FDS.lastHits[_targetEnt:getPlayerName()] ~= nil then
-								if FDS.lastHits[_targetEnt:getPlayerName()][3] == true then
-									FDS.lastHits[_targetEnt:getPlayerName()] = nil
-								else
-									FDS.lastHits[_targetEnt:getPlayerName()] = nil
-									FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
-									msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
-									trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
-									trigger.action.outSoundForGroup(plID,msgKill.sound)
-								end
-							else
-								FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
-								msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
-								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
-								trigger.action.outSoundForGroup(plID,msgKill.sound)
-							end
-						else
-							FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.rewardDict[rewardType]
-							msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' points for your kill.'
-							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
-							trigger.action.outSoundForGroup(plID,msgKill.sound)
-						end
-					end
-				end
-			end
+			awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, targetCheck, _targetEnt, rewardType, true)
+			FDS.lastHits[_targetEnt:getID()][2] = true
+			FDS.lastHits[_targetEnt:getID()] = 'DEAD'
 		end
 	end,
 	[world.event.S_EVENT_MISSION_END] = function(x, param)
@@ -2304,13 +2421,13 @@ FDS.eventActions = FDS.switch {
 				end
 			end
 		elseif playerCheck == true and coaCheck == true then
-			if _initEnt:getPlayerName() then
-				for i,j in pairs(FDS.lastHits) do
-					if _initEnt:getPlayerName() == j[1] then
-						FDS.lastHits[i] = nil
-					end
-				end
-			end
+			--if _initEnt:getPlayerName() then
+			--	for i,j in pairs(FDS.lastHits) do
+			--		if _initEnt:getPlayerName() == j[1] then
+			--			FDS.lastHits[i] = nil
+			--		end
+			--	end
+			--end
 			local plName = _initEnt:getPlayerName()
 			for i,j in pairs(FDS.teamPoints) do
 				for k,w in pairs(FDS.teamPoints[i]['Players']) do
@@ -2318,6 +2435,42 @@ FDS.eventActions = FDS.switch {
 						FDS.teamPoints[i]['Players'][k] = 0.0
 					end
 				end
+			end
+		end
+		-- LASTHITS
+		if FDS.lastHits[_initEnt:getID()] ~= nil then
+			local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
+			local _targetEntLocal = _initEnt
+			local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
+			local initCheck = pcall(FDS.playerCheck,_initEntLocal)
+			local initCoa = 0
+			local initCoaCheck = pcall(FDS.coalitionCheck,_initEntLocal)
+			local targetCheck = pcall(FDS.playerCheck,_targetEntLocal)
+			local targetCoa = 0
+			local targetCoaCheck = pcall(FDS.coalitionCheck,_targetEntLocal)
+			local rewardType = ''
+			--Exporting event record
+			if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
+				if FDS.exportDataSite then
+					if FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
+						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, FDS.lastHits[_targetEntLocal:getID()][1], not FDS.lastHits[_targetEntLocal:getID()][2], true)
+						exportKill(killObject)
+					else
+						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, {}, not FDS.lastHits[_targetEntLocal:getID()][2], true)
+						exportKill(killObject)		
+					end
+				end
+				if _targetEntLocal and _targetEntLocal:getDesc() and _targetEntLocal:getDesc().typeName and FDS.rewardDict[_targetEntLocal:getDesc().typeName] then
+					rewardType = _targetEntLocal:getDesc().typeName
+				else
+					rewardType = 'Default'
+				end
+				if initCoaCheck and targetCoaCheck then
+					initCoa = _initEntLocal:getCoalition()
+					targetCoa = _targetEntLocal:getCoalition()
+				end
+				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, targetCheck, _targetEntLocal, rewardType, false)
+				FDS.lastHits[_initEnt:getID()][2] = true
 			end
 		end
 	end,
@@ -2361,147 +2514,3 @@ end
 
 --Events
 world.addEventHandler(FDS.eventHandler)
-
-function createVehicle()
-	local route = {}
-	route.points={
-		[1] = rou[1],
-		[2] = rou[2]
-		}
-	
-	local unitDesc = {}
-	unitDesc = {}
-	unitDesc.x = -107014.61718741
-	unitDesc.y = 426438.43749992  
-	unitDesc.type = 'T-80UD'
-	unitDesc.skill = 'Ace'
-	unitDesc.route = route
-	
-	local unitDesc2 = {}
-	unitDesc2 = {}
-	unitDesc2.x = -107034.61718741
-	unitDesc2.y = 426438.43749992  
-	unitDesc2.type = 'ZSU-23-4 Shilka'
-	unitDesc2.skill = 'Ace'
-	unitDesc.route2 = route
-	
-
-	local var = {}
-	var.units = {
-		[1] = unitDesc,
-		[2] = unitDesc2
-		}
-	var.country = 1
-	var.category = 2
-	uni = mist.dynAdd(var)
-	return uni
-end
-
-function rota()
-	zones = mist.DBs.zonesByName
-
-	trueRoute = {}
-	for i = 1,8,1 do
-		trueRoute[i] = {}
-		trueRoute[i].action = "Off Road"
-		trueRoute[i].type = "Turning Point"
-		trueRoute[i].speed = 4.0
-		trueRoute[i].form = "Vee"
-		trueRoute[i].x = zones[FDS.blueZones[1]]["point"].x + zones[FDS.blueZones[1]]["radius"]*math.cos(i*2*3.1415/8)
-		trueRoute[i].y = zones[FDS.blueZones[1]]["point"].z + zones[FDS.blueZones[1]]["radius"]*math.sin(i*2*3.1415/8)
-	end
-	
-	--mist.ground.patrol('UKRAINE gnd 98')
-	mist.goRoute('UKRAINE gnd 97', {trueRoute[1],trueRoute[2]})
-end
-
-function controlAA()
-	number = 0
-	wpTasks = {}
-	staticObj = {}
-	taskNumber = 1
-	gp = Group.getByName('Molde_blue_AG')
-	gpR = mist.getGroupRoute(gp:getName(),true)
-	new_GPR = mist.utils.deepCopy(gpR)
-	prioList = {'Paratrooper AKS-74', 'Paratrooper RPG-16', 'Ural-4320T', 'BMP-1', 'BMP-2', 'T-55', 'T-72B', 'T-80UD', 'ZSU-23-4 Shilka', 'SA-18 Igla-S manpad',  'Strela-1 9P31', 'Strela-10M3', '2S6 Tunguska', 'Tor 9A331'}
-	
-	for _,zone in pairs(FDS.redZones) do
-		wpTasks = {}
-		staticObj = {}
-		taskNumber = 1
-		number = 0
-		for i = #prioList, 1, -1 do
-			for _,j in pairs(tgtObj.red[zone]) do
-				local alvo
-				local alvoUni
-				alvo = Group.getByName(j[1])
-				if alvo then
-					alvoUni = alvo:getUnits()
-				else	
-					local static = StaticObject.getByName(j[1])
-					if not has_value(staticObj, static) then
-						table.insert(staticObj,static)
-					end
-				end
-				if alvoUni then
-					if alvoUni[1]:getDesc().typeName == prioList[i] then
-						setTarget = alvo:getID()
-						local task = {}
-						task.auto = false
-						task.enabled = true
-						task.id = 'AttackGroup'
-						task.number = taskNumber
-						task.params = {}
-						task.params.altitude = 6000.0
-						task.params.altitudeEnabled = false
-						task.params.attackQty = 1
-						task.params.attackQtyLimit = true
-						task.params.direction = 3.385938748869
-						task.params.directionEnabled = true
-						task.params.expend = 'One'
-						task.params.groupAttack = false
-						task.params.groupId = setTarget
-						if i < 9 then
-							task.params.weaponType = 2032
-						else
-							task.params.weaponType = 131072
-						end
-						table.insert(wpTasks,task)
-						taskNumber = taskNumber + 1
-					end
-				end
-			end
-			number = number + 1
-		end
-		for _,k in pairs(staticObj) do
-			setTarget = k:getID()
-			local task = {}
-			task.auto = false
-			task.enabled = true
-			task.id = 'AttackUnit'
-			task.number = taskNumber
-			task.params = {}
-			task.params.altitude = 6000.0
-			task.params.altitudeEnabled = false
-			task.params.attackQty = 1
-			task.params.attackQtyLimit = true
-			task.params.direction = 3.385938748869
-			task.params.directionEnabled = true
-			task.params.expend = 'One'
-			task.params.groupAttack = false
-			task.params.unitId = tonumber(setTarget)
-			task.params.weaponType = 14
-			table.insert(wpTasks,task)
-			taskNumber = taskNumber + 1            
-		end
-	
-		if zone == FDS.redZones[1] then
-			new_GPR[3].task.params.tasks = wpTasks
-		elseif zone == FDS.redZones[2] then
-			new_GPR[5].task.params.tasks = wpTasks
-		end
-	end
-	
-	mist.goRoute('USA air 7',new_GPR)
-	return new_GPR
-end
