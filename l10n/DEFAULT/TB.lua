@@ -1798,7 +1798,11 @@ end
 function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
 	if initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa then
 		local plName = _initEnt:getPlayerName()
-		local tgtName = _targetEnt:getPlayerName()
+		if _targetEnt:getCategory() == 3 then
+			tgtName = nil
+		else
+			local tgtName = _targetEnt:getPlayerName()
+		end
 		local plGrp = _initEnt:getGroup()
 		local plID = plGrp:getID()
 		for i,j in pairs(FDS.teamPoints) do
