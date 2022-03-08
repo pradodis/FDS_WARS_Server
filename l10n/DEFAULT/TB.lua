@@ -2444,7 +2444,7 @@ FDS.eventActions = FDS.switch {
 			end
 		end
 		-- LASTHITS
-		if FDS.lastHits[_initEnt:getID()] ~= nil then
+		if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil then
 			local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
 			local _targetEntLocal = _initEnt
 			local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
