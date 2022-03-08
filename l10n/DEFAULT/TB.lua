@@ -1454,6 +1454,11 @@ function FDS.playerCheck(_initiator)
 	return checkPl
 end
 
+function FDS.idCheck(_initEnt)
+	local checkID = _initEnt:getID()
+	return checkID
+end
+
 function isUnitorStructure(_initiator, _target)
 	local initCheck = false
 	local tgtCheck = false
@@ -2444,7 +2449,8 @@ FDS.eventActions = FDS.switch {
 			end
 		end
 		-- LASTHITS
-		if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil then
+		local idCheck = pcall(FDS.checkID,_initEnt)
+		if idCheck and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil then
 			local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
 			local _targetEntLocal = _initEnt
 			local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
