@@ -28,8 +28,8 @@ FDS.entityKills = {}
 FDS.killedByEntity = {}
 FDS.playersKillRecord = nil 
 FDS.dropHeliTypes = {'UH-1H','Mi-8MT'}
-FDS.blueRelieveZones = {'Sochi-Adler', 'Kalitka', 'Shpora', 'Yunga', 'Vetka', 'Otkrytka'}
-FDS.redRelieveZones = {'Maykop-Khanskaya', 'London', 'Dallas', 'Paris', 'Moscow', 'Berlin'}
+FDS.blueRelieveZones = {'Sochi-Adler', 'Shpora-11', 'Shpora-21'}
+FDS.redRelieveZones = {'Maykop-Khanskaya','Moscow-11','Moscow-21'}
 FDS.resAWACSTime = {
 	['blue'] = {'Blue_AWACS_1', 0},
 	['red'] = {'Red_AWACS_1', 0}
@@ -125,12 +125,12 @@ FDS.bomberQty = {
 }
 
 -- AWACS Respawn
-FDS.respawnAWACSTime = 600.0
+FDS.respawnAWACSTime = 1200.0
 FDS.fuelAWACSRestart = 14400.0
 
 -- DropZones
 FDS.randomDropValue = 100.
-FDS.randomDropTime = 600.
+FDS.randomDropTime = 300.
 FDS.hoveringAltitude = 100.0
 FDS.hoveringRadius = 150.0
 FDS.velocityLimit = 10.0
@@ -2346,7 +2346,7 @@ FDS.eventActions = FDS.switch {
 									local msgfinal = {}
 									--trigger.action.setUserFlag(901, true)
 									msgfinal.text = 'Red Team is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
-									msgfinal.displayTime = 20  
+									msgfinal.displayTime = 60  
 									msgfinal.sound = 'victory_Lane.ogg'
 									trigger.action.outText(msgfinal.text, msgfinal.displayTime)
 									trigger.action.outSoundForCoalition(1,msgfinal.sound)
@@ -2408,7 +2408,7 @@ FDS.eventActions = FDS.switch {
 									local msgfinal = {}
 									--trigger.action.setUserFlag(900, true)
 									msgfinal.text = 'Blue Team is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
-									msgfinal.displayTime = 20
+									msgfinal.displayTime = 60
 									msgfinal.sound = 'victory_Lane.ogg'
 									trigger.action.outText(msgfinal.text, msgfinal.displayTime)
 									trigger.action.outSoundForCoalition(2,msgfinal.sound)
