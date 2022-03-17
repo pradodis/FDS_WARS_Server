@@ -1801,7 +1801,7 @@ function exportKill(eventExport)
 end
 
 function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
-	if initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa then
+	if initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa and _initEnt:isExist() then
 		local plName = _initEnt:getPlayerName()
 		local tgtName = nil
 		if _targetEnt:getCategory() == 3 then
@@ -1930,6 +1930,7 @@ FDS.eventActions = FDS.switch {
 		if _init and _currentTgt and _init:getCategory() and _currentTgt:getCategory() and  isUnitorStructure(_init,_currentTgt) then 
 			local hitObjectInfo = assembleKillObject(initCheck, targetCheck, _event, {}, false, false)
 			if _init and _init ~= nil and _init:getID() and _init:getID() ~= nil and _currentTgt ~= nil and _currentTgt:getID() and _currentTgt:getID() ~= nil and FDS.lastHits[_currentTgt:getID()] ~= 'DEAD' then
+				-- [Target ID] = {INFO for JSON, Already paid, Author ID, Copy}
 				FDS.lastHits[_currentTgt:getID()] = {hitObjectInfo, false, _init, _eventCopy}
 			end
 		end
@@ -2505,19 +2506,19 @@ end
 -- Creating Bases, Zones and SAMs
 mist.scheduleFunction(creatingBases, {},timer.getTime()+1)
 -- Updating Players
-mist.scheduleFunction(checkPlayersOn, {},timer.getTime()+2,5)
+mist.scheduleFunction(checkPlayersOn, {},timer.getTime()+1.5,5)
 -- Starting check drop routine
-mist.scheduleFunction(checkDropZones, {},timer.getTime()+3,300)
+mist.scheduleFunction(checkDropZones, {},timer.getTime()+2,300)
 -- Hover checker
-mist.scheduleFunction(detectHover, {},timer.getTime()+4,FDS.refreshScan)
+mist.scheduleFunction(detectHover, {},timer.getTime()+2.5,FDS.refreshScan)
 -- Random drop manager
-mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+5, FDS.randomDropTime)
+mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+3, FDS.randomDropTime)
 -- Transport caller
 mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 -- Export mission data
 if FDS.exportDataSite then
-	mist.scheduleFunction(exportMisData, {}, timer.getTime()+10, FDS.sendDataFreq)
+	mist.scheduleFunction(exportMisData, {}, timer.getTime()+3.5, FDS.sendDataFreq)
 end
 
 for _,i in pairs(FDS.coalitionCode) do

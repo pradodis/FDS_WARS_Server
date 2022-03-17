@@ -4,7 +4,7 @@ mapResource =
     ["ResKey_Action_335"] = "Msg.ogg",
     ["ResKey_ImageBriefing_1271"] = "Micro_Imagem1.jpg",
     ["ResKey_Action_26"] = "mist_4_4_90.lua",
-    ["ResKey_Action_1732"] = "hover_Failure.ogg",
+    ["ResKey_ImageBriefing_1728"] = "Imagens2.jpg",
     ["ResKey_Action_1733"] = "zone_killed.ogg",
     ["ResKey_Action_1745"] = "AirDropDelivered.ogg",
     ["ResKey_ImageBriefing_1730"] = "Micro_Base_Red.jpg",
@@ -21,5 +21,5 @@ mapResource =
     ["ResKey_ImageBriefing_1618"] = "Micro_Imagem2.jpg",
     ["ResKey_ImageBriefing_1727"] = "Imagens1.jpg",
     ["ResKey_ImageBriefing_1619"] = "Micro_Imagem3.jpg",
-    ["ResKey_ImageBriefing_1728"] = "Imagens2.jpg",
+    ["ResKey_Action_1732"] = "hover_Failure.ogg",
 } -- end of mapResource
