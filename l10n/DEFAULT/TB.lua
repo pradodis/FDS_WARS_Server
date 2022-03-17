@@ -262,7 +262,7 @@ function creatingBases()
 					gpPN = k:getPlayerName()
 					gpName = k:getName()
 					local msg = {}
-					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.'
+					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n Also, join our Discord community at https://discord.gg/H5kJdUwKUF (Link available in the briefing)'
 					msg.displayTime = 60
 					msg.sound = 'Welcome.ogg'
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Current War Status',nil, FDS.warStatus, {gpId, gpCoa, gpPN}},timer.getTime()+FDS.wtime)
@@ -283,7 +283,7 @@ function creatingBases()
 					gpPN = k:getPlayerName()
 					gpName = k:getName()
 					local msg = {}
-					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.'
+					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n Also, join our Discord community at https://discord.gg/H5kJdUwKUF (Link available in the briefing)'
 					msg.displayTime = 60
 					msg.sound = 'Welcome.ogg'
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Current War Status',nil, FDS.warStatus, {gpId, gpCoa, gpPN}},timer.getTime()+FDS.wtime)
@@ -1690,6 +1690,32 @@ function ping(a)
 	trigger.action.outSound(msgPing.sound)
 end
 
+function targetInServer()
+    for unidade, killData in pairs(FDS.lastHits) do
+    	if not killData[4].target:isExist() then
+			local _initEntLocal = killData[3]
+			local _targetEntLocal = killData[4].target
+			local initCheck = pcall(FDS.playerCheck,_initEntLocal)
+			local initCoaCheck = pcall(FDS.coalitionCheck,_initEntLocal)
+			local targetCoaCheck = pcall(FDS.coalitionCheck,_targetEntLocal)
+            local initCoa = 0
+			local targetCoa = 0
+			local rewardType = ''
+            if _targetEntLocal and _targetEntLocal:getDesc() and _targetEntLocal:getDesc().typeName and FDS.rewardDict[_targetEntLocal:getDesc().typeName] then
+                rewardType = _targetEntLocal:getDesc().typeName
+            else
+                rewardType = 'Default'
+            end
+            if initCoaCheck and targetCoaCheck then
+                initCoa = _initEntLocal:getCoalition()
+                targetCoa = _targetEntLocal:getCoalition()
+            end
+        	awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
+			killData[2] = true
+        end        
+    end
+end
+
 function assembleKillObject(initCheck, targetCheck, _event, _eventComplementar, editFDS, bypassEvent)
 	FDS.killEventNumber = FDS.killEventNumber + 1
 	eventExport = {}
@@ -1860,7 +1886,7 @@ FDS.eventActions = FDS.switch {
 		end
 		if _initEnt:getCategory() == Object.Category.UNIT and _initEnt:getPlayerName() ~= nil then 
 			local msg = {}
-			msg.text = _initEnt:getPlayerName() .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.'
+			msg.text = _initEnt:getPlayerName() .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n Also, join our Discord community at https://discord.gg/H5kJdUwKUF (Link available in the briefing)'
 			msg.displayTime = 60
 			msg.sound = 'Welcome.ogg'
 			
@@ -2516,10 +2542,13 @@ mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+3, FDS.randomDropTim
 -- Transport caller
 mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+-- Check Connected Players
+mist.scheduleFunction(targetInServer, {}, timer.getTime()+3.5, FDS.sendDataFreq)
 -- Export mission data
 if FDS.exportDataSite then
 	mist.scheduleFunction(exportMisData, {}, timer.getTime()+3.5, FDS.sendDataFreq)
 end
+
 
 for _,i in pairs(FDS.coalitionCode) do
 	FDS.resAWACSTime[i][2] = mist.scheduleFunction(respawnAWACSFuel, {i},timer.getTime()+FDS.fuelAWACSRestart)
