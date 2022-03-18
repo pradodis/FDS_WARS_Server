@@ -222,13 +222,13 @@ mission =
                         ["layerName"] = "Red",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0xff0000ff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Friendly Helipa",
                         ["fillColorString"] = "0xff00002b",
                         ["text"] = "Friendly Helipad",
                         ["angle"] = 0,
+                        ["colorString"] = "0xff0000ff",
                         ["mapX"] = -59400.136570572,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [2]
                 }, -- end of ["objects"]
             }, -- end of [2]
@@ -261,13 +261,13 @@ mission =
                         ["layerName"] = "Blue",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0x0000ffff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Friendly Helipad_Blue",
                         ["fillColorString"] = "0x0000ff26",
                         ["text"] = "Friendly Helipad",
                         ["angle"] = 0,
+                        ["colorString"] = "0x0000ffff",
                         ["mapX"] = -116214.47765954,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [2]
                 }, -- end of ["objects"]
             }, -- end of [3]
@@ -285,13 +285,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0xff0000ff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Red Zone 2",
                         ["fillColorString"] = "0xff000028",
                         ["text"] = "Red Zone 2",
                         ["angle"] = 0,
+                        ["colorString"] = "0xff0000ff",
                         ["mapX"] = -77961.617376473,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [1]
                     [2] = 
                     {
@@ -301,13 +301,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0xff0000ff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Red Zone 1",
                         ["fillColorString"] = "0xff000028",
                         ["text"] = "Red Zone 1",
                         ["angle"] = 0,
+                        ["colorString"] = "0xff0000ff",
                         ["mapX"] = -70988.950291188,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [2]
                     [4] = 
                     {
@@ -317,13 +317,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0x0000ffff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Blue Zone 1",
                         ["fillColorString"] = "0x0000ff28",
                         ["text"] = "Blue Zone 1",
                         ["angle"] = 0,
+                        ["colorString"] = "0x0000ffff",
                         ["mapX"] = -102537.80666805,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [4]
                     [8] = 
                     {
@@ -333,13 +333,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 30,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0xff0000ff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "InvWarn2",
                         ["fillColorString"] = "0xffff8080",
                         ["text"] = "Base and Helipad SAMs are invulnerable",
                         ["angle"] = 0,
+                        ["colorString"] = "0xff0000ff",
                         ["mapX"] = -204577.52662623,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [8]
                     [16] = 
                     {
@@ -403,13 +403,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 20,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0x000000ff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Bombing Run 2",
                         ["fillColorString"] = "0xffffff67",
                         ["text"] = "Bombing Corridor",
                         ["angle"] = 0,
+                        ["colorString"] = "0x000000ff",
                         ["mapX"] = -56753.415210799,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [9]
                     [18] = 
                     {
@@ -446,20 +446,21 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 35,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0x0000ffff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Air Base Blue",
                         ["fillColorString"] = "0x0000ff28",
                         ["text"] = "Air Base Blue",
                         ["angle"] = 0,
+                        ["colorString"] = "0x0000ffff",
                         ["mapX"] = -176123.90681101,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [5]
                     [10] = 
                     {
                         ["visible"] = true,
-                        ["primitiveType"] = "Polygon",
-                        ["mapY"] = 324347.95907164,
                         ["layerName"] = "Common",
+                        ["mapY"] = 324347.95907164,
+                        ["primitiveType"] = "Polygon",
+                        ["length"] = 73085.628387217,
                         ["points"] = 
                         {
                             [6] = 
@@ -503,15 +504,14 @@ mission =
                                 ["x"] = -9135.7035484021,
                             }, -- end of [7]
                         }, -- end of ["points"]
-                        ["length"] = 73085.628387217,
                         ["thickness"] = 8,
-                        ["colorString"] = "0x000000ff",
-                        ["name"] = "Polygon 8",
+                        ["polygonMode"] = "arrow",
+                        ["style"] = "dotdash",
                         ["mapX"] = -86542.002063765,
                         ["angle"] = 1.5015755256301,
                         ["fillColorString"] = "0xffffff80",
-                        ["style"] = "dotdash",
-                        ["polygonMode"] = "arrow",
+                        ["name"] = "Polygon 8",
+                        ["colorString"] = "0x000000ff",
                     }, -- end of [10]
                     [20] = 
                     {
@@ -543,19 +543,19 @@ mission =
                     [21] = 
                     {
                         ["visible"] = true,
-                        ["primitiveType"] = "Polygon",
-                        ["mapY"] = 306423.79137359,
                         ["layerName"] = "Common",
-                        ["mapX"] = -124931.88024766,
+                        ["mapY"] = 306423.79137359,
+                        ["primitiveType"] = "Polygon",
+                        ["colorString"] = "0xff0000ff",
                         ["width"] = 19989.390358528,
                         ["thickness"] = 8,
-                        ["colorString"] = "0xff0000ff",
-                        ["name"] = "Polygon 4",
+                        ["polygonMode"] = "rect",
+                        ["style"] = "solid",
                         ["angle"] = 2,
                         ["height"] = 484076.39375115,
                         ["fillColorString"] = "0xff000028",
-                        ["style"] = "solid",
-                        ["polygonMode"] = "rect",
+                        ["name"] = "Polygon 4",
+                        ["mapX"] = -124931.88024766,
                     }, -- end of [21]
                     [11] = 
                     {
@@ -565,13 +565,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 20,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0x000000ff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Bombing Run",
                         ["fillColorString"] = "0xffffff67",
                         ["text"] = "Bombing Corridor",
                         ["angle"] = 0,
+                        ["colorString"] = "0x000000ff",
                         ["mapX"] = -60751.134354888,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [11]
                     [22] = 
                     {
@@ -581,13 +581,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0xff0000ff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Red_Supply",
                         ["fillColorString"] = "0xff000026",
                         ["text"] = "Red Air Supply Route",
                         ["angle"] = 2,
+                        ["colorString"] = "0xff0000ff",
                         ["mapX"] = 77149.846581468,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [22]
                     [3] = 
                     {
@@ -597,13 +597,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 35,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0xff0000ff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Air Base Red",
                         ["fillColorString"] = "0xff000028",
                         ["text"] = "Air Base Red",
                         ["angle"] = 0,
+                        ["colorString"] = "0xff0000ff",
                         ["mapX"] = -23599.133018794,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [3]
                     [6] = 
                     {
@@ -613,20 +613,21 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0x0000ffff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Blue Zone 2",
                         ["fillColorString"] = "0x0000ff28",
                         ["text"] = "Blue Zone 2",
                         ["angle"] = 0,
+                        ["colorString"] = "0x0000ffff",
                         ["mapX"] = -106987.48449485,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [6]
                     [12] = 
                     {
                         ["visible"] = true,
-                        ["primitiveType"] = "Polygon",
-                        ["mapY"] = 599576.85849667,
                         ["layerName"] = "Common",
+                        ["mapY"] = 599576.85849667,
+                        ["primitiveType"] = "Polygon",
+                        ["length"] = 66402.929838675,
                         ["points"] = 
                         {
                             [6] = 
@@ -670,39 +671,39 @@ mission =
                                 ["x"] = -8300.3662298344,
                             }, -- end of [7]
                         }, -- end of ["points"]
-                        ["length"] = 66402.929838675,
                         ["thickness"] = 8,
-                        ["colorString"] = "0x000000ff",
-                        ["name"] = "Polygon 7",
+                        ["polygonMode"] = "arrow",
+                        ["style"] = "dotdash",
                         ["mapX"] = -88411.16351337,
                         ["angle"] = -179.18842191617,
                         ["fillColorString"] = "0xffffff80",
-                        ["style"] = "dotdash",
-                        ["polygonMode"] = "arrow",
+                        ["name"] = "Polygon 7",
+                        ["colorString"] = "0x000000ff",
                     }, -- end of [12]
                     [24] = 
                     {
                         ["visible"] = true,
-                        ["primitiveType"] = "Polygon",
-                        ["mapY"] = 613719.73684455,
                         ["layerName"] = "Common",
-                        ["mapX"] = -67880.711889334,
+                        ["mapY"] = 613719.73684455,
+                        ["primitiveType"] = "Polygon",
+                        ["colorString"] = "0x0000ffff",
                         ["width"] = 20183.010209757,
                         ["thickness"] = 8,
-                        ["colorString"] = "0x0000ffff",
-                        ["name"] = "Polygon 3",
+                        ["polygonMode"] = "rect",
+                        ["style"] = "solid",
                         ["angle"] = 2,
                         ["height"] = 491240.2375252,
                         ["fillColorString"] = "0x0000ff28",
-                        ["style"] = "solid",
-                        ["polygonMode"] = "rect",
+                        ["name"] = "Polygon 3",
+                        ["mapX"] = -67880.711889334,
                     }, -- end of [24]
                     [25] = 
                     {
                         ["visible"] = true,
-                        ["primitiveType"] = "Polygon",
-                        ["mapY"] = 651280.40403169,
                         ["layerName"] = "Common",
+                        ["mapY"] = 651280.40403169,
+                        ["primitiveType"] = "Polygon",
+                        ["length"] = 24821.627526428,
                         ["points"] = 
                         {
                             [6] = 
@@ -746,15 +747,14 @@ mission =
                                 ["x"] = -3102.7034408035,
                             }, -- end of [7]
                         }, -- end of ["points"]
-                        ["length"] = 24821.627526428,
                         ["thickness"] = 8,
-                        ["colorString"] = "0x0000ffff",
-                        ["name"] = "Polygon 2",
+                        ["polygonMode"] = "arrow",
+                        ["style"] = "solid",
                         ["mapX"] = 168735.84070518,
                         ["angle"] = 93.503531644785,
                         ["fillColorString"] = "0x0000ffff",
-                        ["style"] = "solid",
-                        ["polygonMode"] = "arrow",
+                        ["name"] = "Polygon 2",
+                        ["colorString"] = "0x0000ffff",
                     }, -- end of [25]
                     [13] = 
                     {
@@ -786,9 +786,10 @@ mission =
                     [26] = 
                     {
                         ["visible"] = true,
-                        ["primitiveType"] = "Polygon",
-                        ["mapY"] = 270791.30284318,
                         ["layerName"] = "Common",
+                        ["mapY"] = 270791.30284318,
+                        ["primitiveType"] = "Polygon",
+                        ["length"] = 22912.265623625,
                         ["points"] = 
                         {
                             [6] = 
@@ -832,15 +833,14 @@ mission =
                                 ["x"] = -2864.0332029531,
                             }, -- end of [7]
                         }, -- end of ["points"]
-                        ["length"] = 22912.265623625,
                         ["thickness"] = 8,
-                        ["colorString"] = "0xff0000ff",
-                        ["name"] = "Polygon 1",
+                        ["polygonMode"] = "arrow",
+                        ["style"] = "solid",
                         ["mapX"] = -349446.96167797,
                         ["angle"] = -87.02626891752,
                         ["fillColorString"] = "0xff0000ff",
-                        ["style"] = "solid",
-                        ["polygonMode"] = "arrow",
+                        ["name"] = "Polygon 1",
+                        ["colorString"] = "0xff0000ff",
                     }, -- end of [26]
                     [7] = 
                     {
@@ -850,13 +850,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 30,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0xff0000ff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "InvWarn1",
                         ["fillColorString"] = "0xffff8080",
                         ["text"] = "Base and Helipad SAMs are invulnerable",
                         ["angle"] = 0,
+                        ["colorString"] = "0xff0000ff",
                         ["mapX"] = 5114.8667487062,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [7]
                     [14] = 
                     {
@@ -947,13 +947,13 @@ mission =
                         ["layerName"] = "Common",
                         ["fontSize"] = 24,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0x0000ffff",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Blue_Supply",
                         ["fillColorString"] = "0x0000ff33",
                         ["text"] = "Blue Air Supply Route",
                         ["angle"] = 2,
+                        ["colorString"] = "0x0000ffff",
                         ["mapX"] = 61813.023838351,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [23]
                 }, -- end of ["objects"]
             }, -- end of [1]
@@ -979,20 +979,20 @@ mission =
                         ["layerName"] = "Author",
                         ["fontSize"] = 75,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0x00000096",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Sector 1",
                         ["fillColorString"] = "0x00000028",
                         ["text"] = "Sector 1",
                         ["angle"] = 0,
+                        ["colorString"] = "0x00000096",
                         ["mapX"] = -94567.545805181,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [6]
                     [2] = 
                     {
                         ["visible"] = false,
-                        ["primitiveType"] = "Polygon",
-                        ["mapY"] = 431955.75219936,
                         ["layerName"] = "Author",
+                        ["mapY"] = 431955.75219936,
+                        ["primitiveType"] = "Polygon",
                         ["style"] = "solid",
                         ["angle"] = 0,
                         ["thickness"] = 8,
@@ -1000,9 +1000,9 @@ mission =
                         ["name"] = "Blue Zone 1",
                         ["mapX"] = -103345.04242069,
                         ["colorString"] = "0x0000ffff",
-                        ["r1"] = 784.72273591276,
-                        ["r2"] = 817.39809142053,
                         ["fillColorString"] = "0x0000ff80",
+                        ["r2"] = 817.39809142053,
+                        ["r1"] = 784.72273591276,
                     }, -- end of [2]
                     [8] = 
                     {
@@ -1054,9 +1054,9 @@ mission =
                     [3] = 
                     {
                         ["visible"] = false,
-                        ["primitiveType"] = "Polygon",
-                        ["mapY"] = 472241.69348741,
                         ["layerName"] = "Author",
+                        ["mapY"] = 472241.69348741,
+                        ["primitiveType"] = "Polygon",
                         ["style"] = "solid",
                         ["angle"] = 0,
                         ["thickness"] = 8,
@@ -1064,16 +1064,16 @@ mission =
                         ["name"] = "Red Zone 2",
                         ["mapX"] = -78903.220634637,
                         ["colorString"] = "0xff0000ff",
-                        ["r1"] = 616.91316832755,
-                        ["r2"] = 741.07158771454,
                         ["fillColorString"] = "0xff000080",
+                        ["r2"] = 741.07158771454,
+                        ["r1"] = 616.91316832755,
                     }, -- end of [3]
                     [1] = 
                     {
                         ["visible"] = false,
-                        ["primitiveType"] = "Polygon",
-                        ["mapY"] = 480688.59601749,
                         ["layerName"] = "Author",
+                        ["mapY"] = 480688.59601749,
+                        ["primitiveType"] = "Polygon",
                         ["style"] = "solid",
                         ["angle"] = 0,
                         ["thickness"] = 8,
@@ -1081,16 +1081,16 @@ mission =
                         ["name"] = "Blue Zone 2",
                         ["mapX"] = -107804.28766402,
                         ["colorString"] = "0x0000ffff",
-                        ["r1"] = 697.93188065624,
-                        ["r2"] = 790.66615768359,
                         ["fillColorString"] = "0x0000ff80",
+                        ["r2"] = 790.66615768359,
+                        ["r1"] = 697.93188065624,
                     }, -- end of [1]
                     [4] = 
                     {
                         ["visible"] = false,
-                        ["primitiveType"] = "Polygon",
-                        ["mapY"] = 426342.19877464,
                         ["layerName"] = "Author",
+                        ["mapY"] = 426342.19877464,
+                        ["primitiveType"] = "Polygon",
                         ["style"] = "solid",
                         ["angle"] = 0,
                         ["thickness"] = 8,
@@ -1098,9 +1098,9 @@ mission =
                         ["name"] = "Red Zone 1",
                         ["mapX"] = -72432.324142202,
                         ["colorString"] = "0xff0000ff",
-                        ["r1"] = 796.32019656451,
-                        ["r2"] = 899.73749320221,
                         ["fillColorString"] = "0xff000080",
+                        ["r2"] = 899.73749320221,
+                        ["r1"] = 796.32019656451,
                     }, -- end of [4]
                     [5] = 
                     {
@@ -1110,13 +1110,13 @@ mission =
                         ["layerName"] = "Author",
                         ["fontSize"] = 75,
                         ["primitiveType"] = "TextBox",
-                        ["colorString"] = "0x00000096",
+                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                         ["name"] = "Sector 2",
                         ["fillColorString"] = "0x0000002d",
                         ["text"] = "Sector 2",
                         ["angle"] = 0,
+                        ["colorString"] = "0x00000096",
                         ["mapX"] = -96895.321066952,
-                        ["font"] = "DejaVuLGCSansCondensed.ttf",
                     }, -- end of [5]
                     [7] = 
                     {
@@ -1710,9 +1710,9 @@ mission =
     }, -- end of ["triggers"]
     ["map"] = 
     {
-        ["centerY"] = 445251.94254102,
+        ["centerY"] = 445277.30327474,
         ["zoom"] = 1543.0727308833,
-        ["centerX"] = -118241.46912993,
+        ["centerX"] = -118204.60579868,
     }, -- end of ["map"]
     ["coalitions"] = 
     {
@@ -2146,7 +2146,7 @@ mission =
                             }, -- end of [2]
                             [3] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -2155,7 +2155,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -2401,7 +2401,7 @@ mission =
                             }, -- end of [3]
                             [4] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -2410,7 +2410,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -2656,7 +2656,7 @@ mission =
                             }, -- end of [4]
                             [5] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -2665,7 +2665,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -2911,7 +2911,7 @@ mission =
                             }, -- end of [5]
                             [6] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -2920,7 +2920,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -3166,7 +3166,7 @@ mission =
                             }, -- end of [6]
                             [7] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -3175,7 +3175,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -3421,7 +3421,7 @@ mission =
                             }, -- end of [7]
                             [8] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -3430,7 +3430,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -3676,7 +3676,7 @@ mission =
                             }, -- end of [8]
                             [9] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -3685,7 +3685,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -3931,7 +3931,7 @@ mission =
                             }, -- end of [9]
                             [10] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -3940,7 +3940,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -6206,10 +6206,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -6239,10 +6239,10 @@ mission =
                                                     [13] = 264,
                                                     [26] = 259,
                                                     [23] = 260,
-                                                    [7] = 262,
+                                                    [27] = 262,
                                                     [14] = 266,
                                                     [28] = 257,
-                                                    [27] = 262,
+                                                    [7] = 262,
                                                     [29] = 253,
                                                     [30] = 263,
                                                 }, -- end of ["channels"]
@@ -6564,10 +6564,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -6597,10 +6597,10 @@ mission =
                                                     [13] = 264,
                                                     [26] = 259,
                                                     [23] = 260,
-                                                    [7] = 262,
+                                                    [27] = 262,
                                                     [14] = 266,
                                                     [28] = 257,
-                                                    [27] = 262,
+                                                    [7] = 262,
                                                     [29] = 253,
                                                     [30] = 263,
                                                 }, -- end of ["channels"]
@@ -6922,10 +6922,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -6955,10 +6955,10 @@ mission =
                                                     [13] = 264,
                                                     [26] = 259,
                                                     [23] = 260,
-                                                    [7] = 262,
+                                                    [27] = 262,
                                                     [14] = 266,
                                                     [28] = 257,
-                                                    [27] = 262,
+                                                    [7] = 262,
                                                     [29] = 253,
                                                     [30] = 263,
                                                 }, -- end of ["channels"]
@@ -7240,10 +7240,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -7273,10 +7273,10 @@ mission =
                                                     [13] = 264,
                                                     [26] = 259,
                                                     [23] = 260,
-                                                    [7] = 262,
+                                                    [27] = 262,
                                                     [14] = 266,
                                                     [28] = 257,
-                                                    [27] = 262,
+                                                    [7] = 262,
                                                     [29] = 253,
                                                     [30] = 263,
                                                 }, -- end of ["channels"]
@@ -9443,8 +9443,8 @@ mission =
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
                                             ["HelmetMountedDevice"] = 1,
-                                            ["LaserCode10"] = 8,
                                             ["LAU3ROF"] = 0,
+                                            ["LaserCode10"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
                                         ["Radio"] = 
@@ -9828,8 +9828,8 @@ mission =
                                             ["LaserCode100"] = 6,
                                             ["HelmetMountedDevice"] = 1,
                                             ["LaserCode1"] = 8,
-                                            ["LAU3ROF"] = 0,
                                             ["LaserCode10"] = 8,
+                                            ["LAU3ROF"] = 0,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
                                         ["Radio"] = 
@@ -10213,8 +10213,8 @@ mission =
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
                                             ["HelmetMountedDevice"] = 1,
-                                            ["LaserCode10"] = 8,
                                             ["LAU3ROF"] = 0,
+                                            ["LaserCode10"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
                                         ["Radio"] = 
@@ -10598,8 +10598,8 @@ mission =
                                             ["LaserCode100"] = 6,
                                             ["HelmetMountedDevice"] = 1,
                                             ["LaserCode1"] = 8,
-                                            ["LAU3ROF"] = 0,
                                             ["LaserCode10"] = 8,
+                                            ["LAU3ROF"] = 0,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
                                         ["Radio"] = 
@@ -10983,8 +10983,8 @@ mission =
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
                                             ["HelmetMountedDevice"] = 1,
-                                            ["LaserCode10"] = 8,
                                             ["LAU3ROF"] = 0,
+                                            ["LaserCode10"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
                                         ["Radio"] = 
@@ -11368,8 +11368,8 @@ mission =
                                             ["LaserCode100"] = 6,
                                             ["HelmetMountedDevice"] = 1,
                                             ["LaserCode1"] = 8,
-                                            ["LAU3ROF"] = 0,
                                             ["LaserCode10"] = 8,
+                                            ["LAU3ROF"] = 0,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
                                         ["Radio"] = 
@@ -11753,8 +11753,8 @@ mission =
                                             ["LaserCode100"] = 6,
                                             ["HelmetMountedDevice"] = 1,
                                             ["LaserCode1"] = 8,
-                                            ["LAU3ROF"] = 0,
                                             ["LaserCode10"] = 8,
+                                            ["LAU3ROF"] = 0,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
                                         ["Radio"] = 
@@ -12138,8 +12138,8 @@ mission =
                                             ["LaserCode100"] = 6,
                                             ["HelmetMountedDevice"] = 1,
                                             ["LaserCode1"] = 8,
-                                            ["LAU3ROF"] = 0,
                                             ["LaserCode10"] = 8,
+                                            ["LAU3ROF"] = 0,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
                                         ["Radio"] = 
@@ -12644,18 +12644,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -13056,18 +13056,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -13468,18 +13468,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -13880,18 +13880,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -14292,18 +14292,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -14704,18 +14704,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -15116,18 +15116,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -15528,18 +15528,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -15815,10 +15815,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode10"] = 8,
-                                            ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
+                                            ["LaserCode100"] = 6,
                                             ["AARProbe"] = false,
+                                            ["LaserCode10"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -16393,10 +16393,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode1"] = 8,
-                                            ["LaserCode100"] = 6,
                                             ["AARProbe"] = false,
+                                            ["LaserCode100"] = 6,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode1"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -17010,10 +17010,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -17043,10 +17043,10 @@ mission =
                                                     [13] = 264,
                                                     [26] = 259,
                                                     [23] = 260,
-                                                    [27] = 262,
+                                                    [7] = 262,
                                                     [14] = 266,
                                                     [28] = 257,
-                                                    [7] = 262,
+                                                    [27] = 262,
                                                     [29] = 253,
                                                     [30] = 263,
                                                 }, -- end of ["channels"]
@@ -17721,15 +17721,15 @@ mission =
                                                 ["Sequence 2 Red"] = 
                                                 {
                                                 }, -- end of ["Sequence 2 Red"]
-                                                ["Start Location"] = 
-                                                {
-                                                }, -- end of ["Start Location"]
-                                                ["Sequence 1 Blue"] = 
-                                                {
-                                                }, -- end of ["Sequence 1 Blue"]
                                                 ["Sequence 3 Yellow"] = 
                                                 {
                                                 }, -- end of ["Sequence 3 Yellow"]
+                                                ["Sequence 1 Blue"] = 
+                                                {
+                                                }, -- end of ["Sequence 1 Blue"]
+                                                ["Start Location"] = 
+                                                {
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
@@ -19143,12 +19143,12 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 0.625,
+                                                    [14] = 0.283,
                                                     [13] = 0.583,
                                                     [7] = 0.443,
-                                                    [14] = 0.283,
+                                                    [1] = 0.625,
                                                     [2] = 0.303,
-                                                    [15] = 0.995,
+                                                    [4] = 0.591,
                                                     [8] = 0.215,
                                                     [16] = 1.21,
                                                     [9] = 0.525,
@@ -19158,7 +19158,7 @@ mission =
                                                     [3] = 0.289,
                                                     [6] = 0.803,
                                                     [12] = 0.35,
-                                                    [4] = 0.591,
+                                                    [15] = 0.995,
                                                 }, -- end of ["channels"]
                                             }, -- end of [2]
                                         }, -- end of ["Radio"]
@@ -19300,12 +19300,12 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [15] = 0.995,
+                                                    [4] = 0.591,
                                                     [13] = 0.583,
                                                     [7] = 0.443,
-                                                    [14] = 0.283,
+                                                    [1] = 0.625,
                                                     [2] = 0.303,
-                                                    [4] = 0.591,
+                                                    [15] = 0.995,
                                                     [8] = 0.215,
                                                     [16] = 1.21,
                                                     [9] = 0.525,
@@ -19315,7 +19315,7 @@ mission =
                                                     [11] = 0.718,
                                                     [6] = 0.803,
                                                     [12] = 0.35,
-                                                    [1] = 0.625,
+                                                    [14] = 0.283,
                                                 }, -- end of ["channels"]
                                             }, -- end of [2]
                                         }, -- end of ["Radio"]
@@ -19457,12 +19457,12 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [15] = 0.995,
+                                                    [4] = 0.591,
                                                     [13] = 0.583,
                                                     [7] = 0.443,
-                                                    [14] = 0.283,
+                                                    [1] = 0.625,
                                                     [2] = 0.303,
-                                                    [4] = 0.591,
+                                                    [15] = 0.995,
                                                     [8] = 0.215,
                                                     [16] = 1.21,
                                                     [9] = 0.525,
@@ -19472,7 +19472,7 @@ mission =
                                                     [11] = 0.718,
                                                     [6] = 0.803,
                                                     [12] = 0.35,
-                                                    [1] = 0.625,
+                                                    [14] = 0.283,
                                                 }, -- end of ["channels"]
                                             }, -- end of [2]
                                         }, -- end of ["Radio"]
@@ -19614,12 +19614,12 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [15] = 0.995,
+                                                    [4] = 0.591,
                                                     [13] = 0.583,
                                                     [7] = 0.443,
-                                                    [14] = 0.283,
+                                                    [1] = 0.625,
                                                     [2] = 0.303,
-                                                    [4] = 0.591,
+                                                    [15] = 0.995,
                                                     [8] = 0.215,
                                                     [16] = 1.21,
                                                     [9] = 0.525,
@@ -19629,7 +19629,7 @@ mission =
                                                     [11] = 0.718,
                                                     [6] = 0.803,
                                                     [12] = 0.35,
-                                                    [1] = 0.625,
+                                                    [14] = 0.283,
                                                 }, -- end of ["channels"]
                                             }, -- end of [2]
                                         }, -- end of ["Radio"]
@@ -25818,13 +25818,13 @@ mission =
                                             ["EnableTAF"] = true,
                                             ["ForceINSRules"] = false,
                                             ["LaserCode100"] = 6,
-                                            ["InitHotDrift"] = 0,
+                                            ["LoadNVGCase"] = false,
                                             ["DisableVTBExport"] = false,
                                             ["NoDDMSensor"] = false,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["LoadNVGCase"] = false,
                                             ["RocketBurst"] = 6,
+                                            ["InitHotDrift"] = 0,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["GunBurst"] = 1,
                                         }, -- end of ["AddPropAircraft"]
@@ -26021,13 +26021,13 @@ mission =
                                             ["EnableTAF"] = true,
                                             ["ForceINSRules"] = false,
                                             ["LaserCode100"] = 6,
-                                            ["InitHotDrift"] = 0,
+                                            ["LoadNVGCase"] = false,
                                             ["DisableVTBExport"] = false,
                                             ["NoDDMSensor"] = false,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["LoadNVGCase"] = false,
                                             ["RocketBurst"] = 6,
+                                            ["InitHotDrift"] = 0,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["GunBurst"] = 1,
                                         }, -- end of ["AddPropAircraft"]
@@ -26224,13 +26224,13 @@ mission =
                                             ["EnableTAF"] = true,
                                             ["ForceINSRules"] = false,
                                             ["LaserCode100"] = 6,
-                                            ["InitHotDrift"] = 0,
+                                            ["LoadNVGCase"] = false,
                                             ["DisableVTBExport"] = false,
                                             ["NoDDMSensor"] = false,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["LoadNVGCase"] = false,
                                             ["RocketBurst"] = 6,
+                                            ["InitHotDrift"] = 0,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["GunBurst"] = 1,
                                         }, -- end of ["AddPropAircraft"]
@@ -26427,13 +26427,13 @@ mission =
                                             ["EnableTAF"] = true,
                                             ["ForceINSRules"] = false,
                                             ["LaserCode100"] = 6,
-                                            ["InitHotDrift"] = 0,
+                                            ["LoadNVGCase"] = false,
                                             ["DisableVTBExport"] = false,
                                             ["NoDDMSensor"] = false,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["LoadNVGCase"] = false,
                                             ["RocketBurst"] = 6,
+                                            ["InitHotDrift"] = 0,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["GunBurst"] = 1,
                                         }, -- end of ["AddPropAircraft"]
@@ -29593,12 +29593,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["ClockTime"] = 1,
-                                            ["EWDispenserTFL"] = 1,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["RocketBurst"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["WpBullseye"] = 0,
+                                            ["EWDispenserBL"] = 2,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -29754,8 +29754,8 @@ mission =
                                                     [25] = 0,
                                                     [13] = 0,
                                                     [26] = 0,
-                                                    [7] = 0,
                                                     [27] = 0,
+                                                    [7] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
                                                     [23] = 0,
@@ -29787,8 +29787,8 @@ mission =
                                                     [25] = 344,
                                                     [13] = 269,
                                                     [26] = 385,
-                                                    [7] = 270,
                                                     [27] = 133,
+                                                    [7] = 270,
                                                     [14] = 260,
                                                     [28] = 257.8,
                                                     [23] = 122.1,
@@ -29952,12 +29952,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["RocketBurst"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["EWDispenserBL"] = 2,
                                             ["EWDispenserTFL"] = 1,
+                                            ["EWDispenserBL"] = 2,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -30114,10 +30114,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -30147,10 +30147,10 @@ mission =
                                                     [13] = 269,
                                                     [26] = 385,
                                                     [23] = 122.1,
-                                                    [27] = 133,
+                                                    [7] = 270,
                                                     [14] = 260,
                                                     [28] = 257.8,
-                                                    [7] = 270,
+                                                    [27] = 133,
                                                     [29] = 122.1,
                                                     [30] = 123.3,
                                                 }, -- end of ["channels"]
@@ -30311,12 +30311,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["EWDispenserTFL"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["RocketBurst"] = 1,
+                                            ["EWDispenserBL"] = 2,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -30473,10 +30473,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -30506,10 +30506,10 @@ mission =
                                                     [13] = 269,
                                                     [26] = 385,
                                                     [23] = 122.1,
-                                                    [27] = 133,
+                                                    [7] = 270,
                                                     [14] = 260,
                                                     [28] = 257.8,
-                                                    [7] = 270,
+                                                    [27] = 133,
                                                     [29] = 122.1,
                                                     [30] = 123.3,
                                                 }, -- end of ["channels"]
@@ -30670,12 +30670,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["EWDispenserTFL"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["RocketBurst"] = 1,
+                                            ["EWDispenserBL"] = 2,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -30832,10 +30832,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -30865,10 +30865,10 @@ mission =
                                                     [13] = 269,
                                                     [26] = 385,
                                                     [23] = 122.1,
-                                                    [27] = 133,
+                                                    [7] = 270,
                                                     [14] = 260,
                                                     [28] = 257.8,
-                                                    [7] = 270,
+                                                    [27] = 133,
                                                     [29] = 122.1,
                                                     [30] = 123.3,
                                                 }, -- end of ["channels"]
@@ -32089,8 +32089,8 @@ mission =
                                         {
                                             ["LaserCode100"] = 6,
                                             ["HelmetMountedDevice"] = 1,
-                                            ["LaserCode10"] = 8,
                                             ["LAU3ROF"] = 0,
+                                            ["LaserCode10"] = 8,
                                             ["LaserCode1"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
@@ -32474,8 +32474,8 @@ mission =
                                         {
                                             ["LaserCode100"] = 6,
                                             ["HelmetMountedDevice"] = 1,
-                                            ["LaserCode10"] = 8,
                                             ["LAU3ROF"] = 0,
+                                            ["LaserCode10"] = 8,
                                             ["LaserCode1"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
@@ -32859,8 +32859,8 @@ mission =
                                         {
                                             ["LaserCode100"] = 6,
                                             ["HelmetMountedDevice"] = 1,
-                                            ["LaserCode10"] = 8,
                                             ["LAU3ROF"] = 0,
+                                            ["LaserCode10"] = 8,
                                             ["LaserCode1"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
@@ -33244,8 +33244,8 @@ mission =
                                         {
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["LAU3ROF"] = 0,
                                             ["LaserCode10"] = 8,
+                                            ["LAU3ROF"] = 0,
                                             ["HelmetMountedDevice"] = 1,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
@@ -33629,8 +33629,8 @@ mission =
                                         {
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["LAU3ROF"] = 0,
                                             ["LaserCode10"] = 8,
+                                            ["LAU3ROF"] = 0,
                                             ["HelmetMountedDevice"] = 1,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
@@ -34014,8 +34014,8 @@ mission =
                                         {
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["LAU3ROF"] = 0,
                                             ["LaserCode10"] = 8,
+                                            ["LAU3ROF"] = 0,
                                             ["HelmetMountedDevice"] = 1,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
@@ -34399,8 +34399,8 @@ mission =
                                         {
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["LAU3ROF"] = 0,
                                             ["LaserCode10"] = 8,
+                                            ["LAU3ROF"] = 0,
                                             ["HelmetMountedDevice"] = 1,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
@@ -34784,8 +34784,8 @@ mission =
                                         {
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["LAU3ROF"] = 0,
                                             ["LaserCode10"] = 8,
+                                            ["LAU3ROF"] = 0,
                                             ["HelmetMountedDevice"] = 1,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "F-16C_50",
@@ -35678,12 +35678,12 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 0.625,
+                                                    [14] = 0.283,
                                                     [13] = 0.583,
                                                     [7] = 0.443,
-                                                    [14] = 0.283,
+                                                    [1] = 0.625,
                                                     [2] = 0.303,
-                                                    [15] = 0.995,
+                                                    [4] = 0.591,
                                                     [8] = 0.215,
                                                     [16] = 1.21,
                                                     [9] = 0.525,
@@ -35693,7 +35693,7 @@ mission =
                                                     [3] = 0.289,
                                                     [6] = 0.803,
                                                     [12] = 0.35,
-                                                    [4] = 0.591,
+                                                    [15] = 0.995,
                                                 }, -- end of ["channels"]
                                             }, -- end of [2]
                                         }, -- end of ["Radio"]
@@ -35836,12 +35836,12 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 0.625,
+                                                    [14] = 0.283,
                                                     [13] = 0.583,
                                                     [7] = 0.443,
-                                                    [14] = 0.283,
+                                                    [1] = 0.625,
                                                     [2] = 0.303,
-                                                    [15] = 0.995,
+                                                    [4] = 0.591,
                                                     [8] = 0.215,
                                                     [16] = 1.21,
                                                     [9] = 0.525,
@@ -35851,7 +35851,7 @@ mission =
                                                     [3] = 0.289,
                                                     [6] = 0.803,
                                                     [12] = 0.35,
-                                                    [4] = 0.591,
+                                                    [15] = 0.995,
                                                 }, -- end of ["channels"]
                                             }, -- end of [2]
                                         }, -- end of ["Radio"]
@@ -35994,12 +35994,12 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [1] = 0.625,
+                                                    [14] = 0.283,
                                                     [13] = 0.583,
                                                     [7] = 0.443,
-                                                    [14] = 0.283,
+                                                    [1] = 0.625,
                                                     [2] = 0.303,
-                                                    [15] = 0.995,
+                                                    [4] = 0.591,
                                                     [8] = 0.215,
                                                     [16] = 1.21,
                                                     [9] = 0.525,
@@ -36009,7 +36009,7 @@ mission =
                                                     [3] = 0.289,
                                                     [6] = 0.803,
                                                     [12] = 0.35,
-                                                    [4] = 0.591,
+                                                    [15] = 0.995,
                                                 }, -- end of ["channels"]
                                             }, -- end of [2]
                                         }, -- end of ["Radio"]
@@ -36152,12 +36152,12 @@ mission =
                                             {
                                                 ["channels"] = 
                                                 {
-                                                    [15] = 0.995,
+                                                    [4] = 0.591,
                                                     [13] = 0.583,
                                                     [7] = 0.443,
-                                                    [14] = 0.283,
+                                                    [1] = 0.625,
                                                     [2] = 0.303,
-                                                    [4] = 0.591,
+                                                    [15] = 0.995,
                                                     [8] = 0.215,
                                                     [16] = 1.21,
                                                     [9] = 0.525,
@@ -36167,7 +36167,7 @@ mission =
                                                     [11] = 0.718,
                                                     [6] = 0.803,
                                                     [12] = 0.35,
-                                                    [1] = 0.625,
+                                                    [14] = 0.283,
                                                 }, -- end of ["channels"]
                                             }, -- end of [2]
                                         }, -- end of ["Radio"]
@@ -43771,13 +43771,13 @@ mission =
                                             ["EnableTAF"] = true,
                                             ["ForceINSRules"] = false,
                                             ["LaserCode100"] = 6,
-                                            ["InitHotDrift"] = 0,
+                                            ["LoadNVGCase"] = false,
                                             ["DisableVTBExport"] = false,
                                             ["NoDDMSensor"] = false,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["LoadNVGCase"] = false,
                                             ["RocketBurst"] = 6,
+                                            ["InitHotDrift"] = 0,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["GunBurst"] = 1,
                                         }, -- end of ["AddPropAircraft"]
@@ -44778,13 +44778,13 @@ mission =
                                             ["EnableTAF"] = true,
                                             ["ForceINSRules"] = false,
                                             ["LaserCode100"] = 6,
-                                            ["InitHotDrift"] = 0,
+                                            ["LoadNVGCase"] = false,
                                             ["DisableVTBExport"] = false,
                                             ["NoDDMSensor"] = false,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["LoadNVGCase"] = false,
                                             ["RocketBurst"] = 6,
+                                            ["InitHotDrift"] = 0,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["GunBurst"] = 1,
                                         }, -- end of ["AddPropAircraft"]
@@ -44981,13 +44981,13 @@ mission =
                                             ["EnableTAF"] = true,
                                             ["ForceINSRules"] = false,
                                             ["LaserCode100"] = 6,
-                                            ["InitHotDrift"] = 0,
+                                            ["LoadNVGCase"] = false,
                                             ["DisableVTBExport"] = false,
                                             ["NoDDMSensor"] = false,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["LoadNVGCase"] = false,
                                             ["RocketBurst"] = 6,
+                                            ["InitHotDrift"] = 0,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["GunBurst"] = 1,
                                         }, -- end of ["AddPropAircraft"]
@@ -45184,13 +45184,13 @@ mission =
                                             ["EnableTAF"] = true,
                                             ["ForceINSRules"] = false,
                                             ["LaserCode100"] = 6,
-                                            ["InitHotDrift"] = 0,
+                                            ["LoadNVGCase"] = false,
                                             ["DisableVTBExport"] = false,
                                             ["NoDDMSensor"] = false,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["LoadNVGCase"] = false,
                                             ["RocketBurst"] = 6,
+                                            ["InitHotDrift"] = 0,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["GunBurst"] = 1,
                                         }, -- end of ["AddPropAircraft"]
@@ -45883,12 +45883,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["ClockTime"] = 1,
-                                            ["RocketBurst"] = 1,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["WpBullseye"] = 0,
-                                            ["EWDispenserBL"] = 2,
                                             ["EWDispenserTFL"] = 1,
+                                            ["EWDispenserBL"] = 2,
+                                            ["RocketBurst"] = 1,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -46044,8 +46044,8 @@ mission =
                                                     [25] = 0,
                                                     [13] = 0,
                                                     [26] = 0,
-                                                    [27] = 0,
                                                     [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
                                                     [23] = 0,
@@ -46077,8 +46077,8 @@ mission =
                                                     [25] = 344,
                                                     [13] = 269,
                                                     [26] = 385,
-                                                    [27] = 133,
                                                     [7] = 270,
+                                                    [27] = 133,
                                                     [14] = 260,
                                                     [28] = 257.8,
                                                     [23] = 122.1,
@@ -46363,18 +46363,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -46532,12 +46532,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["EWDispenserTFL"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["RocketBurst"] = 1,
+                                            ["EWDispenserBL"] = 2,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -46693,8 +46693,8 @@ mission =
                                                     [25] = 0,
                                                     [13] = 0,
                                                     [26] = 0,
-                                                    [27] = 0,
                                                     [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
                                                     [23] = 0,
@@ -46726,8 +46726,8 @@ mission =
                                                     [25] = 344,
                                                     [13] = 269,
                                                     [26] = 385,
-                                                    [27] = 133,
                                                     [7] = 270,
+                                                    [27] = 133,
                                                     [14] = 260,
                                                     [28] = 257.8,
                                                     [23] = 122.1,
@@ -46885,12 +46885,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["EWDispenserTFL"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["RocketBurst"] = 1,
+                                            ["EWDispenserBL"] = 2,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -47046,8 +47046,8 @@ mission =
                                                     [25] = 0,
                                                     [13] = 0,
                                                     [26] = 0,
-                                                    [27] = 0,
                                                     [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
                                                     [23] = 0,
@@ -47079,8 +47079,8 @@ mission =
                                                     [25] = 344,
                                                     [13] = 269,
                                                     [26] = 385,
-                                                    [27] = 133,
                                                     [7] = 270,
+                                                    [27] = 133,
                                                     [14] = 260,
                                                     [28] = 257.8,
                                                     [23] = 122.1,
@@ -47238,12 +47238,12 @@ mission =
                                             ["EWDispenserTFR"] = 1,
                                             ["AAR_Zone1"] = 0,
                                             ["EWDispenserTBL"] = 2,
-                                            ["WpBullseye"] = 0,
+                                            ["EWDispenserTFL"] = 1,
                                             ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
-                                            ["EWDispenserTFL"] = 1,
-                                            ["EWDispenserBL"] = 2,
                                             ["RocketBurst"] = 1,
+                                            ["EWDispenserBL"] = 2,
+                                            ["WpBullseye"] = 0,
                                             ["LaserCode10"] = 8,
                                             ["EWDispenserTBR"] = 2,
                                         }, -- end of ["AddPropAircraft"]
@@ -47399,8 +47399,8 @@ mission =
                                                     [25] = 0,
                                                     [13] = 0,
                                                     [26] = 0,
-                                                    [27] = 0,
                                                     [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
                                                     [23] = 0,
@@ -47432,8 +47432,8 @@ mission =
                                                     [25] = 344,
                                                     [13] = 269,
                                                     [26] = 385,
-                                                    [27] = 133,
                                                     [7] = 270,
+                                                    [27] = 133,
                                                     [14] = 260,
                                                     [28] = 257.8,
                                                     [23] = 122.1,
@@ -47718,18 +47718,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -48014,18 +48014,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -48310,18 +48310,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -48606,18 +48606,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -48902,18 +48902,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -49198,18 +49198,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -49494,18 +49494,18 @@ mission =
                                                 ["Sequence 1 Blue"] = 
                                                 {
                                                 }, -- end of ["Sequence 1 Blue"]
-                                                ["Sequence 3 Yellow"] = 
+                                                ["Start Location"] = 
                                                 {
-                                                }, -- end of ["Sequence 3 Yellow"]
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
                                                 ["PP"] = 
                                                 {
                                                 }, -- end of ["PP"]
-                                                ["Start Location"] = 
+                                                ["Sequence 3 Yellow"] = 
                                                 {
-                                                }, -- end of ["Start Location"]
+                                                }, -- end of ["Sequence 3 Yellow"]
                                             }, -- end of ["GroupsPoints"]
                                             ["Points"] = 
                                             {
@@ -51783,15 +51783,15 @@ mission =
                                                 ["Sequence 2 Red"] = 
                                                 {
                                                 }, -- end of ["Sequence 2 Red"]
-                                                ["Start Location"] = 
-                                                {
-                                                }, -- end of ["Start Location"]
-                                                ["Sequence 1 Blue"] = 
-                                                {
-                                                }, -- end of ["Sequence 1 Blue"]
                                                 ["Sequence 3 Yellow"] = 
                                                 {
                                                 }, -- end of ["Sequence 3 Yellow"]
+                                                ["Sequence 1 Blue"] = 
+                                                {
+                                                }, -- end of ["Sequence 1 Blue"]
+                                                ["Start Location"] = 
+                                                {
+                                                }, -- end of ["Start Location"]
                                                 ["A/A Waypoint"] = 
                                                 {
                                                 }, -- end of ["A/A Waypoint"]
@@ -53338,8 +53338,8 @@ mission =
                                                     [25] = 0,
                                                     [13] = 0,
                                                     [26] = 0,
-                                                    [27] = 0,
                                                     [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
                                                     [23] = 0,
@@ -53371,8 +53371,8 @@ mission =
                                                     [25] = 255,
                                                     [13] = 264,
                                                     [26] = 259,
-                                                    [27] = 262,
                                                     [7] = 262,
+                                                    [27] = 262,
                                                     [14] = 266,
                                                     [28] = 257,
                                                     [23] = 260,
@@ -53713,10 +53713,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -53746,10 +53746,10 @@ mission =
                                                     [13] = 264,
                                                     [26] = 259,
                                                     [23] = 260,
-                                                    [7] = 262,
+                                                    [27] = 262,
                                                     [14] = 266,
                                                     [28] = 257,
-                                                    [27] = 262,
+                                                    [7] = 262,
                                                     [29] = 253,
                                                     [30] = 263,
                                                 }, -- end of ["channels"]
@@ -54087,10 +54087,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -54120,10 +54120,10 @@ mission =
                                                     [13] = 264,
                                                     [26] = 259,
                                                     [23] = 260,
-                                                    [7] = 262,
+                                                    [27] = 262,
                                                     [14] = 266,
                                                     [28] = 257,
-                                                    [27] = 262,
+                                                    [7] = 262,
                                                     [29] = 253,
                                                     [30] = 263,
                                                 }, -- end of ["channels"]
@@ -54461,10 +54461,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -54494,10 +54494,10 @@ mission =
                                                     [13] = 264,
                                                     [26] = 259,
                                                     [23] = 260,
-                                                    [7] = 262,
+                                                    [27] = 262,
                                                     [14] = 266,
                                                     [28] = 257,
-                                                    [27] = 262,
+                                                    [7] = 262,
                                                     [29] = 253,
                                                     [30] = 263,
                                                 }, -- end of ["channels"]
@@ -54835,10 +54835,10 @@ mission =
                                                     [13] = 0,
                                                     [26] = 0,
                                                     [23] = 0,
-                                                    [7] = 0,
+                                                    [27] = 0,
                                                     [14] = 0,
                                                     [28] = 0,
-                                                    [27] = 0,
+                                                    [7] = 0,
                                                     [29] = 0,
                                                     [30] = 0,
                                                 }, -- end of ["modulations"]
@@ -54868,10 +54868,10 @@ mission =
                                                     [13] = 264,
                                                     [26] = 259,
                                                     [23] = 260,
-                                                    [7] = 262,
+                                                    [27] = 262,
                                                     [14] = 266,
                                                     [28] = 257,
-                                                    [27] = 262,
+                                                    [7] = 262,
                                                     [29] = 253,
                                                     [30] = 263,
                                                 }, -- end of ["channels"]
@@ -55164,10 +55164,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["AARProbe"] = false,
-                                            ["LaserCode100"] = 6,
                                             ["LaserCode10"] = 8,
+                                            ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
+                                            ["AARProbe"] = false,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -55479,10 +55479,10 @@ mission =
                                         ["speed"] = 138.88888888889,
                                         ["AddPropAircraft"] = 
                                         {
-                                            ["LaserCode10"] = 8,
-                                            ["LaserCode100"] = 6,
                                             ["LaserCode1"] = 8,
+                                            ["LaserCode100"] = 6,
                                             ["AARProbe"] = false,
+                                            ["LaserCode10"] = 8,
                                         }, -- end of ["AddPropAircraft"]
                                         ["type"] = "JF-17",
                                         ["Radio"] = 
@@ -55605,7 +55605,7 @@ mission =
                         {
                             [1] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -55614,7 +55614,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -55860,7 +55860,7 @@ mission =
                             }, -- end of [1]
                             [2] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -55869,7 +55869,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -56115,7 +56115,7 @@ mission =
                             }, -- end of [2]
                             [3] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -56124,7 +56124,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -56370,7 +56370,7 @@ mission =
                             }, -- end of [3]
                             [4] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -56379,7 +56379,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -56625,7 +56625,7 @@ mission =
                             }, -- end of [4]
                             [5] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -56634,7 +56634,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -56880,7 +56880,7 @@ mission =
                             }, -- end of [5]
                             [6] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -56889,7 +56889,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -57135,7 +57135,7 @@ mission =
                             }, -- end of [6]
                             [7] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -57144,7 +57144,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -57390,7 +57390,7 @@ mission =
                             }, -- end of [7]
                             [8] = 
                             {
-                                ["lateActivation"] = true,
+                                ["lateActivation"] = false,
                                 ["tasks"] = 
                                 {
                                 }, -- end of ["tasks"]
@@ -57399,7 +57399,7 @@ mission =
                                 ["uncontrolled"] = false,
                                 ["route"] = 
                                 {
-                                    ["routeRelativeTOT"] = true,
+                                    ["routeRelativeTOT"] = false,
                                     ["points"] = 
                                     {
                                         [1] = 
@@ -59246,7 +59246,6 @@ mission =
                 }, -- end of [1]
             }, -- end of ["rules"]
             ["eventlist"] = "",
-            ["predicate"] = "triggerOnce",
             ["actions"] = 
             {
                 [1] = 
@@ -59270,6 +59269,7 @@ mission =
                     }, -- end of ["ai_task"]
                 }, -- end of [2]
             }, -- end of ["actions"]
+            ["predicate"] = "triggerOnce",
             ["comment"] = "MIST",
         }, -- end of [1]
         [2] = 
@@ -59294,7 +59294,6 @@ mission =
             }, -- end of ["rules"]
             ["eventlist"] = "",
             ["comment"] = "WC",
-            ["predicate"] = "triggerOnce",
             ["actions"] = 
             {
                 [1] = 
@@ -59309,6 +59308,7 @@ mission =
                     }, -- end of ["ai_task"]
                 }, -- end of [1]
             }, -- end of ["actions"]
+            ["predicate"] = "triggerOnce",
         }, -- end of [2]
         [3] = 
         {
@@ -59323,6 +59323,7 @@ mission =
                 }, -- end of [1]
             }, -- end of ["rules"]
             ["eventlist"] = "",
+            ["predicate"] = "triggerOnce",
             ["actions"] = 
             {
                 [1] = 
@@ -59336,7 +59337,6 @@ mission =
                     }, -- end of ["ai_task"]
                 }, -- end of [1]
             }, -- end of ["actions"]
-            ["predicate"] = "triggerOnce",
             ["comment"] = "FDS",
         }, -- end of [3]
         [4] = 
@@ -59353,7 +59353,6 @@ mission =
             }, -- end of ["rules"]
             ["comment"] = "Sons",
             ["eventlist"] = "",
-            ["predicate"] = "triggerOnce",
             ["actions"] = 
             {
                 [1] = 
@@ -59489,6 +59488,7 @@ mission =
                     }, -- end of ["ai_task"]
                 }, -- end of [12]
             }, -- end of ["actions"]
+            ["predicate"] = "triggerOnce",
         }, -- end of [4]
         [5] = 
         {
@@ -59504,7 +59504,6 @@ mission =
                 }, -- end of [1]
             }, -- end of ["rules"]
             ["eventlist"] = "",
-            ["predicate"] = "triggerContinious",
             ["actions"] = 
             {
                 [1] = 
@@ -59580,6 +59579,7 @@ mission =
                     }, -- end of ["ai_task"]
                 }, -- end of [6]
             }, -- end of ["actions"]
+            ["predicate"] = "triggerContinious",
             ["comment"] = "Smokes",
         }, -- end of [5]
         [6] = 
@@ -59597,6 +59597,7 @@ mission =
             }, -- end of ["rules"]
             ["comment"] = "Flag10",
             ["eventlist"] = "",
+            ["predicate"] = "triggerContinious",
             ["actions"] = 
             {
                 [1] = 
@@ -59620,7 +59621,6 @@ mission =
                     }, -- end of ["ai_task"]
                 }, -- end of [2]
             }, -- end of ["actions"]
-            ["predicate"] = "triggerContinious",
         }, -- end of [6]
         [7] = 
         {
@@ -59636,7 +59636,6 @@ mission =
             }, -- end of ["rules"]
             ["comment"] = "Restart Timer",
             ["eventlist"] = "",
-            ["predicate"] = "triggerOnce",
             ["actions"] = 
             {
                 [1] = 
@@ -59652,6 +59651,7 @@ mission =
                     ["clearview"] = false,
                 }, -- end of [1]
             }, -- end of ["actions"]
+            ["predicate"] = "triggerOnce",
         }, -- end of [7]
         [8] = 
         {
@@ -59675,18 +59675,18 @@ mission =
             }, -- end of ["rules"]
             ["comment"] = "Restart_Blue",
             ["eventlist"] = "",
-            ["predicate"] = "triggerOnce",
             ["actions"] = 
             {
                 [1] = 
                 {
                     ["start_delay"] = 0,
-                    ["predicate"] = "a_end_mission",
-                    ["text"] = "DictKey_ActionText_1723",
                     ["KeyDict_text"] = "DictKey_ActionText_1723",
                     ["winner"] = "blue",
+                    ["predicate"] = "a_end_mission",
+                    ["text"] = "DictKey_ActionText_1723",
                 }, -- end of [1]
             }, -- end of ["actions"]
+            ["predicate"] = "triggerOnce",
         }, -- end of [8]
         [9] = 
         {
@@ -59709,22 +59709,22 @@ mission =
                 }, -- end of [2]
             }, -- end of ["rules"]
             ["eventlist"] = "",
+            ["predicate"] = "triggerOnce",
             ["actions"] = 
             {
                 [1] = 
                 {
                     ["start_delay"] = 0,
-                    ["winner"] = "red",
                     ["text"] = "DictKey_ActionText_1724",
-                    ["predicate"] = "a_end_mission",
+                    ["winner"] = "red",
                     ["KeyDict_text"] = "DictKey_ActionText_1724",
+                    ["predicate"] = "a_end_mission",
                 }, -- end of [1]
             }, -- end of ["actions"]
-            ["predicate"] = "triggerOnce",
             ["comment"] = "Restart_Red",
         }, -- end of [9]
     }, -- end of ["trigrules"]
-    ["currentKey"] = 2779093,
+    ["currentKey"] = 2783540,
     ["start_time"] = 43200,
     ["forcedOptions"] = 
     {
