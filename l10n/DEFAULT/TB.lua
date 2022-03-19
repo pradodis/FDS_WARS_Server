@@ -1695,7 +1695,7 @@ function targetInServer()
     	if not killData[4].target:isExist() then
 			local _initEntLocal = killData[3]
 			local _targetEntLocal = killData[4].target
-			local initCheck = pcall(FDS.,_initEntLocal)
+			local initCheck = pcall(FDS.playerCheck,_initEntLocal)
 			local initCoaCheck = pcall(FDS.coalitionCheck,_initEntLocal)
 			local targetCoaCheck = pcall(FDS.coalitionCheck,_targetEntLocal)
             local initCoa = 0
@@ -2548,7 +2548,6 @@ mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTim
 if FDS.exportDataSite then
 	mist.scheduleFunction(exportMisData, {}, timer.getTime()+3.5, FDS.sendDataFreq)
 end
-
 
 for _,i in pairs(FDS.coalitionCode) do
 	FDS.resAWACSTime[i][2] = mist.scheduleFunction(respawnAWACSFuel, {i},timer.getTime()+FDS.fuelAWACSRestart)
