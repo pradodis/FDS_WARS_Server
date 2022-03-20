@@ -84,7 +84,7 @@ FDS.numberZones = 45
 FDS.exportPath = 'C:\\fdsServerData\\'
 FDS.killEventNumber = 0
 FDS.killEventVector = {}
-FDS.sendDataFreq = 1.0
+FDS.sendDataFreq = 2.0
 FDS.exportDataSite = true -- use false for non-multiplayer games
 
 -- Rewards
@@ -644,6 +644,7 @@ function createAG(name, coa)
 end
 
 function bombingRun(coa)
+	validateAliveUnits()
     local zone = ''
 	local qty = 0
 	if coa == 'blue' then
@@ -735,7 +736,21 @@ function updateTgtPositions()
 	end
 end
 
+function validateAliveUnits()
+	for numero1,coa in pairs(tgtObj) do
+		for numero2, zona in pairs(coa) do
+			for numero3, unidade in pairs(zona) do
+				tkGp = StaticObject.getByName(unidade[1]) or Group.getByName(unidade[1])
+				if tkGp == nil then
+					table.remove(tgtObj[numero1][numero2],numero3)
+				end
+			end
+		end
+	end
+end
+
 function guidedBombingRun(coa)
+	validateAliveUnits()
     local zone = ''
 	local qty = 0
 	FDS.bomberQty[coa] = FDS.bomberQty[coa] + 1
@@ -1691,6 +1706,7 @@ function ping(a)
 end
 
 function targetInServer()
+	validateAliveUnits()
     for unidade, killData in pairs(FDS.lastHits) do
     	if not killData[4].target:isExist() then
 			local _initEntLocal = killData[3]
@@ -2342,6 +2358,7 @@ FDS.eventActions = FDS.switch {
 						end
 						if _initGroupName == w[1] or checkStructure then
 							table.remove(tgtObj.blue[j],k)
+							validateAliveUnits()
 							local lenTab = #tgtObj.blue[j]
 							local playWarning = true
 							if  lenTab == 0 then
@@ -2404,6 +2421,7 @@ FDS.eventActions = FDS.switch {
 						end
 						if _initGroupName == w[1] or checkStructure then
 							table.remove(tgtObj.red[j],k)
+							validateAliveUnits()
 							local lenTab = #tgtObj.red[j]
 							local playWarning = true
 							if lenTab == 0 then
@@ -2543,7 +2561,7 @@ mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+3, FDS.randomDropTim
 mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 -- Check Connected Players
---mist.scheduleFunction(targetInServer, {}, timer.getTime()+3.5, FDS.sendDataFreq)
+mist.scheduleFunction(targetInServer, {}, timer.getTime()+3.5, FDS.sendDataFreq)
 -- Export mission data
 if FDS.exportDataSite then
 	mist.scheduleFunction(exportMisData, {}, timer.getTime()+3.5, FDS.sendDataFreq)

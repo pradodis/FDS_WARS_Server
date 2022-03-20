@@ -1710,9 +1710,9 @@ mission =
     }, -- end of ["triggers"]
     ["map"] = 
     {
-        ["centerY"] = 461405.84585143,
-        ["zoom"] = 470.44467820203,
-        ["centerX"] = -61038.602557694,
+        ["centerY"] = 478900.79690287,
+        ["zoom"] = 358236.77099827,
+        ["centerX"] = -117240.0100566,
     }, -- end of ["map"]
     ["coalitions"] = 
     {
@@ -59724,7 +59724,7 @@ mission =
             ["comment"] = "Restart_Red",
         }, -- end of [9]
     }, -- end of ["trigrules"]
-    ["currentKey"] = 2795936,
+    ["currentKey"] = 2820728,
     ["start_time"] = 43200,
     ["forcedOptions"] = 
     {
