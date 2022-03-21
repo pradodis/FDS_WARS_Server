@@ -84,7 +84,7 @@ FDS.numberZones = 45
 FDS.exportPath = 'C:\\fdsServerData\\'
 FDS.killEventNumber = 0
 FDS.killEventVector = {}
-FDS.sendDataFreq = 2.0
+FDS.sendDataFreq = 1.0
 FDS.exportDataSite = true -- use false for non-multiplayer games
 
 -- Rewards
@@ -1795,17 +1795,31 @@ function assembleKillObject(initCheck, targetCheck, _event, _eventComplementar, 
 	eventExport = {}
 	eventExport['time'] = _event.time
 	eventExport['eventID'] = _event.id 
-	eventExport['initiatorUcid'] = _eventComplementar["initiatorUcid"] or nil
-	eventExport['initiatorPlayerName'] = _eventComplementar["initiatorPlayerName"] or nil
-	eventExport['initiatorName'] = _eventComplementar["initiatorName"] or nil
-	eventExport['initiatorCoalition'] = _eventComplementar["initiatorCoalition"] or nil
-	eventExport['targetUcid'] = _eventComplementar["targetUcid"] or nil
-	eventExport['targetPlayerName'] = _eventComplementar["targetPlayerName"] or nil
-	eventExport['targetName'] = _eventComplementar["targetName"] or nil
-	eventExport['targetCoalition'] = _eventComplementar["targetCoalition"] or nil
-	eventExport['weaponCategory'] = _eventComplementar["weaponCategory"] or nil 
-	eventExport['weaponDisplayName'] = _eventComplementar["weaponDisplayName"] or nil 
-	eventExport['isPvP'] = _eventComplementar["isPvP"] or nil
+	if _eventComplementar ~= nil then
+		eventExport['initiatorUcid'] = _eventComplementar["initiatorUcid"] or nil
+		eventExport['initiatorPlayerName'] = _eventComplementar["initiatorPlayerName"] or nil
+		eventExport['initiatorName'] = _eventComplementar["initiatorName"] or nil
+		eventExport['initiatorCoalition'] = _eventComplementar["initiatorCoalition"] or nil
+		eventExport['targetUcid'] = _eventComplementar["targetUcid"] or nil
+		eventExport['targetPlayerName'] = _eventComplementar["targetPlayerName"] or nil
+		eventExport['targetName'] = _eventComplementar["targetName"] or nil
+		eventExport['targetCoalition'] = _eventComplementar["targetCoalition"] or nil
+		eventExport['weaponCategory'] = _eventComplementar["weaponCategory"] or nil 
+		eventExport['weaponDisplayName'] = _eventComplementar["weaponDisplayName"] or nil 
+		eventExport['isPvP'] = _eventComplementar["isPvP"] or nil
+	else
+		eventExport['initiatorUcid'] = nil
+		eventExport['initiatorPlayerName'] = nil
+		eventExport['initiatorName'] = nil
+		eventExport['initiatorCoalition'] = nil
+		eventExport['targetUcid'] = nil
+		eventExport['targetPlayerName'] = nil
+		eventExport['targetName'] = nil
+		eventExport['targetCoalition'] = nil
+		eventExport['weaponCategory'] =  nil 
+		eventExport['weaponDisplayName'] = nil 
+		eventExport['isPvP'] = nil
+	end
 
 	if not bypassEvent then
 		if initCheck and _event['initiator'] ~= nil and _event['initiator']:getPlayerName() and _event['initiator']:getPlayerName() ~= nil then 
