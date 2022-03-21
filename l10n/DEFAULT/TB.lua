@@ -737,12 +737,70 @@ function updateTgtPositions()
 end
 
 function validateAliveUnits()
+	local codeCoalitions = {
+		['blue'] = {2,1},
+		['red'] = {1,2}
+	}
+	local teamCode = {
+		['blue'] = 'Red Team',
+		['red'] = 'Blue Team'
+	}
 	for numero1,coa in pairs(tgtObj) do
 		for numero2, zona in pairs(coa) do
 			for numero3, unidade in pairs(zona) do
 				tkGp = StaticObject.getByName(unidade[1]) or Group.getByName(unidade[1])
-				if tkGp == nil then
+				if tkGp == nil or (tkGp ~= nil and not tkGp:isExist()) then
 					table.remove(tgtObj[numero1][numero2],numero3)
+					local lenTab = #tgtObj[numero1][numero2]
+					local playWarning = true
+					if  lenTab == 0 then
+						FDS.zoneSts[numero1][numero2] = "Cleared"
+						local allClearFlag = true
+						for _,zSts in pairs(FDS.zoneSts[numero1]) do
+							if zSts ~= 'Cleared' then allClearFlag = false end
+						end
+						local msgclear = {}  
+						if allClearFlag then
+							msgclear.text = 'Congratulations! All enemy units are eliminated. Mission Accomplished! ByCorrection'
+							msgclear.displayTime = 120
+						else
+							msgclear.text = numero2 .. ' has been cleared, there are no signs of enemy activities in this zone. Good work.'
+							msgclear.displayTime = 25 
+							-- Msg for Enemy
+							local msgfinalEnemy = {}  
+							msgfinalEnemy.text = numero2 .. ' is Lost.'
+							msgfinalEnemy.displayTime = 30  
+							msgfinalEnemy.sound = 'zone_killed.ogg'
+							trigger.action.outTextForCoalition(codeCoalitions[numero1][1], msgfinalEnemy.text, msgfinalEnemy.displayTime)
+							trigger.action.outSoundForCoalition(codeCoalitions[numero1][1],msgfinalEnemy.sound)
+							playWarning = false
+						end
+						msgclear.sound = 'Complete.ogg'
+						trigger.action.outTextForCoalition(codeCoalitions[numero1][2], msgclear.text, msgclear.displayTime)
+						trigger.action.outSoundForCoalition(codeCoalitions[numero1][2],msgclear.sound)
+						if allClearFlag then
+							local msgfinal = {}
+							--trigger.action.setUserFlag(901, true)
+							msgfinal.text = teamCode[numero1] .. ' is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
+							msgfinal.displayTime = 60  
+							msgfinal.sound = 'victory_Lane.ogg'
+							trigger.action.outText(msgfinal.text, msgfinal.displayTime)
+							trigger.action.outSoundForCoalition(codeCoalitions[numero1][2],msgfinal.sound)
+							trigger.action.outSoundForCoalition(codeCoalitions[numero1][1],'zone_killed.ogg')
+							playWarning = false
+							endMission()
+						end	
+					end
+					if playWarning then
+						local msgfinal = {}  
+						msgfinal.text = 'Warning! ' .. numero2 .. ' is under attack.'
+						msgfinal.displayTime = 30  
+						msgfinal.sound = 'alert_UA.ogg'
+						trigger.action.outTextForCoalition(codeCoalitions[numero1][1], msgfinal.text, msgfinal.displayTime)
+						trigger.action.outSoundForCoalition(codeCoalitions[numero1][1],msgfinal.sound)
+					else 
+						playWarning = true
+					end
 				end
 			end
 		end
@@ -2358,7 +2416,7 @@ FDS.eventActions = FDS.switch {
 						end
 						if _initGroupName == w[1] or checkStructure then
 							table.remove(tgtObj.blue[j],k)
-							validateAliveUnits()
+							--validateAliveUnits()
 							local lenTab = #tgtObj.blue[j]
 							local playWarning = true
 							if  lenTab == 0 then
@@ -2421,7 +2479,7 @@ FDS.eventActions = FDS.switch {
 						end
 						if _initGroupName == w[1] or checkStructure then
 							table.remove(tgtObj.red[j],k)
-							validateAliveUnits()
+							--validateAliveUnits()
 							local lenTab = #tgtObj.red[j]
 							local playWarning = true
 							if lenTab == 0 then
