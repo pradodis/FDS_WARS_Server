@@ -1766,7 +1766,7 @@ end
 function targetInServer()
 	validateAliveUnits()
     for unidade, killData in pairs(FDS.lastHits) do
-    	if not killData[4].target:isExist() then
+    	if killData ~= nil and killData[4] ~= nil and killData[4].target ~= nil and not killData[4].target:isExist() then
 			local _initEntLocal = killData[3]
 			local _targetEntLocal = killData[4].target
 			local initCheck = pcall(FDS.playerCheck,_initEntLocal)
