@@ -1875,7 +1875,7 @@ function assembleKillObject(initCheck, targetCheck, _event, _eventComplementar, 
 	end
 	-- Integrating with missionStats
 	if editFDS and eventExport['initiatorPlayerName'] == nil then
-		if _event['initiator'] and _event['initiator'] ~= nil then
+		if _event['initiator'] and _event['initiator'] ~= nil and _event['initiator']:getGroup() ~= nil and _event['initiator']:getGroup():getName() ~= nil then
 			if FDS.entityKills[_event['initiator']:getGroup():getName()] == nil then
 				FDS.entityKills[_event['initiator']:getGroup():getName()] = {}
 			end
@@ -1883,7 +1883,7 @@ function assembleKillObject(initCheck, targetCheck, _event, _eventComplementar, 
 		end
 	end
 	if editFDS and eventExport['targetPlayerName'] == nil then
-		if _event['target'] and _event['target'] ~= nil then
+		if _event['target'] and _event['target'] ~= nil and _event['target']:getCategory() ~= nil then
 			if _event['target']:getCategory() == 3 then
 				FDS.killedByEntity[eventExport['targetName']] = eventExport
 			else
