@@ -1969,10 +1969,10 @@ FDS.eventActions = FDS.switch {
 	[world.event.S_EVENT_BIRTH] = function(x, param)
 		local _event = param.event
 		local _initEnt = _event.initiator
-		if FDS.lastHits[_initEnt:getID()] ~= nil then
+		if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil then
 			FDS.lastHits[_initEnt:getID()] = nil
 		end
-		if _initEnt:getCategory() == Object.Category.UNIT and _initEnt:getPlayerName() ~= nil then 
+		if _initEnt ~= nil and _initEnt:getCategory() == Object.Category.UNIT and _initEnt:getPlayerName() ~= nil then 
 			local msg = {}
 			msg.text = _initEnt:getPlayerName() .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n - Join our Discord community at FDS Server (Link available in the briefing)'
 			msg.displayTime = 60
@@ -1996,7 +1996,7 @@ FDS.eventActions = FDS.switch {
 	[world.event.S_EVENT_PILOT_DEAD] = function(x, param)
 		local _event = param.event
 		local _initEnt = _event.initiator
-		if FDS.lastHits[_initEnt:getID()] ~= nil then
+		if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil then
 			local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
 			local _targetEntLocal = _initEnt
 			local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
@@ -2041,7 +2041,7 @@ FDS.eventActions = FDS.switch {
 		local playerCheck2 = pcall(FDS.playerCheck,_currentTgt)
 		local initCheck = pcall(FDS.playerCheck,_init)
 		local targetCheck = pcall(FDS.playerCheck,_currentTgt)
-		if _init and _currentTgt and _init:getCategory() and _currentTgt:getCategory() and  isUnitorStructure(_init,_currentTgt) then 
+		if _init ~= nil and _currentTgt ~= nil and _init:getCategory() and _currentTgt:getCategory() and  isUnitorStructure(_init,_currentTgt) then 
 			local hitObjectInfo = assembleKillObject(initCheck, targetCheck, _event, {}, false, false)
 			if _init and _init ~= nil and _init:getID() and _init:getID() ~= nil and _currentTgt ~= nil and _currentTgt:getID() and _currentTgt:getID() ~= nil and FDS.lastHits[_currentTgt:getID()] ~= 'DEAD' then
 				-- [Target ID] = {INFO for JSON, Already paid, Author ID, Copy}
@@ -2053,7 +2053,7 @@ FDS.eventActions = FDS.switch {
 		local _event = param.event
 		local _initEnt = _event.initiator
 		local currV = 0
-		if _initEnt:getPlayerName() then
+		if _initEnt ~= nil and _initEnt:getPlayerName() then
 			--if FDS.lastHits[_initEnt:getID()] ~= nil then
 			--	FDS.lastHits[_initEnt:getID()] = nil
 			--end
@@ -2154,7 +2154,7 @@ FDS.eventActions = FDS.switch {
 		local initCoaCheck = pcall(FDS.coalitionCheck,_initEnt)
 		local initCoa = 0
 		local rewardType = ''
-		if _initEnt and _initEnt:getPlayerName() then
+		if _initEnt ~= nil and _initEnt:getPlayerName() then
 			for _,i in pairs(FDS.teamPoints) do
 				for name,value in pairs(i['Players']) do
 					if _initEnt:getPlayerName() == name then
@@ -2230,7 +2230,7 @@ FDS.eventActions = FDS.switch {
 		if initCoaCheck then
 			initCoa = _initEnt:getCoalition()
 		end
-		if _initEnt:getPlayerName() then
+		if _initEnt ~= nil and _initEnt:getPlayerName() then
 			if _local then
 				local flagRed = false
 				for _,type in pairs(FDS.redRelieveZones) do
@@ -2355,7 +2355,7 @@ FDS.eventActions = FDS.switch {
 		local rewardType = ''
 
 		--Exporting event record
-		if _initEnt and _targetEnt and _initEnt:getCategory() and _targetEnt:getCategory() and isUnitorStructure(_initEnt,_targetEnt) then
+		if _initEnt ~= nil and _targetEnt ~= nil and _initEnt:getCategory() and _targetEnt:getCategory() and isUnitorStructure(_initEnt,_targetEnt) then
 			if FDS.exportDataSite then
 				if FDS.lastHits[_targetEnt:getID()] ~= nil and FDS.lastHits[_targetEnt:getID()] ~= nil then 
 					local killObject = assembleKillObject(initCheck, targetCheck, _event, FDS.lastHits[_targetEnt:getID()][1], not FDS.lastHits[_targetEnt:getID()][2], false)
