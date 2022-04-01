@@ -86,6 +86,7 @@ FDS.killEventNumber = 0
 FDS.killEventVector = {}
 FDS.sendDataFreq = 1.0
 FDS.exportDataSite = true -- use false for non-multiplayer games
+FDS.errorLogMis = true
 
 -- Rewards
 FDS.playerReward = 250.0
@@ -173,6 +174,12 @@ if FDS.exportDataSite then
 	file:write(nil)
 	file:close()
 end
+if FDS.errorLogMis then
+	lfs.mkdir(FDS.exportPath)
+	local file = io.open(FDS.exportPath .. "missionError.log", "w")
+	file:write(nil)
+	file:close()
+end
 
 -- Switch
 function FDS.switch(t,p)
@@ -180,13 +187,25 @@ function FDS.switch(t,p)
     local f=self[x] or self.default
     if f then
       if type(f)=="function" then
-        f(x, p, self)
+        if not pcall(f,x, p, self) then
+			local infile = io.open(FDS.exportPath .. "missionError.log", "a")
+			local instr = infile:write("Error! At time : Year: " .. os.date("%y") .. " - Month: " .. os.date("%m") .. " - Day: " .. os.date("%d") .. " - Hour: " .. os.date("%H") .. " - Minute: " .. os.date("%M") .. " - Second: " .. os.date("%S") .. "\n")
+			infile:close()
+		end
       else
         error("case "..tostring(x).." not a function")
       end
     end
   end
   return t
+end
+
+function protectCall(f)
+	if not pcall(f) then
+		local infile = io.open(FDS.exportPath .. "missionError.log", "a")
+		local instr = infile:write("Error! At time : Year: " .. os.date("%y") .. " - Month: " .. os.date("%m") .. " - Day: " .. os.date("%d") .. " - Hour: " .. os.date("%H") .. " - Minute: " .. os.date("%M") .. " - Second: " .. os.date("%S") .. "\n")
+		infile:close()
+	end
 end
 
 -- Starting
@@ -2226,6 +2245,7 @@ FDS.eventActions = FDS.switch {
 		local _local = _event.place
 		local initCheck = pcall(FDS.playerCheck,_initEnt)
 		local initCoa = 0
+		local hunck = _initEnt.min.cobra
 		local initCoaCheck = pcall(FDS.coalitionCheck,_initEnt)
 		if initCoaCheck then
 			initCoa = _initEnt:getCoalition()
@@ -2616,31 +2636,42 @@ function FDS.eventHandler:onEvent(_event)
 	--trigger.action.outText(msgfinal.text, msgfinal.displayTime)
 	table.insert(FDS.exportVector,'evento')
 	FDS.eventActions:case(_event.id, {event = _event})
+	--pcall(FDS.eventActions:case(_event.id),{_event.id, {event = _event}})
 end
 
 -- Main
 -- Creating Bases, Zones and SAMs
-mist.scheduleFunction(creatingBases, {},timer.getTime()+1)
+--mist.scheduleFunction(creatingBases, {},timer.getTime()+1)
+mist.scheduleFunction(pcall, {creatingBases},timer.getTime()+1)
 -- Updating Players
-mist.scheduleFunction(checkPlayersOn, {},timer.getTime()+1.5,5)
+--mist.scheduleFunction(checkPlayersOn, {},timer.getTime()+1.5,5)
+mist.scheduleFunction(pcall, {checkPlayersOn},timer.getTime()+1.5,5)
 -- Starting check drop routine
-mist.scheduleFunction(checkDropZones, {},timer.getTime()+2,300)
+--mist.scheduleFunction(checkDropZones, {},timer.getTime()+2,300)
+mist.scheduleFunction(pcall, {checkDropZones},timer.getTime()+2,300)
 -- Hover checker
-mist.scheduleFunction(detectHover, {},timer.getTime()+2.5,FDS.refreshScan)
+--mist.scheduleFunction(detectHover, {},timer.getTime()+2.5,FDS.refreshScan)
+mist.scheduleFunction(pcall, {detectHover},timer.getTime()+2.5,FDS.refreshScan)
 -- Random drop manager
-mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+3, FDS.randomDropTime)
+--mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+3, FDS.randomDropTime)
+mist.scheduleFunction(pcall, {createRandomDrop}, timer.getTime()+3, FDS.randomDropTime)
 -- Transport caller
-mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
-mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+--mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+mist.scheduleFunction(pcall, {checkTransport,'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+--mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+mist.scheduleFunction(pcall, {checkTransport,'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 -- Check Connected Players
-mist.scheduleFunction(targetInServer, {}, timer.getTime()+3.5, FDS.sendDataFreq)
+--mist.scheduleFunction(targetInServer, {}, timer.getTime()+3.5, FDS.sendDataFreq)
+mist.scheduleFunction(pcall, {targetInServer}, timer.getTime()+3.5, FDS.sendDataFreq)
 -- Export mission data
 if FDS.exportDataSite then
-	mist.scheduleFunction(exportMisData, {}, timer.getTime()+3.5, FDS.sendDataFreq)
+	--mist.scheduleFunction(exportMisData, {}, timer.getTime()+3.5, FDS.sendDataFreq)
+	mist.scheduleFunction(pcall, {exportMisData}, timer.getTime()+3.5, FDS.sendDataFreq)
 end
 
 for _,i in pairs(FDS.coalitionCode) do
-	FDS.resAWACSTime[i][2] = mist.scheduleFunction(respawnAWACSFuel, {i},timer.getTime()+FDS.fuelAWACSRestart)
+	--FDS.resAWACSTime[i][2] = mist.scheduleFunction(respawnAWACSFuel, {i},timer.getTime()+FDS.fuelAWACSRestart)
+	FDS.resAWACSTime[i][2] = mist.scheduleFunction(pcall,{respawnAWACSFuel, i},timer.getTime()+FDS.fuelAWACSRestart)
 end
 
 --Events
