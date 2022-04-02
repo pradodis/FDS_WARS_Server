@@ -96,6 +96,8 @@ FDS.shelterReward = 100.0
 FDS.commandPostReward = 100.0
 FDS.escortReward = 75.0
 FDS.cargoReward = 50.0
+FDS.infAKReward = 2.0
+FDS.infRPGReward = 4.0
 
 FDS.rewardDict = {
 	['.Command Center'] = FDS.commandPostReward,
@@ -103,6 +105,8 @@ FDS.rewardDict = {
 	['Fuel tank'] = FDS.fuelReward,
 	['FA-18C_hornet'] = FDS.escortReward,
 	['C-130'] = FDS.cargoReward,
+	['Paratrooper AKS-74'] = FDS.infAKReward,
+	['Paratrooper RPG-16'] = FDS.infRPGReward,
 	['Default'] = FDS.enemyReward
 }
 
@@ -141,21 +145,21 @@ FDS.hoveringTotalTime = 10.0
 FDS.positionHist = {}
 
 -- Units per Zone
-FDS.InfAK = 0
-FDS.InfRPG = 0
+FDS.InfAK = 17
+FDS.InfRPG = 17
 
 FDS.ArmTrucks = 5
-FDS.ArmBMP1 = 0
-FDS.ArmBMP2 = 0
-FDS.ArmT55 = 0
-FDS.ArmT72 = 3
-FDS.ArmT80 = 5
+FDS.ArmBMP1 = 2
+FDS.ArmBMP2 = 2
+FDS.ArmT55 = 2
+FDS.ArmT72 = 2
+FDS.ArmT80 = 2
 
 FDS.AAA = 2
 FDS.AATung = 1
 FDS.AAStrela1 = 0
 FDS.AAStrela2 = 1
-FDS.AAIgla = 1
+FDS.AAIgla = 3
 FDS.AATor = 1
 FDS.SAM = 0
 
@@ -187,9 +191,10 @@ function FDS.switch(t,p)
     local f=self[x] or self.default
     if f then
       if type(f)=="function" then
-        if not pcall(f,x, p, self) then
+		local isOk, message = pcall(f,x, p, self)
+        if not isOk then
 			local infile = io.open(FDS.exportPath .. "missionError.log", "a")
-			local instr = infile:write("Error! At time: Day: " .. os.date("%d") .. "/" .. os.date("%m") .. "/" .. os.date("%y") .. " - Hour: " .. os.date("%H") .. ":" .. os.date("%M") .. ":" .. os.date("%S") .. " - Func: " .. func .. "\n")
+			local instr = infile:write("Error! At time: Day: " .. os.date("%d") .. "/" .. os.date("%m") .. "/" .. os.date("%y") .. " - Hour: " .. os.date("%H") .. ":" .. os.date("%M") .. ":" .. os.date("%S") .. " - Func: " .. func .. "\n" .. message .. "\n")
 			infile:close()
 		end
       else
@@ -201,7 +206,8 @@ function FDS.switch(t,p)
 end
 
 function protectCall(f,arg)
-	if not pcall(f,arg) then
+	local isOk, message = pcall(f,arg)
+	if not isOk then
         local func = " - ? - "
         for i,v in pairs(getfenv(0)) do
             if v == f then
@@ -209,7 +215,7 @@ function protectCall(f,arg)
             end
         end
 		local infile = io.open(FDS.exportPath .. "missionError.log", "a")
-		local instr = infile:write("Error! At time: Day: " .. os.date("%d") .. "/" .. os.date("%m") .. "/" .. os.date("%y") .. " - Hour: " .. os.date("%H") .. ":" .. os.date("%M") .. ":" .. os.date("%S") .. " - Func: " .. func .. "\n")
+		local instr = infile:write("Error! At time: Day: " .. os.date("%d") .. "/" .. os.date("%m") .. "/" .. os.date("%y") .. " - Hour: " .. os.date("%H") .. ":" .. os.date("%M") .. ":" .. os.date("%S") .. " - Func: " .. func .. "\n" .. message .. "\n")
 		infile:close()
 	end
 end
