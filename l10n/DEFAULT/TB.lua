@@ -2245,7 +2245,6 @@ FDS.eventActions = FDS.switch {
 		local _local = _event.place
 		local initCheck = pcall(FDS.playerCheck,_initEnt)
 		local initCoa = 0
-		local hunck = _initEnt.min.cobra
 		local initCoaCheck = pcall(FDS.coalitionCheck,_initEnt)
 		if initCoaCheck then
 			initCoa = _initEnt:getCoalition()
@@ -2656,10 +2655,10 @@ mist.scheduleFunction(pcall, {detectHover},timer.getTime()+2.5,FDS.refreshScan)
 --mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+3, FDS.randomDropTime)
 mist.scheduleFunction(pcall, {createRandomDrop}, timer.getTime()+3, FDS.randomDropTime)
 -- Transport caller
---mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
-mist.scheduleFunction(pcall, {checkTransport,'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
---mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
-mist.scheduleFunction(pcall, {checkTransport,'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+--mist.scheduleFunction(pcall, {checkTransport,'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+--mist.scheduleFunction(pcall, {checkTransport,'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 -- Check Connected Players
 --mist.scheduleFunction(targetInServer, {}, timer.getTime()+3.5, FDS.sendDataFreq)
 mist.scheduleFunction(pcall, {targetInServer}, timer.getTime()+3.5, FDS.sendDataFreq)
