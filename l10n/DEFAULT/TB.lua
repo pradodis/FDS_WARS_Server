@@ -1163,12 +1163,17 @@ function FDS.warStatus(g_id)
 			for _,j in pairs(FDS.blueZones) do
 				local unitQtyBlue = 0
 				local structureQtyBlue = 0
+				local infantryQtyBlue = 0
 				if FDS.zoneSts.blue[j] == 'Hot' then 
 					stsMsg = tostring(#tgtObj[i][j]) 
 					for _,k in pairs(tgtObj.blue[j]) do
 						if Group.getByName(k[1]) then
 							-- If it is unit
-							unitQtyBlue = unitQtyBlue + 1
+							if Group.getByName(k[1]):getUnits()[1]:hasAttribute('Infantry') then
+								infantryQtyBlue = infantryQtyBlue + 1
+							elseif Group.getByName(k[1]):getUnits()[1]:hasAttribute('Ground vehicles') then
+								unitQtyBlue = unitQtyBlue + 1
+							end
 						else
 							-- If it is structure
 							structureQtyBlue = structureQtyBlue + 1
@@ -1177,18 +1182,23 @@ function FDS.warStatus(g_id)
 				else 
 					stsMsg = 'Cleared.' 
 				end
-				msg.text = msg.text .. j .. ': ' .. stsMsg .. ' -- Units: '.. unitQtyBlue .. '  Structures: ' .. structureQtyBlue .. '\n'
+				msg.text = msg.text .. j .. ': ' .. stsMsg .. ' -- Vehicles: '.. unitQtyBlue .. '  Infantry: '.. infantryQtyBlue .. '  Structures: ' .. structureQtyBlue .. '\n'
 			end
 		else
 			for _,j in pairs(FDS.redZones) do
 				local unitQtyRed = 0
 				local structureQtyRed = 0
+				local infantryQtyRed = 0
 				if FDS.zoneSts.red[j] == 'Hot' then 
 					stsMsg = tostring(#tgtObj[i][j]) 
 					for _,k in pairs(tgtObj.red[j]) do
 						if Group.getByName(k[1]) then
 							-- If it is unit
-							unitQtyRed = unitQtyRed + 1
+							if Group.getByName(k[1]):getUnits()[1]:hasAttribute('Infantry') then
+								infantryQtyRed = infantryQtyRed + 1
+							elseif Group.getByName(k[1]):getUnits()[1]:hasAttribute('Ground vehicles') then
+								unitQtyRed = unitQtyRed + 1
+							end
 						else
 							-- If it is structure
 							structureQtyRed = structureQtyRed + 1
@@ -1197,7 +1207,7 @@ function FDS.warStatus(g_id)
 				else 
 					stsMsg = 'Cleared.' 
 				end
-				msg.text = msg.text .. j .. ': ' .. stsMsg .. ' -- Units: '.. unitQtyRed .. '  Structures: ' .. structureQtyRed .. '\n'
+				msg.text = msg.text .. j .. ': ' .. stsMsg .. ' -- Vehicles: '.. unitQtyRed .. '  Infantry: '.. infantryQtyRed .. '  Structures: ' .. structureQtyRed .. '\n'
 			end
 		end
 		msg.text = msg.text .. '\n -------------------- \n \n'
@@ -1254,12 +1264,17 @@ function FDS.whereStrike(g_id)
 		for _,j in pairs(FDS.redZones) do
 			local structureQty = 0
 			local unitQty = 0
+			local infantryQty = 0
 			if FDS.zoneSts.red[j] == 'Hot' then 
 				stsMsg = tostring(#tgtObj.red[j]) 
 				for _,k in pairs(tgtObj.red[j]) do
 					if Group.getByName(k[1]) then
 						-- If it is unit
-						unitQty = unitQty + 1
+						if Group.getByName(k[1]):getUnits()[1]:hasAttribute('Infantry') then
+							infantryQty = infantryQty + 1
+						elseif Group.getByName(k[1]):getUnits()[1]:hasAttribute('Ground vehicles') then
+							unitQty = unitQty + 1
+						end
 					else
 						-- If it is structure
 						structureQty = structureQty + 1
@@ -1268,7 +1283,7 @@ function FDS.whereStrike(g_id)
 			else 
 				stsMsg = 'Cleared.' 
 			end
-			msg.text = msg.text .. j .. ': ' .. stsMsg .. ' remaining targets -- '.. unitQty .. ' units and ' .. structureQty .. ' structures.' .. '\n'
+			msg.text = msg.text .. j .. ': ' .. stsMsg .. ' remaining targets -- '.. unitQty .. ' vehicles ' .. infantryQty .. ' soldiers ' .. structureQty .. ' structures.' .. '\n'
 			
 			local var = {}
 			local varMGRS = {}
@@ -1306,12 +1321,17 @@ function FDS.whereStrike(g_id)
 		for _,j in pairs(FDS.blueZones) do
 			local structureQty = 0
 			local unitQty = 0
+			local infantryQty = 0
 			if FDS.zoneSts.blue[j] == 'Hot' then 
 				stsMsg = tostring(#tgtObj.blue[j]) 
 				for _,k in pairs(tgtObj.blue[j]) do
 					if Group.getByName(k[1]) then
 						-- If it is unit
-						unitQty = unitQty + 1
+						if Group.getByName(k[1]):getUnits()[1]:hasAttribute('Infantry') then
+							infantryQty = infantryQty + 1
+						elseif Group.getByName(k[1]):getUnits()[1]:hasAttribute('Ground vehicles') then
+							unitQty = unitQty + 1
+						end
 					else
 						-- If it is structure
 						structureQty = structureQty + 1
@@ -1320,7 +1340,7 @@ function FDS.whereStrike(g_id)
 			else 
 				stsMsg = 'Cleared.' 
 			end
-			msg.text = msg.text .. j .. ': ' .. stsMsg .. ' remaining targets -- '.. unitQty .. ' units and ' .. structureQty .. ' structures.' .. '\n'
+			msg.text = msg.text .. j .. ': ' .. stsMsg .. ' remaining targets -- '.. unitQty .. ' vehicles ' .. infantryQty .. ' soldiers ' .. structureQty .. ' structures.' .. '\n'
 			
 			local var = {}
 			local varMGRS = {}
