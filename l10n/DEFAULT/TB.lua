@@ -193,9 +193,17 @@ function FDS.switch(t,p)
       if type(f)=="function" then
 		local isOk, message = pcall(f,x, p, self)
         if not isOk then
+			local func = " - ? - "
+			for i,v in pairs(getfenv(0)) do
+				if v == f then
+					func = i
+				end
+			end
 			local infile = io.open(FDS.exportPath .. "missionError.log", "a")
-			local instr = infile:write("Error! At time: Day: " .. os.date("%d") .. "/" .. os.date("%m") .. "/" .. os.date("%y") .. " - Hour: " .. os.date("%H") .. ":" .. os.date("%M") .. ":" .. os.date("%S") .. " - Func: " .. func .. "\n" .. message .. "\n")
-			infile:close()
+			if infile ~= nil then
+				local instr = infile:write("Error! At time: Day: " .. os.date("%d") .. "/" .. os.date("%m") .. "/" .. os.date("%y") .. " - Hour: " .. os.date("%H") .. ":" .. os.date("%M") .. ":" .. os.date("%S") .. " - Func: " .. func .. "\n" .. message .. "\n")
+				infile:close()
+			end
 		end
       else
         error("case "..tostring(x).." not a function")
@@ -1814,29 +1822,42 @@ function ping(a)
 	trigger.action.outSound(msgPing.sound)
 end
 
+function checkExistentialCrisis(rewardDict, _targetEntLocal)
+	if _targetEntLocal and _targetEntLocal:getDesc() and _targetEntLocal:getDesc().typeName and rewardDict[_targetEntLocal:getDesc().typeName] then
+		return true
+	end
+end
+
 function targetInServer()
 	validateAliveUnits()
     for unidade, killData in pairs(FDS.lastHits) do
     	if killData ~= nil and killData[4] ~= nil and killData[4].target ~= nil and not killData[4].target:isExist() then
 			local _initEntLocal = killData[3]
 			local _targetEntLocal = killData[4].target
-			local initCheck = pcall(FDS.playerCheck,_initEntLocal)
-			local initCoaCheck = pcall(FDS.coalitionCheck,_initEntLocal)
-			local targetCoaCheck = pcall(FDS.coalitionCheck,_targetEntLocal)
-            local initCoa = 0
-			local targetCoa = 0
-			local rewardType = ''
-            if _targetEntLocal and _targetEntLocal:getDesc() and _targetEntLocal:getDesc().typeName and FDS.rewardDict[_targetEntLocal:getDesc().typeName] then
-                rewardType = _targetEntLocal:getDesc().typeName
-            else
-                rewardType = 'Default'
-            end
-            if initCoaCheck and targetCoaCheck then
-                initCoa = _initEntLocal:getCoalition()
-                targetCoa = _targetEntLocal:getCoalition()
-            end
-        	awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
-			killData[2] = true
+			if pcall(checkExistentialCrisis,FDS.rewardDict, _targetEntLocal) then
+				local initCheck = pcall(FDS.playerCheck,_initEntLocal)
+				local initCoaCheck = pcall(FDS.coalitionCheck,_initEntLocal)
+				local targetCoaCheck = pcall(FDS.coalitionCheck,_targetEntLocal)
+				local initCoa = 0
+				local targetCoa = 0
+				local rewardType = ''
+				if _targetEntLocal and _targetEntLocal:getDesc() and _targetEntLocal:getDesc().typeName and FDS.rewardDict[_targetEntLocal:getDesc().typeName] then
+					rewardType = _targetEntLocal:getDesc().typeName
+				else
+					rewardType = 'Default'
+				end
+				if initCoaCheck and targetCoaCheck then
+					initCoa = _initEntLocal:getCoalition()
+					targetCoa = _targetEntLocal:getCoalition()
+				end
+				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
+				killData[2] = true
+			else
+				local infile = io.open(FDS.exportPath .. "missionError.log", "a")
+				local instr = infile:write("Warning! At time: Day: " .. os.date("%d") .. "/" .. os.date("%m") .. "/" .. os.date("%y") .. " - Hour: " .. os.date("%H") .. ":" .. os.date("%M") .. ":" .. os.date("%S") .. " - Func: " .. func .. "\n" .. message .. "\n" .. "FDS.lastHits is losing the entry: with target name " .. killData[5].uName .. ", which has Player Name: " .. killData[5].pName .. " \n")
+				infile:close()
+				FDS.lastHits[killData[5].uID] = nil
+			end
         end        
     end
 end
@@ -1965,6 +1986,22 @@ function exportKill(eventExport)
 	file:close()
 end
 
+function checkTID(_event)
+	if _event ~= nil and _event.target ~= nil and _event.target:getID() ~= nil then
+		return true
+	end
+end
+function checkTName(_event)
+	if _event ~= nil and _event.target ~= nil and _event.target:getName() ~= nil then
+		return true
+	end
+end
+function checkTPName(_event)
+	if _event ~= nil and _event.target ~= nil and _event.target:getPlayerName() ~= nil then
+		return true
+	end
+end
+
 function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
 	if initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa and _initEnt:isExist() then
 		local plName = _initEnt:getPlayerName()
@@ -2086,17 +2123,27 @@ FDS.eventActions = FDS.switch {
 	[world.event.S_EVENT_HIT] = function(x, param)
 		local _event = param.event
 		local _eventCopy = mist.utils.deepCopy(_event)
+		local debugInfo = {}
 		local _init = _event.initiator
 		local _currentTgt = _event.target
 		local playerCheck1 = pcall(FDS.playerCheck,_init)
 		local playerCheck2 = pcall(FDS.playerCheck,_currentTgt)
 		local initCheck = pcall(FDS.playerCheck,_init)
 		local targetCheck = pcall(FDS.playerCheck,_currentTgt)
+		if pcall(checkTID, _event) and _event ~= nil and _event.target ~= nil and _event.target:getID() ~= nil then
+			debugInfo['uID'] = _event.target:getID()
+		end
+		if pcall(checkTName, _event) and _event ~= nil and _event.target ~= nil and _event.target:getName() ~= nil then
+			debugInfo['uName'] = _event.target:getName()
+		end
+		if pcall(checkTPName, _event) and _event ~= nil and _event.target ~= nil and playerCheck2 and _event.target:getPlayerName() ~= nil then
+			debugInfo['pName'] = _event.target:getPlayerName()
+		end
 		if _init ~= nil and _currentTgt ~= nil and _init:getCategory() and _currentTgt:getCategory() and  isUnitorStructure(_init,_currentTgt) then 
 			local hitObjectInfo = assembleKillObject(initCheck, targetCheck, _event, {}, false, false)
 			if _init and _init ~= nil and _init:getID() and _init:getID() ~= nil and _currentTgt ~= nil and _currentTgt:getID() and _currentTgt:getID() ~= nil and FDS.lastHits[_currentTgt:getID()] ~= 'DEAD' then
 				-- [Target ID] = {INFO for JSON, Already paid, Author ID, Copy}
-				FDS.lastHits[_currentTgt:getID()] = {hitObjectInfo, false, _init, _eventCopy}
+				FDS.lastHits[_currentTgt:getID()] = {hitObjectInfo, false, _init, _eventCopy, debugInfo}
 			end
 		end
 	end,
