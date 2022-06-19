@@ -21,6 +21,7 @@ FDS.zoneSts = {}
 FDS.redZones = {'Red Zone 1','Red Zone 2'}
 FDS.blueZones = {'Blue Zone 1','Blue Zone 2'}
 FDS.randomDropZones = {'randomDrop_1','randomDrop_2','randomDrop_3','randomDrop_4','randomDrop_5','randomDrop_6','randomDrop_7','randomDrop_8','randomDrop_9','randomDrop_10','randomDrop_11','randomDrop_12','randomDrop_13'}
+FDS.redZ1DroneZones = {'Red_Zone_1_Drone_1','Red_Zone_1_Drone_2','Red_Zone_1_Drone_3','Red_Zone_1_Drone_4','Red_Zone_1_Drone_5','Red_Zone_1_Drone_6','Red_Zone_1_Drone_7'}
 FDS.dropZones = {}
 FDS.activeHovers = {}
 FDS.retrievedZones = {}
@@ -28,11 +29,19 @@ FDS.entityKills = {}
 FDS.killedByEntity = {}
 FDS.playersKillRecord = nil 
 FDS.dropHeliTypes = {'UH-1H','Mi-8MT'}
-FDS.blueRelieveZones = {'Sochi-Adler', 'Shpora-11', 'Shpora-21'}
-FDS.redRelieveZones = {'Maykop-Khanskaya','Moscow-11','Moscow-21'}
+FDS.blueRelieveZones = {'Sochi-Adler', 'Gudauta', 'Sukhumi-Babushara', 'Shpora-11', 'Shpora-21', 'Blue_Carrier_K', 'Blue_Carrier_F', 'Blue_Carrier_S', 'Blue_Carrier_T'}
+FDS.redRelieveZones = {'Maykop-Khanskaya', 'Krasnodar-Center', 'Krasnodar-Pashkovsky' ,'Moscow-11','Moscow-21', 'Red_Carrier_K', 'Red_Carrier_F', 'Red_Carrier_S', 'Red_Carrier_T'}
 FDS.resAWACSTime = {
 	['blue'] = {'Blue_AWACS_1', 0},
 	['red'] = {'Red_AWACS_1', 0}
+}
+FDS.resTankerTime = {
+	['blue'] = {'Blue_Tanker_1_Cesta', 0},
+	['red'] = {'Red_Tanker_1_Cesta', 0}
+}
+FDS.resMPRSTankerTime = {
+	['blue'] = {'Blue_Tanker_1_Haste', 0},
+	['red'] = {'Red_Tanker_1_Haste', 0}
 }
 FDS.currentTransport = {
 	['blue'] = {2,''},
@@ -111,7 +120,7 @@ FDS.rewardDict = {
 }
 
 -- Transport
-FDS.refreshTime = 2700.
+FDS.refreshTime = 2400.
 FDS.squadSize = 4
 FDS.rewardCargo = 50.
 FDS.firstGroupTime = 300.0
@@ -132,6 +141,10 @@ FDS.bomberQty = {
 -- AWACS Respawn
 FDS.respawnAWACSTime = 1200.0
 FDS.fuelAWACSRestart = 14400.0
+
+-- Tanker Respawn
+FDS.respawnTankerTime = 600.0
+FDS.fuelTankerRestart = 14400.0
 
 -- DropZones
 FDS.randomDropValue = 100.
@@ -682,6 +695,27 @@ function createAG(name, coa)
 	mist.goRoute(name,new_GPR)
 end
 
+function createDrone(coa)
+	local point3 = mist.getRandomPointInZone(FDS.redZ1DroneZones[mist.random(#FDS.redZ1DroneZones)])
+	local heightD = mist.random(100)
+	heightD = (4000 + 160*heightD)*0.3048
+	gp = Group.getByName('Blue_Spy_Drone')
+	gPData = mist.getGroupData('Blue_Spy_Drone',true)
+	gpR = mist.getGroupRoute(gp:getName(),true)
+	new_GPR = mist.utils.deepCopy(gpR)
+	new_gPData = mist.utils.deepCopy(gPData)
+	new_gPData.units[1].x = point3.x
+	new_gPData.units[1].y = point3.y
+	new_gPData.units[1].alt = heightD
+	new_GPR[1].task.params.tasks[7].params.altitude = heightD
+	new_GPR[1].x = point3.x
+	new_GPR[1].y = point3.y
+	new_gPData.clone = true
+	new_gPData.route = new_GPR
+	local newDrone = mist.dynAdd(new_gPData)
+	ctld.JTACAutoLase(newDrone.name, 1688, false,"all") 
+end
+
 function bombingRun(coa)
 	validateAliveUnits()
     local zone = ''
@@ -1050,6 +1084,16 @@ function respawnAWACSFuel(coa)
 	FDS.resAWACSTime[coa][2] = mist.scheduleFunction(respawnAWACSFuel, {coa},timer.getTime()+FDS.fuelAWACSRestart)
 end
 
+function respawnTankerFuel(coa)
+	mist.respawnGroup(FDS.resTankerTime[coa][1],true)
+	FDS.resTankerTime[coa][2] = mist.scheduleFunction(respawnTankerFuel, {coa},timer.getTime()+FDS.fuelTankerRestart)
+end
+
+function respawnMPRSTankerFuel(coa)
+	mist.respawnGroup(FDS.resMPRSTankerTime[coa][1],true)
+	FDS.resTankerTime[coa][2] = mist.scheduleFunction(respawnMPRSTankerFuel, {coa},timer.getTime()+FDS.fuelTankerRestart)
+end
+
 function respawnAWACS(coa)
 	sideAWACS = {{'Red_AWACS_1', 1, 2,'red'}, {'Blue_AWACS_1', 2, 1,'blue'}}
 	mist.respawnGroup(sideAWACS[coa][1], true)
@@ -1066,6 +1110,42 @@ function respawnAWACS(coa)
 	msgAWACSBack.sound = 'Msg.ogg'
 	trigger.action.outTextForCoalition(sideAWACS[coa][2], msgAWACSBack.text, msgAWACSBack.displayTime)
 	trigger.action.outSoundForCoalition(sideAWACS[coa][2],msgAWACSBack.sound) 
+end
+
+function respawnTanker(coa)
+	sideTanker = {{'Red_Tanker_1_Cesta', 1, 2,'red'}, {'Blue_Tanker_1_Cesta', 2, 1,'blue'}}
+	mist.respawnGroup(sideTanker[coa][1], true)
+	FDS.resTankerTime[sideTanker[coa][4]][2] = mist.scheduleFunction(respawnTankerFuel, {sideTanker[coa][4]},timer.getTime()+FDS.fuelTankerRestart)
+	local msgTankerBack = {}  
+	msgTankerBack.text = 'Enemy Basket Tanker is back to action.'
+	msgTankerBack.displayTime = 10  
+	msgTankerBack.sound = 'Msg.ogg'
+	trigger.action.outTextForCoalition(sideTanker[coa][3], msgTankerBack.text, msgTankerBack.displayTime)
+	trigger.action.outSoundForCoalition(sideTanker[coa][3],msgTankerBack.sound) 
+	local msgTankerBack = {}  
+	msgTankerBack.text = 'Our Basket Tanker is back to action.'
+	msgTankerBack.displayTime = 10  
+	msgTankerBack.sound = 'Msg.ogg'
+	trigger.action.outTextForCoalition(sideTanker[coa][2], msgTankerBack.text, msgTankerBack.displayTime)
+	trigger.action.outSoundForCoalition(sideTanker[coa][2],msgTankerBack.sound) 
+end
+
+function respawnTankerMPRS(coa)
+	sideTanker = {{'Red_Tanker_1_Haste', 1, 2,'red'}, {'Blue_Tanker_1_Haste', 2, 1,'blue'}}
+	mist.respawnGroup(sideTanker[coa][1], true)
+	FDS.resMPRSTankerTime[sideTanker[coa][4]][2] = mist.scheduleFunction(respawnMPRSTankerFuel, {sideTanker[coa][4]},timer.getTime()+FDS.fuelTankerRestart)
+	local msgTankerBack = {}  
+	msgTankerBack.text = 'Enemy MPRS Tanker is back to action.'
+	msgTankerBack.displayTime = 10  
+	msgTankerBack.sound = 'Msg.ogg'
+	trigger.action.outTextForCoalition(sideTanker[coa][3], msgTankerBack.text, msgTankerBack.displayTime)
+	trigger.action.outSoundForCoalition(sideTanker[coa][3],msgTankerBack.sound) 
+	local msgTankerBack = {}  
+	msgTankerBack.text = 'Our MPRS Tanker is back to action.'
+	msgTankerBack.displayTime = 10  
+	msgTankerBack.sound = 'Msg.ogg'
+	trigger.action.outTextForCoalition(sideTanker[coa][2], msgTankerBack.text, msgTankerBack.displayTime)
+	trigger.action.outSoundForCoalition(sideTanker[coa][2],msgTankerBack.sound) 
 end
 
 function checkPlayersOn()
@@ -1822,6 +1902,13 @@ function ping(a)
 	trigger.action.outSound(msgPing.sound)
 end
 
+function find(tbl, val)
+    for k, v in pairs(tbl) do
+        if v == val then return k end
+    end
+    return nil
+end
+
 function checkExistentialCrisis(rewardDict, _targetEntLocal)
 	if _targetEntLocal and _targetEntLocal:getDesc() and _targetEntLocal:getDesc().typeName and rewardDict[_targetEntLocal:getDesc().typeName] then
 		return true
@@ -2095,6 +2182,37 @@ FDS.eventActions = FDS.switch {
 			local targetCoa = 0
 			local targetCoaCheck = pcall(FDS.coalitionCheck,_targetEntLocal)
 			local rewardType = ''
+			--[[ local currV = 0
+			if _initEnt ~= nil and _initEnt:getPlayerName() then
+				for _,i in pairs(FDS.teamPoints) do
+					for name,value in pairs(i['Players']) do
+						if _initEnt:getPlayerName() == name then
+							currV = value
+						end
+					end
+				end
+				if currV > 0.0 then
+					--createPoint = closestZone(_initEnt:getPosition().p)
+					createPoint = _initEnt:getPosition().p
+					createPoint.y = land.getHeight({x = createPoint.x,y = createPoint.z})
+					local newValue = true
+					for _,i in pairs(FDS.dropZones) do
+						if i[3] == _event.initiator:getPlayerName() and i[1].x == createPoint.x and i[1].y == createPoint.y and i[1].z == createPoint.z then
+							newValue = false
+						end
+					end
+					if newValue then 
+						table.insert(FDS.dropZones,{createPoint, currV, _event.initiator:getPlayerName()}) 
+						local msg = {}
+						msg.text = 'A new drop zone has been created with ' .. tostring(currV) .. ' points.'
+						msg.displayTime = 60  
+						msg.sound = 'Msg.ogg'
+						trigger.action.outText(msg.text, msg.displayTime)
+						trigger.action.outSound(msg.sound)
+						trigger.action.smoke(createPoint,3)
+					end
+				end
+			end ]]
 			--Exporting event record
 			if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
 				if FDS.exportDataSite then
@@ -2151,6 +2269,7 @@ FDS.eventActions = FDS.switch {
 		local _event = param.event
 		local _initEnt = _event.initiator
 		local currV = 0
+		local actorDetails = {}
 		if _initEnt ~= nil and _initEnt:getPlayerName() then
 			--if FDS.lastHits[_initEnt:getID()] ~= nil then
 			--	FDS.lastHits[_initEnt:getID()] = nil
@@ -2160,10 +2279,11 @@ FDS.eventActions = FDS.switch {
 			--		FDS.lastHits[i] = nil
 			--	end
 			--end
-			for _,i in pairs(FDS.teamPoints) do
+			for j,i in pairs(FDS.teamPoints) do
 				for name,value in pairs(i['Players']) do
 					if _initEnt:getPlayerName() == name then
 						currV = value
+						actorDetails = {j, name}
 					end
 				end
 			end
@@ -2186,6 +2306,7 @@ FDS.eventActions = FDS.switch {
 					trigger.action.outText(msg.text, msg.displayTime)
 					trigger.action.outSound(msg.sound)
 					trigger.action.smoke(createPoint,3)
+					FDS.teamPoints[actorDetails[1]]['Players'][actorDetails[2]] = nil
 				end
 			end
 		end
@@ -2207,6 +2328,44 @@ FDS.eventActions = FDS.switch {
 			trigger.action.outTextForCoalition(sideAWACS[coalit][2], msgAWACSDown.text, msgAWACSDown.displayTime)
 			trigger.action.outSoundForCoalition(sideAWACS[coalit][2],msgAWACSDown.sound) 
 			mist.scheduleFunction(respawnAWACS, {coalit},timer.getTime()+FDS.respawnAWACSTime)
+		end
+		if _initEnt:getDesc() and _initEnt:getDesc().typeName == 'KC135MPRS' then
+			local coalit = _initEnt:getCoalition()
+			local sideTanker = {{'Blue_Tanker_1_Haste', 2, 1, 'red'}, {'Red_Tanker_1_Haste', 1, 2, 'blue'}}
+			mist.removeFunction(FDS.resMPRSTankerTime[sideTanker[coalit][4]][2])
+			mist.respawnGroup(sideTanker[coalit][1], true)
+			local msgTankerDown = {}  
+			msgTankerDown.text = 'The enemy shot down our MPRS tanker. It will respawn in ' .. tostring(math.floor((FDS.respawnTankerTime/60)+0.7)) .. ' minutes.'
+			msgTankerDown.displayTime = 10  
+			msgTankerDown.sound = 'AirDropDelivered.ogg'
+			trigger.action.outTextForCoalition(sideTanker[coalit][3], msgTankerDown.text, msgTankerDown.displayTime)
+			trigger.action.outSoundForCoalition(sideTanker[coalit][3],msgTankerDown.sound) 
+			local msgTankerDown = {}  
+			msgTankerDown.text = 'The enemy MPRS tanker is down. It will respawn in ' .. tostring(math.floor((FDS.respawnTankerTime/60)+0.7)) .. ' minutes.'
+			msgTankerDown.displayTime = 10  
+			msgTankerDown.sound = 'Msg.ogg'
+			trigger.action.outTextForCoalition(sideTanker[coalit][2], msgTankerDown.text, msgTankerDown.displayTime)
+			trigger.action.outSoundForCoalition(sideTanker[coalit][2],msgTankerDown.sound) 
+			mist.scheduleFunction(respawnTankerMPRS, {coalit},timer.getTime()+FDS.respawnTankerTime)
+		end
+		if _initEnt:getDesc() and _initEnt:getDesc().typeName == 'KC-135' then
+			local coalit = _initEnt:getCoalition()
+			local sideTanker = {{'Blue_Tanker_1_Cesta', 2, 1, 'red'}, {'Red_Tanker_1_Cesta', 1, 2, 'blue'}}
+			mist.removeFunction(FDS.resTankerTime[sideTanker[coalit][4]][2])
+			mist.respawnGroup(sideTanker[coalit][1], true)
+			local msgTankerDown = {}  
+			msgTankerDown.text = 'The enemy shot down our basket tanker. It will respawn in ' .. tostring(math.floor((FDS.respawnTankerTime/60)+0.7)) .. ' minutes.'
+			msgTankerDown.displayTime = 10  
+			msgTankerDown.sound = 'AirDropDelivered.ogg'
+			trigger.action.outTextForCoalition(sideTanker[coalit][3], msgTankerDown.text, msgTankerDown.displayTime)
+			trigger.action.outSoundForCoalition(sideTanker[coalit][3],msgTankerDown.sound) 
+			local msgTankerDown = {}  
+			msgTankerDown.text = 'The enemy basket tanker is down. It will respawn in ' .. tostring(math.floor((FDS.respawnTankerTime/60)+0.7)) .. ' minutes.'
+			msgTankerDown.displayTime = 10  
+			msgTankerDown.sound = 'Msg.ogg'
+			trigger.action.outTextForCoalition(sideTanker[coalit][2], msgTankerDown.text, msgTankerDown.displayTime)
+			trigger.action.outSoundForCoalition(sideTanker[coalit][2],msgTankerDown.sound) 
+			mist.scheduleFunction(respawnTanker, {coalit},timer.getTime()+FDS.respawnTankerTime)
 		end
 		if FDS.lastHits[_initEnt:getID()] ~= nil then
 			local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
@@ -2253,10 +2412,11 @@ FDS.eventActions = FDS.switch {
 		local initCoa = 0
 		local rewardType = ''
 		if _initEnt ~= nil and _initEnt:getPlayerName() then
-			for _,i in pairs(FDS.teamPoints) do
+			for j,i in pairs(FDS.teamPoints) do
 				for name,value in pairs(i['Players']) do
 					if _initEnt:getPlayerName() == name then
 						currV = value
+						actorDetails = {j, name}
 					end
 				end
 			end
@@ -2279,6 +2439,7 @@ FDS.eventActions = FDS.switch {
 					trigger.action.outText(msg.text, msg.displayTime)
 					trigger.action.outSound(msg.sound) 
 					trigger.action.smoke(createPoint,3)
+					FDS.teamPoints[actorDetails[1]]['Players'][actorDetails[2]] = nil
 				end
 			end
 			if FDS.lastHits[_initEnt:getID()] ~= nil then
@@ -2525,6 +2686,45 @@ FDS.eventActions = FDS.switch {
 			end
 		end
 
+		if _initEnt ~= nil and _initEnt:getPlayerName() then
+			--if FDS.lastHits[_initEnt:getID()] ~= nil then
+			--	FDS.lastHits[_initEnt:getID()] = nil
+			--end
+			--for i,j in pairs(FDS.lastHits) do
+			--	if _initEnt:getID() == j[1] then
+			--		FDS.lastHits[i] = nil
+			--	end
+			--end
+			for _,i in pairs(FDS.teamPoints) do
+				for name,value in pairs(i['Players']) do
+					if _initEnt:getPlayerName() == name then
+						currV = value
+					end
+				end
+			end
+			if currV > 0.0 then
+				--createPoint = closestZone(_initEnt:getPosition().p)
+				createPoint = _initEnt:getPosition().p
+				createPoint.y = land.getHeight({x = createPoint.x,y = createPoint.z})
+				local newValue = true
+				for _,i in pairs(FDS.dropZones) do
+					if i[3] == _event.initiator:getPlayerName() and i[1].x == createPoint.x and i[1].y == createPoint.y and i[1].z == createPoint.z then
+						newValue = false
+					end
+				end
+				if newValue then 
+					table.insert(FDS.dropZones,{createPoint, currV, _event.initiator:getPlayerName()}) 
+					local msg = {}
+					msg.text = 'A new drop zone has been created with ' .. tostring(currV) .. ' points.'
+					msg.displayTime = 60  
+					msg.sound = 'Msg.ogg'
+					trigger.action.outText(msg.text, msg.displayTime)
+					trigger.action.outSound(msg.sound)
+					trigger.action.smoke(createPoint,3)
+				end
+			end
+		end
+
 		if playerCheck == false and coaCheck == true then
 			-- If not player, verify zones
 			if _initEnt:getCoalition() == 2 then
@@ -2716,7 +2916,8 @@ FDS.eventHandler = {}
 function FDS.eventHandler:onEvent(_event)
 	-- Debug
 	--local msgfinal = {}
-	--msgfinal.text = tostring(_event.id)
+	--local eventName = find(world.event, _event.id)
+	--msgfinal.text = tostring(eventName)
 	--msgfinal.displayTime = 5 
 	--msgfinal.sound = 'Msg.ogg' 
 	--trigger.action.outText(msgfinal.text, msgfinal.displayTime)
@@ -2731,7 +2932,8 @@ end
 mist.scheduleFunction(protectCall, {creatingBases},timer.getTime()+1)
 -- Updating Players
 --mist.scheduleFunction(checkPlayersOn, {},timer.getTime()+1.5,5)
-mist.scheduleFunction(protectCall, {checkPlayersOn},timer.getTime()+1.5,5)
+--mist.scheduleFunction(protectCall, {checkPlayersOn},timer.getTime()+1.5,5)
+
 -- Starting check drop routine
 --mist.scheduleFunction(checkDropZones, {},timer.getTime()+2,300)
 mist.scheduleFunction(protectCall, {checkDropZones},timer.getTime()+2,300)
@@ -2758,6 +2960,8 @@ end
 for _,i in pairs(FDS.coalitionCode) do
 	--FDS.resAWACSTime[i][2] = mist.scheduleFunction(respawnAWACSFuel, {i},timer.getTime()+FDS.fuelAWACSRestart)
 	FDS.resAWACSTime[i][2] = mist.scheduleFunction(protectCall,{respawnAWACSFuel, i},timer.getTime()+FDS.fuelAWACSRestart)
+	FDS.resTankerTime[i][2] = mist.scheduleFunction(protectCall,{respawnTankerFuel, i},timer.getTime()+FDS.fuelTankerRestart)
+	FDS.resMPRSTankerTime[i][2] = mist.scheduleFunction(protectCall,{respawnMPRSTankerFuel, i},timer.getTime()+FDS.fuelTankerRestart)
 end
 
 --Events
