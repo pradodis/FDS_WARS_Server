@@ -2686,45 +2686,6 @@ FDS.eventActions = FDS.switch {
 			end
 		end
 
-		if _initEnt ~= nil and _initEnt:getPlayerName() then
-			--if FDS.lastHits[_initEnt:getID()] ~= nil then
-			--	FDS.lastHits[_initEnt:getID()] = nil
-			--end
-			--for i,j in pairs(FDS.lastHits) do
-			--	if _initEnt:getID() == j[1] then
-			--		FDS.lastHits[i] = nil
-			--	end
-			--end
-			for _,i in pairs(FDS.teamPoints) do
-				for name,value in pairs(i['Players']) do
-					if _initEnt:getPlayerName() == name then
-						currV = value
-					end
-				end
-			end
-			if currV > 0.0 then
-				--createPoint = closestZone(_initEnt:getPosition().p)
-				createPoint = _initEnt:getPosition().p
-				createPoint.y = land.getHeight({x = createPoint.x,y = createPoint.z})
-				local newValue = true
-				for _,i in pairs(FDS.dropZones) do
-					if i[3] == _event.initiator:getPlayerName() and i[1].x == createPoint.x and i[1].y == createPoint.y and i[1].z == createPoint.z then
-						newValue = false
-					end
-				end
-				if newValue then 
-					table.insert(FDS.dropZones,{createPoint, currV, _event.initiator:getPlayerName()}) 
-					local msg = {}
-					msg.text = 'A new drop zone has been created with ' .. tostring(currV) .. ' points.'
-					msg.displayTime = 60  
-					msg.sound = 'Msg.ogg'
-					trigger.action.outText(msg.text, msg.displayTime)
-					trigger.action.outSound(msg.sound)
-					trigger.action.smoke(createPoint,3)
-				end
-			end
-		end
-
 		if playerCheck == false and coaCheck == true then
 			-- If not player, verify zones
 			if _initEnt:getCoalition() == 2 then
