@@ -17,6 +17,12 @@ env.info('FDS started')
 FDS.exportVector = {}
 FDS.recordDeliveredPoints = nil
 FDS.teamPoints = {}
+FDS.playersCredits = {}
+FDS.cargoList = {} -- Aircrafts with cargo
+FDS.valuableList = {}
+FDS.deployedUnits = {} -- All deployed units
+FDS.isName = false
+FDS.isOnline = true
 FDS.zoneSts = {}
 FDS.redZones = {'Red Zone 1','Red Zone 2'}
 FDS.blueZones = {'Blue Zone 1','Blue Zone 2'}
@@ -28,7 +34,7 @@ FDS.retrievedZones = {}
 FDS.entityKills = {}
 FDS.killedByEntity = {}
 FDS.playersKillRecord = nil 
-FDS.dropHeliTypes = {'UH-1H','Mi-8MT'}
+FDS.dropHeliTypes = {'UH-1H','Mi-8MT','SA342Mistral','Mi-24P'}
 FDS.blueRelieveZones = {'Sochi-Adler', 'Gudauta', 'Sukhumi-Babushara', 'Shpora-11', 'Shpora-21', 'Blue_Carrier_K', 'Blue_Carrier_F', 'Blue_Carrier_S', 'Blue_Carrier_T', 'Blue_Carrier_SuperCarrier'}
 FDS.redRelieveZones = {'Maykop-Khanskaya', 'Krasnodar-Center', 'Krasnodar-Pashkovsky' ,'Moscow-11','Moscow-21', 'Red_Carrier_K', 'Red_Carrier_F', 'Red_Carrier_S', 'Red_Carrier_T', 'Red_Carrier_SuperCarrier'}
 FDS.resAWACSTime = {
@@ -59,7 +65,9 @@ FDS.trueCoalitionCode = {
 	[2] = 'blue'
 }
 
-for i,j in  pairs{'blue','red'} do
+for i,j in pairs{'blue','red'} do
+	FDS.deployedUnits[j] = {}
+	FDS.playersCredits[j] = {}
 	FDS.teamPoints[j] = {['Base'] = 0,['Players'] = {}}
 	FDS.zoneSts[j] = {}
 	if j == 'blue' then
@@ -87,7 +95,7 @@ FDS.uCat.Infantry = {"Paratrooper AKS-74","Paratrooper RPG-16"}
 FDS.wtime = 1
 FDS.randomDropLimit = 2
 FDS.callCost = 1000.
-FDS.distMin = 75.
+FDS.distMin = 50.
 FDS.numberZones = 45
 --FDS.exportPath = lfs.currentdir() .. 'fdsServerData\\'
 FDS.exportPath = 'C:\\fdsServerData\\'
@@ -116,6 +124,8 @@ FDS.rewardDict = {
 	['C-130'] = FDS.cargoReward,
 	['Paratrooper AKS-74'] = FDS.infAKReward,
 	['Paratrooper RPG-16'] = FDS.infRPGReward,
+	['Infantry AK ver3'] = FDS.infAKReward,
+	['Soldier M249'] = FDS.infAKReward,
 	['Default'] = FDS.enemyReward
 }
 
@@ -184,6 +194,119 @@ FDS.blueunitsInZones = {}
 FDS.bluecountUCat = {}
 FDS.blueunitsInZone = {}
 
+-- FARP Logic
+FDS.farpOwner = {}
+FDS.farpEverCaptured = false
+FDS.refreshFARPScan = 5.0
+FDS.dropLimitAlt = 10.0
+FDS.dropSpeedLimit = 0.5
+FDS.timeProbe = 0.5
+FDS.farpCoalition = 0
+function checkIfEmpty(arg)
+	if #arg > 0 then
+		return false
+	else
+		return true
+	end
+end
+function checkIfNotEmpty(arg)
+	if #arg > 0 then
+		return true
+	else
+		return false
+	end
+end
+FDS.actionOption = {
+	['loadCargo'] = {'pick', checkIfNotEmpty, "You are not in your helipad/airfield."},
+	['dropTroops'] = {'disable', checkIfEmpty, "You cannot deploy troops here (too close from an enemy helipad/airfield)."},
+	['loadValuableGoods'] = {'goods', checkIfNotEmpty, "You are not in the advanced FARP to load the goods."},
+	['deliverGoods'] = {'deliver', checkIfNotEmpty, "You cannot deliver goods here (too far from an allied helipad/airfield)."}
+}
+FDS.coalitionAceptZones = {
+	['blue'] = {
+		['pick'] = {'Blue_PickZone_1', 'Blue_PickZone_2'}, 
+		['disable'] = {'blueTroopsNotAllowed_1', 'blueTroopsNotAllowed_2', 'blueTroopsNotAllowed_3', 'blueTroopsNotAllowed_4', 'blueTroopsNotAllowed_5'},
+		['goods'] = {'Mid_Helipad_Load'},
+		['deliver'] = {'Blue_PickZone_1', 'Blue_PickZone_2'}},
+	['red'] = {
+		['pick'] = {'Red_PickZone_1', 'Red_PickZone_2'}, 
+		['disable'] = {'redTroopsNotAllowed_1', 'redTroopsNotAllowed_2', 'redTroopsNotAllowed_3', 'redTroopsNotAllowed_4'},
+		['goods'] = {'Mid_Helipad_Load'},
+		['deliver'] = {'Red_PickZone_1', 'Red_PickZone_2'}}
+	}
+-- Credits Logic
+FDS.bypassPlace = false
+FDS.bypassSpeed = false
+FDS.bypassAlt = false
+FDS.bypassCredits = false
+-- Position
+FDS.dropDistance = 15
+FDS.dropTroopDistance = 6
+FDS.advanceDistance = 10
+--Mass
+FDS.soldierWeight = 80 -- kg
+FDS.kitWeight = 20 -- kg
+FDS.riffleWeight = 5 -- kg
+FDS.manpadWeight = 18 -- kg
+FDS.rpgWeight = 7.6 -- kg
+FDS.mgWeight = 10 -- kg
+FDS.ammoWeight = 50 -- kg
+FDS.AAAWeigth = 500 -- kg
+FDS.ShilkaWeight = 1500 -- kg
+FDS.StrelaWeight = 1500 -- kg
+FDS.TunguskaWeight = 3000 -- kg
+FDS.TORWeight = 3000 -- kg
+FDS.ammoWeight = 500 -- kg
+FDS.JTACWeight = 250 -- kg
+FDS.minAltitude = 11000.0
+FDS.maxAltitude = 22000.0
+FDS.goldenBars = {
+	['weight'] = 150,
+	['value'] = 40,
+	['slots'] = 1
+}
+FDS.laserCodes = {
+	['default'] = '1688',
+	['su25T'] = '1113'
+}
+FDS.validLaserDigits={
+	{'5','6','7'},
+	{'1','2','3','4','5','6','7','8'},
+	{'1','2','3','4','5','6','7','8'}
+}
+FDS.airSupportAssets = {
+	{name = "Mig-19", cost = 500, groupName = "_AS_LVL1"},
+	{name = "Mig-23", cost = 750, groupName = "_AS_LVL2"},
+	{name = "Mig-29", cost = 1000, groupName = "_AS_LVL3"}
+	--{name = "JTAC UAV", cost = 300, groupName = "_Spy_Drone", deafultCode = '1688', su25TCode = '1113'}
+}
+FDS.heliSlots = {
+	['UH-1H'] = 12,
+	['Mi-8MT'] = 22,
+	['SA342Mistral'] = 2,
+	['Mi-24P'] = 8
+}
+FDS.troopAssetsNumbered = {
+	{name = "AK Soldier", cost = 50, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}},
+	{name = "MG Soldier", cost = 100, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}},
+	{name = "RPG Soldier", cost = 200, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.rpgWeight}, slots = 1, variability = {{90,120}}},
+	{name = "Igla", cost = 500, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.manpadWeight}, slots = 1, variability = {{90,120}}},
+	--{name = "JTAC Team", cost = 250, mass = {FDS.JTACWeight, FDS.soldierWeight, FDS.soldierWeight}, slots = 2, variability = {nil,{90,120},{90,120}}, deafultCode = '1688', su25TCode = '1113'},
+	{name = "Shilka", cost = 750, mass = {FDS.ShilkaWeight}, slots = 5, variability = {}},
+	{name = "Strela", cost = 1200, mass = {FDS.StrelaWeight}, slots = 5, variability = {}},
+	{name = "Tunguska", cost = 2500, mass = {FDS.TunguskaWeight}, slots = 10, variability = {}},
+	{name = "TOR", cost = 2500, mass = {FDS.TORWeight}, slots = 10, variability = {}},
+	{name = "Ammo", cost = 250, mass = {FDS.ammoWeight}, slots = 2, variability = {}}
+}
+FDS.troopAssets = {}
+for _, i in pairs(FDS.troopAssetsNumbered) do
+	FDS.troopAssets[i.name] = i
+end
+FDS.airSupportAssetsKeys = {}
+for _, i in pairs(FDS.airSupportAssets) do
+	FDS.airSupportAssetsKeys[i.name] = i
+end
+
 -- Starting event file
 if FDS.exportDataSite then
 	lfs.mkdir(FDS.exportPath)
@@ -238,6 +361,502 @@ function protectCall(f,arg)
 		local infile = io.open(FDS.exportPath .. "missionError.log", "a")
 		local instr = infile:write("Error! At time: Day: " .. os.date("%d") .. "/" .. os.date("%m") .. "/" .. os.date("%y") .. " - Hour: " .. os.date("%H") .. ":" .. os.date("%M") .. ":" .. os.date("%S") .. " - Func: " .. func .. "\n" .. message .. "\n")
 		infile:close()
+	end
+end
+
+function FDS.retrieveUcid(arg,name)
+	local gpUcid = ""
+	local activePlayerList = net.get_player_list()
+	for _, i in pairs(activePlayerList) do
+		local playerData = net.get_player_info(i)
+		if playerData.name == arg then
+			gpUcid = playerData.ucid
+		end
+	end
+	if name then
+		return arg
+	else
+		return gpUcid
+	end
+end
+
+function FDS.checkPlayerOnline(arg,name,online)
+	local gpMsg = ""
+	local activePlayerList = net.get_player_list()	
+	if online then
+		for _, i in pairs(activePlayerList) do
+			local playerData = net.get_player_info(i)
+			if not name and playerData.ucid == arg then
+				for i,j in pairs(mist.DBs.humansByName) do
+					if Unit.getByName(i) and Unit.getByName(i):getPlayerName() then
+						if Unit.getByName(i):getPlayerName() == playerData.name then
+							gpMsg = Unit.getByName(i):getGroup()
+						end
+					end
+				end
+			else
+				for i,j in pairs(mist.DBs.humansByName) do
+					if Unit.getByName(i) and Unit.getByName(i):getPlayerName() then
+						if Unit.getByName(i):getPlayerName() == arg then
+							gpMsg = Unit.getByName(i):getGroup()
+						end
+					end
+				end
+			end
+		end
+	else
+		for i,j in pairs(mist.DBs.humansByName) do
+			if Unit.getByName(i) and Unit.getByName(i):getPlayerName() then
+				if Unit.getByName(i):getPlayerName() == arg then
+					gpMsg = Unit.getByName(i):getGroup()
+				end
+			end
+		end		
+	end
+	return gpMsg
+end
+
+function calculateWeight(unit)
+	local usedSlots = 0
+	local totalInternalMass = 0
+	for _, i in pairs(FDS.cargoList[tostring(unit:getName())]) do
+		usedSlots = usedSlots + i.slot
+		totalInternalMass = totalInternalMass + i.mass
+	end
+	for _, i in pairs(FDS.valuableList[tostring(unit:getName())]) do
+		usedSlots = usedSlots + i.slot
+		totalInternalMass = totalInternalMass + i.mass
+	end
+	return {usedSlots, totalInternalMass}
+end
+
+function FDS.loadCargo(gp)
+	local cycle = true
+	for repetition = 1,gp[3],1 do
+		local myUni = gp[1]:getUnits()[1]
+		local totalMass = 0
+		local totalInternalMass = 0
+		for i,j in pairs(FDS.troopAssets[gp[2]].mass) do
+			if FDS.troopAssets[gp[2]].variability[i] then
+				totalMass = totalMass + j*(math.random(FDS.troopAssets[gp[2]].variability[i][1],FDS.troopAssets[gp[2]].variability[i][2])/100)
+			else
+				totalMass = totalMass + j
+			end		
+		end
+		if FDS.cargoList[tostring(gp[1]:getName())] == nil then
+			FDS.cargoList[tostring(gp[1]:getName())] = {} 
+		end
+		--local usedSlots = 0
+		--totalInternalMass = totalMass
+		--for _, i in pairs(FDS.cargoList[tostring(gp[1]:getName())]) do
+		--	usedSlots = usedSlots + i.slot
+		--	totalInternalMass = totalInternalMass + i.mass
+		--end
+		usedSlots, totalInternalMass = unpack(calculateWeight(gp[1]:getUnits()[1]))
+		totalInternalMass = totalInternalMass + totalMass
+		local gpUcid = FDS.retrieveUcid(gp[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+		local msg = {}
+		msg.displayTime = 5
+		if (usedSlots + FDS.troopAssets[gp[2]].slots) < FDS.heliSlots[myUni:getDesc().typeName] and (FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] >= FDS.troopAssets[gp[2]].cost or FDS.bypassCredits) then
+			if gp[2] == "JTAC Team" then
+				table.insert(FDS.cargoList[tostring(gp[1]:getName())], {name = FDS.troopAssets[gp[2]].name, mass = totalMass, slot = FDS.troopAssets[gp[2]].slots, code = gp[4]})
+			else
+				table.insert(FDS.cargoList[tostring(gp[1]:getName())], {name = FDS.troopAssets[gp[2]].name, mass = totalMass, slot = FDS.troopAssets[gp[2]].slots})
+			end
+			trigger.action.setUnitInternalCargo(myUni:getName(),totalInternalMass)
+			msg.text = FDS.troopAssets[gp[2]].name .. " loaded in the helicopter. It weighs " .. tostring(totalMass) .. " kg.\nTotal internal mass: " .. tostring(totalInternalMass) .. " kg. Slots Available: " .. tostring(FDS.heliSlots[myUni:getDesc().typeName] - usedSlots - 1) .. ". \n"
+		else
+			if (FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] < FDS.troopAssets[gp[2]].cost and not FDS.bypassCredits) then
+				msg.text = "Insuficient credits."
+			else
+				msg.text = "No slots are available in the helicopter."
+			end
+			cycle = false			
+		end
+		msg.sound = 'fdsTroops.ogg'
+		trigger.action.outTextForGroup(gp[1]:getID(),msg.text,msg.displayTime)
+		trigger.action.outSoundForGroup(gp[1]:getID(),msg.sound)
+		if not cycle then
+			break
+		end
+	end
+end
+
+function FDS.loadValuableGoods(gp)
+	local cycle = true
+	for repetition = 1,gp[3],1 do
+		local myUni = gp[1]:getUnits()[1]
+		local totalInternalMass = 0
+		--totalInternalMass = totalMass
+		--local usedSlots = 0
+		--for _, i in pairs(FDS.cargoList[tostring(gp[1]:getName())]) do
+		--	usedSlots = usedSlots + i.slot
+		--	totalInternalMass = totalInternalMass + i.mass
+		--end
+		usedSlots, totalInternalMass = unpack(calculateWeight(gp[1]:getUnits()[1]))
+		totalInternalMass = totalInternalMass + FDS.goldenBars.weight
+		local msg = {}
+		msg.displayTime = 5
+		if usedSlots < FDS.heliSlots[myUni:getDesc().typeName] then
+			table.insert(FDS.valuableList[tostring(gp[1]:getName())], {name = "Valuable Goods", mass = FDS.goldenBars.weight, slot = FDS.goldenBars.slots})
+			trigger.action.setUnitInternalCargo(myUni:getName(),totalInternalMass)
+			msg.text = "Goods loaded in the helicopter. They weigh " .. tostring(FDS.goldenBars.weight) .. " kg.\nTotal internal mass: " .. tostring(totalInternalMass) .. " kg. Slots Available: " .. tostring(FDS.heliSlots[myUni:getDesc().typeName] - usedSlots - 1) .. ". \n"
+			msg.sound = 'fdsTroops.ogg'
+		else
+			msg.text = "No slots are available in the helicopter."
+			msg.sound = 'fdsTroops.ogg'
+			cycle = false			
+		end		
+		trigger.action.outTextForGroup(gp[1]:getID(),msg.text,msg.displayTime)
+		trigger.action.outSoundForGroup(gp[1]:getID(),msg.sound)
+		if not cycle then
+			break
+		end
+	end
+end
+
+function FDS.cargoStatus(gp)
+	local totalMass = 0
+	local occupiedSlots = 0
+	local freeSlots = 0
+	local slotList = ""
+	if FDS.cargoList[tostring(gp[1]:getName())] ~= nil then
+		slotList = slotList .. "\n-------- Troops --------\n\n"
+		for i,j in pairs(FDS.cargoList[tostring(gp[1]:getName())]) do
+			totalMass = totalMass + j.mass
+			occupiedSlots = occupiedSlots + j.slot
+			slotList = slotList .. "Slot " .. tostring(i) .. ": " .. j.name .. " - Mass: " .. j.mass .. " kg.\n"
+		end
+	end
+	if FDS.valuableList[tostring(gp[1]:getName())] ~= nil then	
+		slotList = slotList .. "\n-------- Valuable Goods --------\n\n"
+		for i,j in pairs(FDS.valuableList[tostring(gp[1]:getName())]) do
+			totalMass = totalMass + j.mass
+			occupiedSlots = occupiedSlots + j.slot
+			slotList = slotList .. "Slot " .. tostring(i) .. ": " .. j.name .. " - Mass: " .. j.mass .. " kg.\n"
+		end
+	end
+	freeSlots = FDS.heliSlots[gp[1]:getUnits()[1]:getDesc().typeName] - occupiedSlots
+	local msg = {}
+	msg.text = "*** Internal Cargo Status *** \n"
+	msg.text = msg.text .. "Total Internal Mass: " .. tostring(totalMass) .. " kg.\n"
+	msg.text = msg.text .. "Free Slots: " .. tostring(freeSlots) .. ".\n\nSlot Order: \n"
+	if occupiedSlots > 0 then
+		msg.text = msg.text .. slotList
+	end
+	msg.displayTime = 10
+	msg.sound = 'Welcome.ogg'
+	trigger.action.outTextForGroup(gp[1]:getID(),msg.text,msg.displayTime)
+	trigger.action.outSoundForGroup(gp[1]:getID(),msg.sound)
+end
+
+function FDS.validateDropBoard(args)
+	local heliPos1 = args.rawData[1]:getUnits()[1]:getPosition()
+	local probeTime1 = timer.getTime()
+	local terrainAlt = land.getHeight({x = heliPos1.p.x, y = heliPos1.p.z})
+	if heliPos1.p.y-terrainAlt <= FDS.dropLimitAlt or FDS.bypassAlt then
+		mist.scheduleFunction(FDS.validateSpeed,{{['firstObject'] = args, ['firstPos'] = heliPos1}},timer.getTime()+FDS.timeProbe)
+		return true
+	else
+		local msg = {}
+		msg.displayTime = 5
+		msg.text = "You are in flight. Land the aircraft first."
+		msg.sound = 'fdsTroops.ogg'
+		trigger.action.outTextForGroup(args.rawData[1]:getID(),msg.text,msg.displayTime)
+		trigger.action.outSoundForGroup(args.rawData[1]:getID(),msg.sound)
+		return false
+	end
+end
+
+function FDS.validateSpeed(args)
+	local actorCoalition = args.firstObject.rawData[1]:getCoalition()
+	local heliPos2 = args.firstObject.rawData[1]:getUnits()[1]:getPosition()
+	local probeTime2 = timer.getTime()
+	local currentSpeed = math.sqrt((heliPos2.p.x-args.firstPos.p.x)^2 + (heliPos2.p.z-args.firstPos.p.z)^2)
+	if currentSpeed < FDS.dropSpeedLimit or FDS.bypassSpeed then
+		local disabledZone = mist.getUnitsInZones({args.firstObject.rawData[1]:getUnits()[1]:getName()},FDS.coalitionAceptZones[FDS.trueCoalitionCode[actorCoalition]][FDS.actionOption[args.firstObject.dropCaseString][1]],'cylinder')
+		if FDS.actionOption[args.firstObject.dropCaseString][2](disabledZone) or FDS.bypassPlace then
+			if args.firstObject.dropCaseString == 'loadValuableGoods' then 
+				if FDS.farpCoalition == actorCoalition then
+					args.firstObject.dropCase(args.firstObject.rawData)
+				else
+					local msg = {}
+					msg.displayTime = 5
+					msg.text = "You must take control of the FARP before loading goods."
+					msg.sound = 'fdsTroops.ogg'
+					trigger.action.outTextForGroup(args.firstObject.rawData[1]:getID(),msg.text,msg.displayTime)
+					trigger.action.outSoundForGroup(args.firstObject.rawData[1]:getID(),msg.sound)
+				end
+			else
+				args.firstObject.dropCase(args.firstObject.rawData)
+			end
+		else
+			local msg = {}
+			msg.displayTime = 5
+			msg.text = FDS.actionOption[args.firstObject.dropCaseString][3]
+			msg.sound = 'fdsTroops.ogg'
+			trigger.action.outTextForGroup(args.firstObject.rawData[1]:getID(),msg.text,msg.displayTime)
+			trigger.action.outSoundForGroup(args.firstObject.rawData[1]:getID(),msg.sound)
+		end
+		return true
+	else
+		local msg = {}
+		msg.displayTime = 5
+		msg.text = "You are moving. Stop the aircraft."
+		msg.sound = 'fdsTroops.ogg'
+		trigger.action.outTextForGroup(args.firstObject.rawData[1]:getID(),msg.text,msg.displayTime)
+		trigger.action.outSoundForGroup(args.firstObject.rawData[1]:getID(),msg.sound)
+		return false
+	end
+end
+
+function FDS.dropTroops(args)
+	local msg = {}
+	local elementNumber = 1
+	local numberAdjust = 0
+	local usedSlots = 0
+	local totalInternalMass = 0
+	--for _, i in pairs(FDS.cargoList[tostring(args[1]:getName())]) do
+	--	usedSlots = usedSlots + i.slot
+	--	totalInternalMass = totalInternalMass + i.mass
+	--end
+	iterationNumber = 0
+	if args[2] == -1 then
+		iterationNumber = #FDS.cargoList[tostring(args[1]:getName())]
+	else
+		iterationNumber = args[2]
+	end
+	if #FDS.cargoList[tostring(args[1]:getName())] > 0 then
+		for i = 1, iterationNumber, 1 do
+			usedSlots, totalInternalMass = unpack(calculateWeight(args[1]:getUnits()[1]))
+			local dropPoint = args[1]:getUnits()[1]:getPosition().p
+			local headingDev = args[1]:getUnits()[1]:getPosition().x
+			local adjHeading = 0
+			local compz = 0
+			local compx = 0
+			local degreeHeading = math.atan2(headingDev.z, headingDev.x)*57.2958
+			if degreeHeading < 0 then
+				degreeHeading = 360 + degreeHeading
+			end
+			varDeg = 90
+			if degreeHeading + varDeg > 360 then
+				adjHeading = degreeHeading + varDeg - 360
+			elseif degreeHeading + varDeg < 0 then
+				adjHeading = degreeHeading + varDeg + 360
+			else
+				adjHeading = degreeHeading + varDeg
+			end
+			compz = math.sqrt(1/((math.tan(adjHeading*0.0174533)^2) + 1))
+			compx = compz*math.tan(adjHeading * 0.0174533)
+			if elementNumber == 1 then
+				numberAdjust = {x = 0, z = 0}
+			elseif (elementNumber % 2 == 0) then
+				numberAdjust = {z = FDS.dropTroopDistance*compx*math.floor(elementNumber/2), x = FDS.dropTroopDistance*compz*math.floor(elementNumber/2)}
+			else
+				numberAdjust = {z = -FDS.dropTroopDistance*compx*math.floor(elementNumber/2), x = -FDS.dropTroopDistance*compz*math.floor(elementNumber/2)}
+			end
+			elementNumber = elementNumber+1
+			dropPoint.x = dropPoint.x + headingDev.x*FDS.dropDistance + numberAdjust.x
+			dropPoint.z = dropPoint.z + headingDev.z*FDS.dropDistance + numberAdjust.z
+			local height = land.getHeight({x = dropPoint.x, y = dropPoint.z})
+			mockUpName = ""
+			if args[1]:getCoalition() == 1 then
+				local namePart = string.gsub(FDS.cargoList[tostring(args[1]:getName())][1].name, " ", "_")
+				mockUpName = mockUpName .. "Red_" .. namePart .. "_Deploy"
+			elseif args[1]:getCoalition() == 2 then
+				local namePart = string.gsub(FDS.cargoList[tostring(args[1]:getName())][1].name, " ", "_")
+				mockUpName = mockUpName .. "Blue_" .. namePart .. "_Deploy"
+			end
+			gp = Group.getByName(mockUpName)
+			gPData = mist.getGroupData(mockUpName,true)
+			gpR = mist.getGroupRoute(mockUpName,true)
+			new_GPR = mist.utils.deepCopy(gpR)
+			new_gPData = mist.utils.deepCopy(gPData)
+			new_gPData.units[1].x = dropPoint.x
+			new_gPData.units[1].y = dropPoint.z
+			new_gPData.units[1].alt = height
+			new_gPData.units[1].heading = math.atan2(headingDev.z, headingDev.x)
+			new_GPR[1].x = dropPoint.x
+			new_GPR[1].y = dropPoint.z
+			new_GPR[2].x = dropPoint.x + headingDev.x*FDS.advanceDistance
+			new_GPR[2].y = dropPoint.z + headingDev.z*FDS.advanceDistance
+			new_gPData.clone = true
+			new_gPData.route = new_GPR
+			local returnZone = mist.getUnitsInZones({args[1]:getUnits()[1]:getName()},FDS.coalitionAceptZones[FDS.trueCoalitionCode[args[1]:getCoalition()]]['pick'],'cylinder')
+			if #returnZone < 1 then
+				local newTroop = mist.dynAdd(new_gPData)
+				if FDS.cargoList[tostring(args[1]:getName())][1].code ~= nil then
+					ctld.JTACAutoLase(newTroop.name, FDS.cargoList[tostring(args[1]:getName())][1].code, false,"all") 
+				end
+				local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
+				trigger.action.setUnitInternalCargo(args[1]:getName(),massaFinal)
+				deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+				FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = deployerID
+				table.remove(FDS.cargoList[args[1]:getName()],1)
+				msg.text = "All troops are deployed.\n"
+			else
+				local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
+				trigger.action.setUnitInternalCargo(args[1]:getName(),massaFinal)
+				local gpUcid = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+				local cargoName = FDS.cargoList[tostring(args[1]:getName())][1].name
+				FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][gpUcid] + FDS.troopAssets[cargoName].cost
+				table.remove(FDS.cargoList[args[1]:getName()],1)
+				msg.text = "Troops went back to base.\n"
+			end
+		end
+		msg.displayTime = 10
+		msg.sound = 'fdsTroops.ogg'
+	else
+		msg.text = "No troops to drop off.\n"
+		msg.displayTime = 10
+		msg.sound = 'fdsTroops.ogg'
+	end
+	trigger.action.outTextForGroup(args[1]:getID(),msg.text,msg.displayTime)
+	trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
+end
+
+function FDS.deliverGoods(args)
+	local msg = {}
+	local elementNumber = 1
+	local numberAdjust = 0
+	local usedSlots = 0
+	local totalInternalMass = 0
+	--for _, i in pairs(FDS.cargoList[tostring(args[1]:getName())]) do
+	--	usedSlots = usedSlots + i.slot
+	--	totalInternalMass = totalInternalMass + i.mass
+	--end
+	iterationNumber = 0
+	if args[2] == -1 then
+		iterationNumber = #FDS.valuableList[tostring(args[1]:getName())]
+	else
+		iterationNumber = args[2]
+	end
+	if #FDS.valuableList[tostring(args[1]:getName())] > 0 then
+		for i = 1, iterationNumber, 1 do
+			usedSlots, totalInternalMass = unpack(calculateWeight(args[1]:getUnits()[1]))
+			local returnZone = mist.getUnitsInZones({args[1]:getUnits()[1]:getName()},FDS.coalitionAceptZones[FDS.trueCoalitionCode[args[1]:getCoalition()]]['deliver'],'cylinder')
+			if #returnZone > 0 or FDS.bypassPlace then
+				local massafinal = totalInternalMass-FDS.valuableList[tostring(args[1]:getName())][1].mass
+				trigger.action.setUnitInternalCargo(args[1]:getName(),massafinal)
+				deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+				table.remove(FDS.valuableList[args[1]:getName()],1)
+				local gpUcid = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+				FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][gpUcid] + FDS.goldenBars.value
+				msg.text = "Goods delivered.\n"
+			else
+				msg.text = "You are not at your helipad/airfield.\n"
+			end
+		end
+		msg.displayTime = 10
+		msg.sound = 'fdsTroops.ogg'
+	else
+		msg.text = "No goods to deliver.\n"
+		msg.displayTime = 10
+		msg.sound = 'fdsTroops.ogg'
+	end
+	trigger.action.outTextForGroup(args[1]:getID(),msg.text,msg.displayTime)
+	trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
+end
+
+function FDS.addCreditsOptions(gp)
+	local rootCredits = missionCommands.addSubMenuForGroup(gp:getID(), "Use Credits")
+	-- Air Support
+	local rootAirSupport = missionCommands.addSubMenuForGroup(gp:getID(), "Air Support", rootCredits)
+	local jtacAS = ''
+	for _, i in pairs(FDS.airSupportAssets) do
+		if i.name == "JTAC UAV" then
+			jtacAS = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($" .. tostring(i.cost) .. ")", rootAirSupport)
+			for label, code in pairs(FDS.laserCodes) do
+				missionCommands.addCommandForGroup(gp:getID(), "Laser code: " .. code .. " (" .. label .. ")", jtacAS, FDS.createJTACDrone, {gp, i.name, code})
+			end
+			jtacASCustom = missionCommands.addSubMenuForGroup(gp:getID(), "Custom laser code: 1", jtacAS)
+			jtacASCustomDigit = {}
+			for _, digit in pairs(FDS.validLaserDigits[1]) do
+				jtacASCustomDigit1 = missionCommands.addSubMenuForGroup(gp:getID(), digit, jtacASCustom)
+				for _, digit2 in pairs(FDS.validLaserDigits[2]) do
+					jtacASCustomDigit2 = missionCommands.addSubMenuForGroup(gp:getID(), digit2, jtacASCustomDigit1)
+					for _, digit3 in pairs(FDS.validLaserDigits[3]) do
+						missionCommands.addCommandForGroup(gp:getID(), digit3, jtacASCustomDigit2, FDS.createJTACDrone, {gp, i.name, '1' .. digit .. digit2 .. digit3})
+					end
+				end
+			end
+		else
+			missionCommands.addCommandForGroup(gp:getID(), i.name .. " - ($" .. tostring(i.cost) .. ")", rootAirSupport, FDS.createASupport, {gp, i.name})
+		end
+	end
+	-- Troop transport
+	local hasTransport = false
+	for key,_ in pairs(FDS.heliSlots) do
+		if gp:getUnits()[1]:getDesc().typeName == key then
+			hasTransport = true
+		end
+	end
+	if hasTransport then
+		local rootTroops = missionCommands.addSubMenuForGroup(gp:getID(), "Troop Transport", rootCredits)
+		local jtacTT = ''
+		for _, i in pairs(FDS.troopAssetsNumbered) do
+			if i.name == "JTAC Team" then
+				jtacTT = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($" .. tostring(i.cost) .. ")", rootTroops)
+				for label, code in pairs(FDS.laserCodes) do
+					missionCommands.addCommandForGroup(gp:getID(), "Laser code: " .. code .. " (" .. label .. ")", jtacTT, FDS.validateDropBoard, {['rawData'] = {gp, i.name,1, code}, ['dropCase'] = FDS.loadCargo, ['dropCaseString'] = 'loadCargo'})
+				end
+				jtacTTCustom = missionCommands.addSubMenuForGroup(gp:getID(), "Custom laser code: 1", jtacTT)
+				for _, digit in pairs(FDS.validLaserDigits[1]) do
+					jtacTTCustomDigit1 = missionCommands.addSubMenuForGroup(gp:getID(), digit, jtacTTCustom)
+					for _, digit2 in pairs(FDS.validLaserDigits[2]) do
+						jtacTTCustomDigit2 = missionCommands.addSubMenuForGroup(gp:getID(), digit2, jtacTTCustomDigit1)
+						for _, digit3 in pairs(FDS.validLaserDigits[3]) do
+							missionCommands.addCommandForGroup(gp:getID(), digit3, jtacTTCustomDigit2, FDS.validateDropBoard, {['rawData'] = {gp, i.name, 1, '1' .. digit .. digit2 .. digit3}, ['dropCase'] = FDS.loadCargo, ['dropCaseString'] = 'loadCargo'})
+						end
+					end
+				end
+			else
+				local troopType = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($".. i.cost ..")", rootTroops)
+				for j=1,10,1 do  
+					missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), troopType, FDS.validateDropBoard, {['rawData'] = {gp, i.name, j}, ['dropCase'] = FDS.loadCargo, ['dropCaseString'] = 'loadCargo'})
+				end
+			end
+		end
+		local cargoRoot = missionCommands.addSubMenuForGroup(gp:getID(), "Cargo")
+		missionCommands.addCommandForGroup(gp:getID(), "Status", cargoRoot, FDS.cargoStatus, {gp})
+		missionCommands.addCommandForGroup(gp:getID(), "Drop All", cargoRoot, FDS.validateDropBoard, {['rawData'] = {gp,-1}, ['dropCase'] = FDS.dropTroops, ['dropCaseString'] = 'dropTroops'})
+		local cargoDropRoot = missionCommands.addSubMenuForGroup(gp:getID(), "Drop", cargoRoot)
+		for j=1,10,1 do  
+			missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), cargoDropRoot, FDS.validateDropBoard, {['rawData'] = {gp, j}, ['dropCase'] = FDS.dropTroops, ['dropCaseString'] = 'dropTroops'})
+		end
+		local variousGoods = missionCommands.addSubMenuForGroup(gp:getID(), "Valuable goods",cargoRoot)
+		local goodsLoadRoot = missionCommands.addSubMenuForGroup(gp:getID(), "Load", variousGoods)
+		for j=1,10,1 do  
+			missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), goodsLoadRoot, FDS.validateDropBoard, {['rawData'] = {gp,'', j}, ['dropCase'] = FDS.loadValuableGoods, ['dropCaseString'] = 'loadValuableGoods'})
+		end
+		missionCommands.addCommandForGroup(gp:getID(), "Deliver", variousGoods, FDS.validateDropBoard,{['rawData'] = {gp,-1}, ['dropCase'] = FDS.deliverGoods, ['dropCaseString'] = 'deliverGoods'})
+	end
+end
+
+function FDS.checkFarpDefences()
+	if FDS.farpEverCaptured and StaticObject.getByName("Mid_Helipad"):getCoalition() == 3 then
+		defenceForces = {}
+		for i,j in pairs(FDS.farpOwner) do
+			for k,_ in pairs(FDS.deployedUnits[i]) do
+				if defGp and k then
+					table.insert(defenceForces,k)
+				end
+			end
+			aliveForces = mist.getUnitsInZones(defenceForces,{"Capture_Farp"},'cylinder')
+			if #aliveForces == 0 then
+				if Group.getByName(j) ~= nil then
+					Group.getByName(j):destroy()
+				else
+					local UOI = {}
+					local aliveForces = {}
+					for i, j in pairs(mist.makeUnitTable({'[' .. i .. '][vehicle]'})) do
+						table.insert(UOI,j)
+					end
+					emergengyAliveForces = mist.getUnitsInZones(UOI,{"Capture_Farp"},'cylinder')
+					emergengyAliveForces[1]:getGroup():destroy()
+				end
+			end 
+		end
 	end
 end
 
@@ -313,14 +932,28 @@ function creatingBases()
 					gpCoa = k:getCoalition()
 					gpPN = k:getPlayerName()
 					gpName = k:getName()
+					gpUcid = FDS.retrieveUcid(gpPN,FDS.isName)
+					local cleanCargo = false
+					if k:getCategory() == 1 then
+						for i,j in pairs(FDS.heliSlots) do
+							if k:getDesc().typeName == i then
+								cleanCargo = true
+							end
+						end
+						if cleanCargo then
+							FDS.cargoList[tostring(k:getName())] = {} 
+							FDS.valuableList[tostring(k:getName())] = {} 
+						end
+					end
 					local msg = {}
-					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n - Join our Discord community at FDS Server (Link available in the briefing)'
+					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n - Join our Discord community at FDS Server (Link available in the briefing). \nAn explanation about this server is available on our youtube channel: "FDS Server - DCS".'
 					msg.displayTime = 60
 					msg.sound = 'Welcome.ogg'
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Current War Status',nil, FDS.warStatus, {gpId, gpCoa, gpPN}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Where to Attack',nil, FDS.whereStrike, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Where to Defend',nil, FDS.whereDefend, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
-					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Drop Zones',nil, FDS.whereDropZones, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime) 
+					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Drop Zones',nil, FDS.whereDropZones, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
+					FDS.addCreditsOptions(gp)
 					mist.scheduleFunction(trigger.action.outTextForGroup,{gpId,msg.text,msg.displayTime},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(trigger.action.outSoundForGroup,{gpId,msg.sound},timer.getTime()+FDS.wtime)
 					if i == 1 then 
@@ -328,27 +961,46 @@ function creatingBases()
 					elseif i == 2 then
 						FDS.teamPoints['blue']['Players'][gpPN] = 0
 					end
+					if FDS.playersCredits[FDS.trueCoalitionCode[gpCoa]][gpUcid] == nil then
+						FDS.playersCredits[FDS.trueCoalitionCode[gpCoa]][gpUcid] = 0
+					end
 				elseif i == 2 then
 					gp = k:getGroup()
 					gpId = gp:getID()
 					gpCoa = k:getCoalition()
 					gpPN = k:getPlayerName()
 					gpName = k:getName()
+					gpUcid = FDS.retrieveUcid(gpPN,FDS.isName)
+					local cleanCargo = false
+					if k:getCategory() == 1 then
+						for i,j in pairs(FDS.heliSlots) do
+							if k:getDesc().typeName == i then
+								cleanCargo = true
+							end
+						end
+						if cleanCargo then
+							FDS.cargoList[tostring(k:getName())] = {} 
+							FDS.valuableList[tostring(k:getName())] = {} 
+						end
+					end
 					local msg = {}
-					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n - Join our Discord community at FDS Server (Link available in the briefing)'
+					msg.text = gpPN .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n - Join our Discord community at FDS Server (Link available in the briefing). \nAn explanation about this server is available on our youtube channel: "FDS Server - DCS".'
 					msg.displayTime = 60
 					msg.sound = 'Welcome.ogg'
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Current War Status',nil, FDS.warStatus, {gpId, gpCoa, gpPN}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Where to Attack',nil, FDS.whereStrike, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Where to Defend',nil, FDS.whereDefend, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Drop Zones',nil, FDS.whereDropZones, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
+					FDS.addCreditsOptions(gp)
 					mist.scheduleFunction(trigger.action.outTextForGroup,{gpId,msg.text,msg.displayTime},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(trigger.action.outSoundForGroup,{gpId,msg.sound},timer.getTime()+FDS.wtime)
-
 					if i == 1 then 
 						FDS.teamPoints['red']['Players'][gpPN] = 0
 					elseif i == 2 then
 						FDS.teamPoints['blue']['Players'][gpPN] = 0
+					end
+					if FDS.playersCredits[FDS.trueCoalitionCode[gpCoa]][gpUcid] == nil then
+						FDS.playersCredits[FDS.trueCoalitionCode[gpCoa]][gpUcid] = 0
 					end
 				end
 			end
@@ -507,6 +1159,7 @@ function getPlayersStats()
         jogStats = net.get_stat(i)
         if jogInfo['side'] ~= 0 then 
             jogStats['points'] = FDS.teamPoints[enumSide[jogInfo['side']]]['Players'][jogInfo['name']]
+			jogStats['credits'] = FDS.playersCredits[enumSide[jogInfo['side']]][jogInfo['ucid']]
             listaViva = mist.DBs.humansByName
             local playerUnits = {}
             for k,z in pairs(listaViva) do
@@ -695,25 +1348,67 @@ function createAG(name, coa)
 	mist.goRoute(name,new_GPR)
 end
 
-function createDrone(coa)
-	local point3 = mist.getRandomPointInZone(FDS.redZ1DroneZones[mist.random(#FDS.redZ1DroneZones)])
-	local heightD = mist.random(100)
-	heightD = (4000 + 160*heightD)*0.3048
-	gp = Group.getByName('Blue_Spy_Drone')
-	gPData = mist.getGroupData('Blue_Spy_Drone',true)
+function FDS.createJTACDrone(args)
+	local point3 = args[1]:getUnits()[1]:getPosition().p
+	local heightD = ''
+	if point3.y/0.3048 > FDS.minAltitude then
+		heightD = point3.y/0.3048
+	else
+		heightD = mist.random(100)
+		local variation = (FDS.maxAltitude - FDS.minAltitude)/100
+		heightD = (11000 + 100*heightD)*0.3048
+	end
+	local mockUpName = ''
+	if args[1]:getCoalition() == 1 then
+		mockUpName = "Red_Spy_Drone"
+	elseif args[1]:getCoalition() == 2 then
+		mockUpName = "Blue_Spy_Drone"
+	end
+	gp = Group.getByName(mockUpName)
+	gPData = mist.getGroupData(mockUpName,true)
 	gpR = mist.getGroupRoute(gp:getName(),true)
 	new_GPR = mist.utils.deepCopy(gpR)
 	new_gPData = mist.utils.deepCopy(gPData)
 	new_gPData.units[1].x = point3.x
-	new_gPData.units[1].y = point3.y
+	new_gPData.units[1].y = point3.z
 	new_gPData.units[1].alt = heightD
 	new_GPR[1].task.params.tasks[7].params.altitude = heightD
 	new_GPR[1].x = point3.x
-	new_GPR[1].y = point3.y
+	new_GPR[1].y = point3.z
 	new_gPData.clone = true
 	new_gPData.route = new_GPR
 	local newDrone = mist.dynAdd(new_gPData)
-	ctld.JTACAutoLase(newDrone.name, 1688, false,"all") 
+	ctld.JTACAutoLase(newDrone.name, args[3], false,"all") 
+end
+
+function FDS.createASupport(args)
+	local cloneName = ''
+	if args[1]:getCoalition() == 1 then
+		cloneName = 'Red'.. FDS.airSupportAssetsKeys[args[2]].groupName
+	else
+		cloneName = 'Blue'..FDS.airSupportAssetsKeys[args[2]].groupName
+	end
+	gp = Group.getByName(cloneName)
+	gPData = mist.getGroupData(cloneName,true)
+	gpR = mist.getGroupRoute(gp:getName(),true)
+	new_GPR = mist.utils.deepCopy(gpR)
+	new_gPData = mist.utils.deepCopy(gPData)
+	new_gPData.clone = true
+	new_gPData.route = new_GPR
+	local deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+	local msg = {}
+	msg.displayTime = 10
+	if FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] >= FDS.airSupportAssetsKeys[args[2]].cost or FDS.bypassCredits then
+		local newAS = mist.dynAdd(new_gPData)
+		FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newAS.name):getUnits()[1]:getName()] = deployerID
+		msg.text = "Air support is on the way.\n"
+		msg.sound = 'fdsTroops.ogg'	
+	else
+		msg.text = "Insuficient credits.\n"
+		msg.sound = 'fdsTroops.ogg'
+	end
+	trigger.action.outTextForGroup(args[1]:getID(),msg.text,msg.displayTime)
+	trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
 end
 
 function bombingRun(coa)
@@ -1246,6 +1941,7 @@ function FDS.warStatus(g_id)
 	msg.text = 'Mission Status:\n \n'
    	msg.displayTime = 30
    	msg.sound = 'Msg.ogg'
+	gpUcid = FDS.retrieveUcid(g_id[3],FDS.isName)
 	for _, i in pairs({'blue','red'}) do
 		if i == 'blue' then
 			for _,j in pairs(FDS.blueZones) do
@@ -1313,7 +2009,9 @@ function FDS.warStatus(g_id)
 		end
 		msg.text = msg.text .. '\nRed AWACS: '.. redAWACS .. '\n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
-		msg.text = msg.text .. 'Base Points: ' .. tostring(FDS.teamPoints.blue.Base) .. '\nYour plane has ' .. tostring(FDS.teamPoints.blue['Players'][g_id[3]]) .. ' points.'
+		msg.text = msg.text .. 'Base points: ' .. tostring(FDS.teamPoints.blue.Base) .. '\nYour plane is carrying ' .. tostring(FDS.teamPoints.blue['Players'][g_id[3]]) .. ' points. \n'
+		msg.text = msg.text .. '\n -------------------- \n \n'
+		msg.text = msg.text .. 'Your Credits: ' .. tostring(FDS.playersCredits.blue[gpUcid])
 	else
 		local redAWACS = 'Inactive'
 		if Unit.getByName('Red_AWACS_1') then
@@ -1326,7 +2024,9 @@ function FDS.warStatus(g_id)
 		end
 		msg.text = msg.text .. '\nBlue AWACS: '.. blueAWACS .. '\n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
-		msg.text = msg.text .. 'Base Points: ' .. tostring(FDS.teamPoints.red.Base) .. '\nYour plane has ' .. tostring(FDS.teamPoints.red['Players'][g_id[3]]) .. ' points.'
+		msg.text = msg.text .. 'Base Points: ' .. tostring(FDS.teamPoints.red.Base) .. '\nYour plane has ' .. tostring(FDS.teamPoints.red['Players'][g_id[3]]) .. ' points. \n'
+		msg.text = msg.text .. '\n -------------------- \n \n'
+		msg.text = msg.text .. 'Your Credits: ' .. tostring(FDS.playersCredits.red[gpUcid])
 	end
 
 	trigger.action.outTextForGroup(g_id[1], msg.text, msg.displayTime)
@@ -1938,6 +2638,7 @@ function targetInServer()
 					targetCoa = _targetEntLocal:getCoalition()
 				end
 				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
+				awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				killData[2] = true
 			else
 				local infile = io.open(FDS.exportPath .. "missionError.log", "a")
@@ -2139,17 +2840,85 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 	end
 end
 
+function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
+	if FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()] ~= nil then
+		local plName = FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()]
+		local tgtName = nil
+		if _targetEnt:getCategory() == 3 then
+			tgtName = nil
+		elseif _targetEnt:getPlayerName() ~= nil then
+			tgtName = _targetEnt:getPlayerName()
+		end
+		local plGrp = FDS.checkPlayerOnline(plName,FDS.isName,FDS.isOnline)
+		local plID = plGrp:getID()
+		local plCOA = plGrp:getCoalition()
+		local unitCOA = _initEnt:getCoalition()
+		tgtName = FDS.retrieveUcid(tgtName,FDS.isName)
+		for k,w in pairs(FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]]) do
+			if plName == k then
+				local msgKill = {}
+				msgKill.displayTime = 20
+				msgKill.sound = 'indirectKill.ogg'
+				if FDS.lastHits[_targetEnt:getID()] ~= nil then
+					if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
+						if tgtName ~= nil and tgtName ~= '' then
+							if tgtName ~= plName then
+								FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.playerReward
+								msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' credits because your troops killed an enemy.'
+							end
+						else
+							FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.rewardDict[rewardType]
+							msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' credits because your troops killed an enemy.'
+						end
+						if plCOA == unitCOA then
+							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
+							trigger.action.outSoundForGroup(plID,msgKill.sound)	
+						end
+					end
+				elseif forceAward then
+					if tgtName ~= nil and tgtName ~= '' then
+						if tgtName ~= plName then
+							FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.playerReward
+							msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' credits because your troops killed an enemy.'
+						end
+					else
+						FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.rewardDict[rewardType]
+						msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' credits because your troops killed an enemy.'
+					end
+					if plCOA == unitCOA then
+						trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
+						trigger.action.outSoundForGroup(plID,msgKill.sound)	
+					end
+				end
+			end
+		end
+	end
+end
+
 -- Event Handler
 FDS.eventActions = FDS.switch {
 	[world.event.S_EVENT_BIRTH] = function(x, param)
 		local _event = param.event
 		local _initEnt = _event.initiator
+		local cleanCargo = false
+		if _initEnt:getCategory() == 1 then
+			for i,j in pairs(FDS.heliSlots) do
+				if _initEnt:getDesc().typeName == i then
+					cleanCargo = true
+				end
+			end
+			if cleanCargo then
+				FDS.cargoList[tostring(_initEnt:getName())] = {} 
+				FDS.valuableList[tostring(_initEnt:getName())] = {} 
+			end
+		end
 		if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil then
 			FDS.lastHits[_initEnt:getID()] = nil
 		end
 		if _initEnt ~= nil and _initEnt:getCategory() == Object.Category.UNIT and _initEnt:getPlayerName() ~= nil then 
+			gpUcid = FDS.retrieveUcid(_initEnt:getPlayerName(),FDS.isName)
 			local msg = {}
-			msg.text = _initEnt:getPlayerName() .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n - Join our Discord community at FDS Server (Link available in the briefing)'
+			msg.text = _initEnt:getPlayerName() .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n - Join our Discord community at FDS Server (Link available in the briefing). \nAn explanation about this server is available on our youtube channel: "FDS Server - DCS".'
 			msg.displayTime = 60
 			msg.sound = 'Welcome.ogg'
 			
@@ -2158,6 +2927,7 @@ FDS.eventActions = FDS.switch {
 			mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[_initEnt:getName()]['groupId'],'Where to Attack',nil, FDS.whereStrike, {_initEnt:getGroup().id_, _initEnt:getCoalition(), _initEnt:getName()}},timer.getTime()+FDS.wtime)
 			mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[_initEnt:getName()]['groupId'],'Where to Defend',nil, FDS.whereDefend, {_initEnt:getGroup().id_, _initEnt:getCoalition(), _initEnt:getName()}},timer.getTime()+FDS.wtime)
 			mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[_initEnt:getName()]['groupId'],'Drop Zones',nil, FDS.whereDropZones, {_initEnt:getGroup().id_, _initEnt:getCoalition(), _initEnt:getName()}},timer.getTime()+FDS.wtime)
+			FDS.addCreditsOptions(_initEnt:getGroup())
 			mist.scheduleFunction(trigger.action.outTextForGroup,{_initEnt:getGroup().id_,msg.text,msg.displayTime},timer.getTime()+FDS.wtime)
 			mist.scheduleFunction(trigger.action.outSoundForGroup,{_initEnt:getGroup().id_,msg.sound},timer.getTime()+FDS.wtime)
 
@@ -2165,6 +2935,9 @@ FDS.eventActions = FDS.switch {
 				FDS.teamPoints['red']['Players'][_initEnt:getPlayerName()] = 0
 			elseif _initEnt:getCoalition() == 2 then
 				FDS.teamPoints['blue']['Players'][_initEnt:getPlayerName()] = 0
+			end
+			if FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][gpUcid] == nil then
+				FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][gpUcid] = 0
 			end
 		end
 	end,
@@ -2234,6 +3007,7 @@ FDS.eventActions = FDS.switch {
 					targetCoa = _targetEntLocal:getCoalition()
 				end
 				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
+				awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				FDS.lastHits[_initEnt:getID()][2] = true
 			end
 		end
@@ -2399,6 +3173,7 @@ FDS.eventActions = FDS.switch {
 					targetCoa = _targetEntLocal:getCoalition()
 				end
 				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
+				awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				FDS.lastHits[_initEnt:getID()][2] = true
 			end
 		end
@@ -2474,6 +3249,7 @@ FDS.eventActions = FDS.switch {
 						targetCoa = _targetEntLocal:getCoalition()
 					end
 					awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
+					awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 					FDS.lastHits[_initEnt:getID()][2] = true
 				end
 			end
@@ -2486,6 +3262,7 @@ FDS.eventActions = FDS.switch {
 		local initCheck = pcall(FDS.playerCheck,_initEnt)
 		local initCoa = 0
 		local initCoaCheck = pcall(FDS.coalitionCheck,_initEnt)
+		local gpUcid = FDS.retrieveUcid(_initEnt:getPlayerName(),FDS.isName)
 		if initCoaCheck then
 			initCoa = _initEnt:getCoalition()
 		end
@@ -2509,7 +3286,7 @@ FDS.eventActions = FDS.switch {
 				if initCheck and initCoaCheck and initCoa == 2 and flagBlue and _initEnt:getPlayerName() and FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] > 0 then
 					local msgLand = {}
 					local gp = _initEnt:getGroup()
-					msgLand.text = 'You land at ' .. _local:getName() .. '. You deliver ' .. FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] .. ' points to your team.' 
+					msgLand.text = 'You land at ' .. _local:getName() .. '. You deliver ' .. FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] .. ' points to your team and receive ' .. FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] .. ' credits.'
 					msgLand.displayTime = 20  
 					msgLand.sound = 'Msg.ogg'
 					trigger.action.outTextForGroup(gp:getID(), msgLand.text, msgLand.displayTime)
@@ -2519,6 +3296,7 @@ FDS.eventActions = FDS.switch {
 					recordLandPoints(_initEnt, FDS.trueCoalitionCode[initCoa])
 
 					FDS.teamPoints.blue.Base = FDS.teamPoints.blue.Base + FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()]
+					FDS.playersCredits.blue[gpUcid] = FDS.playersCredits.blue[gpUcid] + FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()]
 					FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] = 0.0
 					if FDS.teamPoints.blue.Base >= FDS.callCost then 
 						local bombTimes = math.floor(FDS.teamPoints.blue.Base/FDS.callCost)
@@ -2541,6 +3319,7 @@ FDS.eventActions = FDS.switch {
 					recordLandPoints(_initEnt, FDS.trueCoalitionCode[initCoa])
 
 					FDS.teamPoints.red.Base = FDS.teamPoints.red.Base + FDS.teamPoints.red['Players'][_initEnt:getPlayerName()]
+					FDS.playersCredits.red[gpUcid] = FDS.playersCredits.red[gpUcid] + FDS.teamPoints.red['Players'][_initEnt:getPlayerName()]
 					FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] = 0.0
 					if FDS.teamPoints.red.Base >= FDS.callCost then 
 						local bombTimes = math.floor(FDS.teamPoints.red.Base/FDS.callCost)
@@ -2600,6 +3379,19 @@ FDS.eventActions = FDS.switch {
 				end 
 			end
 		end
+		if _local:getName() == "Mid_Helipad" and _local:getCoalition() == _initEnt:getCoalition() then
+			local msgLand = {}
+			local gp = _initEnt:getGroup()
+			msgLand.text = 'Here can load valuable goods to deliver to your base helipad. \nEach item weighs ' .. tostring(FDS.goldenBars.weight) .. ' kg, and is worth $' .. tostring(FDS.goldenBars.value) .. ' credits. Access the radio via F10 to load.'
+			msgLand.displayTime = 20  
+			msgLand.sound = 'Msg.ogg'
+			trigger.action.outTextForGroup(gp:getID(), msgLand.text, msgLand.displayTime)
+			trigger.action.outSoundForGroup(gp:getID(),msgLand.sound)
+			--local variousGoods = missionCommands.addSubMenuForGroup(gp:getID(), "Load valuable goods")
+			--for j=1,10,1 do  
+				--missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), variousGoods, FDS.validateDropBoard, {['rawData'] = {gp,'', j}, ['dropCase'] = FDS.loadValuableGoods, ['dropCaseString'] = 'loadValuableGoods'})
+			--end
+		end
 	end,
 	[world.event.S_EVENT_KILL] = function(x, param)
 		local _event = param.event
@@ -2634,6 +3426,7 @@ FDS.eventActions = FDS.switch {
 				targetCoa = _targetEnt:getCoalition()
 			end
 			awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, true)
+			awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, true)
 			FDS.lastHits[_targetEnt:getID()][2] = true
 			FDS.lastHits[_targetEnt:getID()] = 'DEAD'
 		end
@@ -2666,6 +3459,28 @@ FDS.eventActions = FDS.switch {
 
 			--pcall(killDCSProcess,{})
 		end
+	end,
+	[world.event.S_EVENT_BASE_CAPTURED] = function(x, param)
+		local _event = param.event
+		local guards = ''
+		if not FDS.farpEverCaptured then
+			FDS.farpEverCaptured = true
+		end
+		if _event.place:getCoalition() == 1 then
+			FDS.farpCoalition = 1
+			guards = mist.cloneGroup("Red_Outpost_Crew", true)
+		elseif _event.place:getCoalition() == 2 then
+			FDS.farpCoalition = 2
+			guards = mist.cloneGroup("Blue_Outpost_Crew", true)
+		end
+		FDS.farpOwner = {[FDS.trueCoalitionCode[_event.place:getCoalition()]] = guards.name}
+		local soundDict = {['blue'] = {"fdsBaseLost.ogg","fdsBaseCaptured.ogg"}, ['red'] = {"fdsBaseCaptured.ogg","fdsBaseLost.ogg"}}
+		msgCap = {}
+		msgCap.text = FDS.trueCoalitionCode[_event.place:getCoalition()]:gsub("^%l", string.upper) .. ' Team captured the middle FARP.'
+		msgCap.displayTime = 15  
+		trigger.action.outText(msgCap.text, msgCap.displayTime)
+		trigger.action.outSoundForCoalition(1,soundDict[FDS.trueCoalitionCode[_event.place:getCoalition()]][1])
+		trigger.action.outSoundForCoalition(2,soundDict[FDS.trueCoalitionCode[_event.place:getCoalition()]][2])
 	end,
 	[world.event.S_EVENT_DEAD] = function(x, param)
 		local _event = param.event
@@ -2866,8 +3681,18 @@ FDS.eventActions = FDS.switch {
 					targetCoa = _targetEntLocal:getCoalition()
 				end
 				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
+				awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				FDS.lastHits[_initEnt:getID()][2] = true
 			end
+		end
+		-- Clean Deploy
+		if _initName ~= nil and coaCheck then
+			local coaDead = _initEnt:getCoalition()
+			for i,_ in pairs(FDS.deployedUnits[FDS.trueCoalitionCode[coaDead]]) do
+				if _initName == i then
+					FDS.deployedUnits[FDS.trueCoalitionCode[coaDead]][i] = nil
+				end
+			end 
 		end
 	end,
 	default = function(x, param) end,
@@ -2901,6 +3726,8 @@ mist.scheduleFunction(protectCall, {checkDropZones},timer.getTime()+2,300)
 -- Hover checker
 --mist.scheduleFunction(detectHover, {},timer.getTime()+2.5,FDS.refreshScan)
 mist.scheduleFunction(protectCall, {detectHover},timer.getTime()+2.5,FDS.refreshScan)
+-- FARP check
+mist.scheduleFunction(protectCall, {FDS.checkFarpDefences},timer.getTime()+2.5,FDS.refreshFARPScan)
 -- Random drop manager
 --mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+3, FDS.randomDropTime)
 mist.scheduleFunction(protectCall, {createRandomDrop}, timer.getTime()+3, FDS.randomDropTime)
