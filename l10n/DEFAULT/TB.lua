@@ -694,7 +694,7 @@ function FDS.dropTroops(args)
 				deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
 				FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = deployerID
 				table.remove(FDS.cargoList[args[1]:getName()],1)
-				msg.text = "All troops are deployed.\n"
+				msg.text = "Troops deployed.\n"
 			else
 				local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
 				trigger.action.setUnitInternalCargo(args[1]:getName(),massaFinal)
