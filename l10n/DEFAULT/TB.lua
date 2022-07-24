@@ -3463,24 +3463,26 @@ FDS.eventActions = FDS.switch {
 	[world.event.S_EVENT_BASE_CAPTURED] = function(x, param)
 		local _event = param.event
 		local guards = ''
-		if not FDS.farpEverCaptured then
-			FDS.farpEverCaptured = true
+		if _event.place:getCoalition() ~= FDS.farpCoalition then
+			if not FDS.farpEverCaptured then
+				FDS.farpEverCaptured = true
+			end
+			if _event.place:getCoalition() == 1 then
+				FDS.farpCoalition = 1
+				guards = mist.cloneGroup("Red_Outpost_Crew", true)
+			elseif _event.place:getCoalition() == 2 then
+				FDS.farpCoalition = 2
+				guards = mist.cloneGroup("Blue_Outpost_Crew", true)
+			end
+			FDS.farpOwner = {[FDS.trueCoalitionCode[_event.place:getCoalition()]] = guards.name}
+			local soundDict = {['blue'] = {"fdsBaseLost.ogg","fdsBaseCaptured.ogg"}, ['red'] = {"fdsBaseCaptured.ogg","fdsBaseLost.ogg"}}
+			msgCap = {}
+			msgCap.text = FDS.trueCoalitionCode[_event.place:getCoalition()]:gsub("^%l", string.upper) .. ' Team captured the middle FARP.'
+			msgCap.displayTime = 15  
+			trigger.action.outText(msgCap.text, msgCap.displayTime)
+			trigger.action.outSoundForCoalition(1,soundDict[FDS.trueCoalitionCode[_event.place:getCoalition()]][1])
+			trigger.action.outSoundForCoalition(2,soundDict[FDS.trueCoalitionCode[_event.place:getCoalition()]][2])
 		end
-		if _event.place:getCoalition() == 1 then
-			FDS.farpCoalition = 1
-			guards = mist.cloneGroup("Red_Outpost_Crew", true)
-		elseif _event.place:getCoalition() == 2 then
-			FDS.farpCoalition = 2
-			guards = mist.cloneGroup("Blue_Outpost_Crew", true)
-		end
-		FDS.farpOwner = {[FDS.trueCoalitionCode[_event.place:getCoalition()]] = guards.name}
-		local soundDict = {['blue'] = {"fdsBaseLost.ogg","fdsBaseCaptured.ogg"}, ['red'] = {"fdsBaseCaptured.ogg","fdsBaseLost.ogg"}}
-		msgCap = {}
-		msgCap.text = FDS.trueCoalitionCode[_event.place:getCoalition()]:gsub("^%l", string.upper) .. ' Team captured the middle FARP.'
-		msgCap.displayTime = 15  
-		trigger.action.outText(msgCap.text, msgCap.displayTime)
-		trigger.action.outSoundForCoalition(1,soundDict[FDS.trueCoalitionCode[_event.place:getCoalition()]][1])
-		trigger.action.outSoundForCoalition(2,soundDict[FDS.trueCoalitionCode[_event.place:getCoalition()]][2])
 	end,
 	[world.event.S_EVENT_DEAD] = function(x, param)
 		local _event = param.event
