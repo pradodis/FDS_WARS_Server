@@ -1400,9 +1400,9 @@ function FDS.createASupport(args)
 	local msg = {}
 	msg.displayTime = 10
 	if FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] >= FDS.airSupportAssetsKeys[args[2]].cost or FDS.bypassCredits then
+		FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] - FDS.troopAssets[args[2]].cost
 		local newAS = mist.dynAdd(new_gPData)
 		FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newAS.name):getUnits()[1]:getName()] = deployerID
-		FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] - FDS.troopAssets[gp[2]].cost
 		msg.text = "Air support is on the way.\nRemaining Credits: $" .. tostring(FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid])
 		msg.sound = 'fdsTroops.ogg'	
 	else
