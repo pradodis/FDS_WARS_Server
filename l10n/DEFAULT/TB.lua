@@ -457,7 +457,7 @@ function FDS.loadCargo(gp)
 		local gpUcid = FDS.retrieveUcid(gp[1]:getUnits()[1]:getPlayerName(),FDS.isName)
 		local msg = {}
 		msg.displayTime = 5
-		if (usedSlots + FDS.troopAssets[gp[2]].slots) < FDS.heliSlots[myUni:getDesc().typeName] and (FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] >= FDS.troopAssets[gp[2]].cost or FDS.bypassCredits) then
+		if (usedSlots + FDS.troopAssets[gp[2]].slots) <= FDS.heliSlots[myUni:getDesc().typeName] and (FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] >= FDS.troopAssets[gp[2]].cost or FDS.bypassCredits) then
 			if gp[2] == "JTAC Team" then
 				table.insert(FDS.cargoList[tostring(gp[1]:getName())], {name = FDS.troopAssets[gp[2]].name, mass = totalMass, slot = FDS.troopAssets[gp[2]].slots, code = gp[4]})
 			else
@@ -467,7 +467,7 @@ function FDS.loadCargo(gp)
 			FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] - FDS.troopAssets[gp[2]].cost
 			msg.text = FDS.troopAssets[gp[2]].name .. " loaded in the helicopter. It weighs " .. tostring(totalMass) .. " kg.\nTotal internal mass: " .. tostring(totalInternalMass) .. " kg. Slots Available: " .. tostring(FDS.heliSlots[myUni:getDesc().typeName] - usedSlots - 1) .. ". \nRemaining Credits: $" .. tostring(FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid])
 		else
-			if (FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] < FDS.troopAssets[gp[2]].cost and not FDS.bypassCredits) then
+			if (FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] <= FDS.troopAssets[gp[2]].cost and not FDS.bypassCredits) then
 				msg.text = "Insuficient credits."
 			else
 				msg.text = "No slots are available in the helicopter."
@@ -498,7 +498,7 @@ function FDS.loadValuableGoods(gp)
 		totalInternalMass = totalInternalMass + FDS.goldenBars.weight
 		local msg = {}
 		msg.displayTime = 5
-		if usedSlots < FDS.heliSlots[myUni:getDesc().typeName] then
+		if usedSlots <= FDS.heliSlots[myUni:getDesc().typeName] then
 			table.insert(FDS.valuableList[tostring(gp[1]:getName())], {name = "Valuable Goods", mass = FDS.goldenBars.weight, slot = FDS.goldenBars.slots})
 			trigger.action.setUnitInternalCargo(myUni:getName(),totalInternalMass)
 			msg.text = "Goods loaded in the helicopter. They weigh " .. tostring(FDS.goldenBars.weight) .. " kg.\nTotal internal mass: " .. tostring(totalInternalMass) .. " kg. Slots Available: " .. tostring(FDS.heliSlots[myUni:getDesc().typeName] - usedSlots - 1) .. ". \n"
@@ -1400,10 +1400,10 @@ function FDS.createASupport(args)
 	local msg = {}
 	msg.displayTime = 10
 	if FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] >= FDS.airSupportAssetsKeys[args[2]].cost or FDS.bypassCredits then
-		FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] - FDS.troopAssets[args[2]].cost
+		FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] - FDS.airSupportAssetsKeys[args[2]].cost
 		local newAS = mist.dynAdd(new_gPData)
 		FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newAS.name):getUnits()[1]:getName()] = deployerID
-		msg.text = "Air support is on the way.\nRemaining Credits: $" .. tostring(FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid])
+		msg.text = "Air support is on the way.\nRemaining Credits: $" .. tostring(FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID])
 		msg.sound = 'fdsTroops.ogg'	
 	else
 		msg.text = "Insuficient credits.\n"
