@@ -287,16 +287,16 @@ FDS.heliSlots = {
 	['Mi-24P'] = 8
 }
 FDS.troopAssetsNumbered = {
-	{name = "AK Soldier", cost = 50, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}},
-	{name = "MG Soldier", cost = 100, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}},
-	{name = "RPG Soldier", cost = 200, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.rpgWeight}, slots = 1, variability = {{90,120}}},
-	{name = "Igla", cost = 500, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.manpadWeight}, slots = 1, variability = {{90,120}}},
+	{name = "AK Soldier", cost = 15, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}},
+	{name = "MG Soldier", cost = 30, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}},
+	{name = "RPG Soldier", cost = 80, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.rpgWeight}, slots = 1, variability = {{90,120}}},
+	{name = "Igla", cost = 150, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.manpadWeight}, slots = 1, variability = {{90,120}}},
 	--{name = "JTAC Team", cost = 250, mass = {FDS.JTACWeight, FDS.soldierWeight, FDS.soldierWeight}, slots = 2, variability = {nil,{90,120},{90,120}}, deafultCode = '1688', su25TCode = '1113'},
-	{name = "Shilka", cost = 750, mass = {FDS.ShilkaWeight}, slots = 5, variability = {}},
-	{name = "Strela", cost = 1200, mass = {FDS.StrelaWeight}, slots = 5, variability = {}},
-	{name = "Tunguska", cost = 2500, mass = {FDS.TunguskaWeight}, slots = 10, variability = {}},
-	{name = "TOR", cost = 2500, mass = {FDS.TORWeight}, slots = 10, variability = {}},
-	{name = "Ammo", cost = 250, mass = {FDS.ammoWeight}, slots = 2, variability = {}}
+	{name = "Shilka", cost = 200, mass = {FDS.ShilkaWeight}, slots = 5, variability = {}},
+	{name = "Strela", cost = 300, mass = {FDS.StrelaWeight}, slots = 5, variability = {}},
+	{name = "Tunguska", cost = 600, mass = {FDS.TunguskaWeight}, slots = 10, variability = {}},
+	{name = "TOR", cost = 600, mass = {FDS.TORWeight}, slots = 10, variability = {}},
+	{name = "Ammo", cost = 80, mass = {FDS.ammoWeight}, slots = 2, variability = {}}
 }
 FDS.troopAssets = {}
 for _, i in pairs(FDS.troopAssetsNumbered) do
