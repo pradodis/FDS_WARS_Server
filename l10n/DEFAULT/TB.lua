@@ -1978,7 +1978,7 @@ function FDS.warStatus(g_id)
 				if FDS.zoneSts.red[j] == 'Hot' then 
 					stsMsg = tostring(#tgtObj[i][j]) 
 					for _,k in pairs(tgtObj.red[j]) do
-						if Group.getByName(k[1]) then
+						if Group.getByName(k[1]) != nil and Group.getByName(k[1]):getUnits()[1] != nil then
 							-- If it is unit
 							if Group.getByName(k[1]):getUnits()[1]:hasAttribute('Infantry') then
 								infantryQtyRed = infantryQtyRed + 1
