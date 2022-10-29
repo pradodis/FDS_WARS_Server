@@ -1495,7 +1495,7 @@ function updateTgtPositions()
 				local novaPos = {}
 				if objecto:getCategory() == 3 then
 					novaPos = objecto:getPosition()
-				elseif objecto:getCategory() == 2 then
+				elseif objecto:getCategory() == 2 and objecto:getUnits()[1] ~= nil then
 					novaPos = objecto:getUnits()[1]:getPosition()
 				end
 				novaPos.p.y = novaPos.p.z
@@ -1519,7 +1519,7 @@ function validateAliveUnits()
 		for numero2, zona in pairs(coa) do
 			for numero3, unidade in pairs(zona) do
 				tkGp = StaticObject.getByName(unidade[1]) or Group.getByName(unidade[1])
-				if tkGp == nil or (tkGp ~= nil and not tkGp:isExist()) then
+				if tkGp == nil or (tkGp ~= nil and not tkGp:isExist()) or (tkGp ~= nil and tkGp:getCategory() == 2 and #tkGp:getUnits() < 1) then
 					table.remove(tgtObj[numero1][numero2],numero3)
 					local lenTab = #tgtObj[numero1][numero2]
 					local playWarning = true
@@ -1564,7 +1564,7 @@ function validateAliveUnits()
 					if playWarning then
 						local msgfinal = {}  
 						msgfinal.text = 'Warning! ' .. numero2 .. ' is under attack.'
-						msgfinal.displayTime = 30  
+						msgfinal.displayTime = 5  
 						msgfinal.sound = 'alert_UA.ogg'
 						trigger.action.outTextForCoalition(codeCoalitions[numero1][1], msgfinal.text, msgfinal.displayTime)
 						trigger.action.outSoundForCoalition(codeCoalitions[numero1][1],msgfinal.sound)
@@ -3560,7 +3560,7 @@ FDS.eventActions = FDS.switch {
 							if playWarning then
 								local msgfinal = {}  
 								msgfinal.text = 'Warning! ' .. j .. ' is under attack.'
-								msgfinal.displayTime = 30  
+								msgfinal.displayTime = 5  
 								msgfinal.sound = 'alert_UA.ogg'
 								trigger.action.outTextForCoalition(2, msgfinal.text, msgfinal.displayTime)
 								trigger.action.outSoundForCoalition(2,msgfinal.sound)
@@ -3623,7 +3623,7 @@ FDS.eventActions = FDS.switch {
 							if playWarning then
 								local msgfinal = {}  
 								msgfinal.text = 'Warning! ' .. j .. ' is under attack.'
-								msgfinal.displayTime = 30  
+								msgfinal.displayTime = 5  
 								msgfinal.sound = 'alert_UA.ogg'
 								trigger.action.outTextForCoalition(1, msgfinal.text, msgfinal.displayTime)
 								trigger.action.outSoundForCoalition(1,msgfinal.sound)
