@@ -1,8 +1,8 @@
 mapResource = 
 {
     ["ResKey_Action_1741"] = "victory_Lane.ogg",
-    ["ResKey_Action_335"] = "Msg.ogg",
-    ["ResKey_ImageBriefing_1271"] = "Micro_Imagem1.jpg",
+    ["ResKey_ImageBriefing_1748"] = "Micro_Imagem2.jpg",
+    ["ResKey_Action_1738"] = "AirDropDelivered2.ogg",
     ["ResKey_Action_26"] = "mist_4_4_90.lua",
     ["ResKey_Action_1732"] = "hover_Failure.ogg",
     ["ResKey_Action_1766"] = "fdsBaseLost.ogg",
@@ -14,7 +14,7 @@ mapResource =
     ["ResKey_Action_1721"] = "Siren.ogg",
     ["ResKey_ImageBriefing_1619"] = "Micro_Imagem3.jpg",
     ["ResKey_Action_1745"] = "AirDropDelivered.ogg",
-    ["ResKey_Action_1768"] = "indirectKill.ogg",
+    ["ResKey_ImageBriefing_1747"] = "Micro_Imagem1.jpg",
     ["ResKey_Action_1767"] = "fdsTroops.ogg",
     ["ResKey_Action_1744"] = "bombingRun.ogg",
     ["ResKey_Action_1734"] = "dropCaptured.ogg",
@@ -23,7 +23,7 @@ mapResource =
     ["ResKey_ImageBriefing_1725"] = "Micro_Base_Blue.jpg",
     ["ResKey_Action_143"] = "TB.lua",
     ["ResKey_Action_1765"] = "fdsBaseCaptured.ogg",
-    ["ResKey_ImageBriefing_1747"] = "Micro_Imagem1.jpg",
-    ["ResKey_ImageBriefing_1748"] = "Micro_Imagem2.jpg",
-    ["ResKey_Action_1738"] = "AirDropDelivered2.ogg",
+    ["ResKey_Action_1768"] = "indirectKill.ogg",
+    ["ResKey_Action_335"] = "Msg.ogg",
+    ["ResKey_ImageBriefing_1271"] = "Micro_Imagem1.jpg",
 } -- end of mapResource
