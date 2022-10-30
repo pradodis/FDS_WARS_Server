@@ -24,6 +24,7 @@ FDS.deployedUnits = {} -- All deployed units
 FDS.isName = false
 FDS.isOnline = true
 FDS.zoneSts = {}
+FDS.standardTransfer = {10,20,50,100,200,500,1000,2000}
 FDS.redZones = {'Red Zone 1','Red Zone 2'}
 FDS.blueZones = {'Blue Zone 1','Blue Zone 2'}
 FDS.randomDropZones = {'randomDrop_1','randomDrop_2','randomDrop_3','randomDrop_4','randomDrop_5','randomDrop_6','randomDrop_7','randomDrop_8','randomDrop_9','randomDrop_10','randomDrop_11','randomDrop_12','randomDrop_13'}
@@ -37,6 +38,10 @@ FDS.playersKillRecord = nil
 FDS.dropHeliTypes = {'UH-1H','Mi-8MT','SA342Mistral','Mi-24P'}
 FDS.blueRelieveZones = {'Sochi-Adler', 'Gudauta', 'Sukhumi-Babushara', 'Shpora-11', 'Shpora-21', 'Blue_Carrier_K', 'Blue_Carrier_F', 'Blue_Carrier_S', 'Blue_Carrier_T', 'Blue_Carrier_SuperCarrier'}
 FDS.redRelieveZones = {'Maykop-Khanskaya', 'Krasnodar-Center', 'Krasnodar-Pashkovsky' ,'Moscow-11','Moscow-21', 'Red_Carrier_K', 'Red_Carrier_F', 'Red_Carrier_S', 'Red_Carrier_T', 'Red_Carrier_SuperCarrier'}
+FDS.alliedList = {
+	['blue'] = {},
+	['red'] = {}
+}
 FDS.resAWACSTime = {
 	['blue'] = {'Blue_AWACS_1', 0},
 	['red'] = {'Red_AWACS_1', 0}
@@ -759,8 +764,108 @@ function FDS.deliverGoods(args)
 	trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
 end
 
+function FDS.refreshOnLinePlayers()
+	local jog = net.get_player_list()
+	local alliedListRed = {}
+    local alliedListBlue = {}
+	for i, j in pairs(jog) do
+		if net.get_player_info(j).side == 1 then
+    		alliedListRed[net.get_player_info(j).name] = net.get_player_info(j).ucid
+        else
+            alliedListBlue[net.get_player_info(j).name] = net.get_player_info(j).ucid
+		end
+	end
+    FDS.alliedList['red'] = alliedListRed
+    FDS.alliedList['blue'] = alliedListBlue
+end
+
+function FDS.transferNow(args)
+    local trueCoa = FDS.trueCoalitionCode[args.gpCoa]
+    FDS.refreshOnLinePlayers()
+    if FDS.alliedList[trueCoa][args.sender] ~= nil then 
+        if FDS.alliedList[trueCoa][args.receiver] ~= nil then 
+            if FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] - args.amount > 0 then
+        		FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] = FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] - args.amount
+        		FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]] = FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]] + args.amount
+                local msg = {}
+                msg.displayTime = 5
+                msg.sound = 'fdsTroops.ogg'
+                msg.text = "You transfered $" .. tostring(args.amount) .. " to " .. args.receiver .. ".\nYou have $" .. tostring(FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]]) .. " remaining."
+                trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
+                trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
+                local playerCrafts = mist.DBs.humansByName
+                local receiverGp = nil
+                for i,j in pairs(playerCrafts) do
+                    if Group.getByName(i) ~= nil and Group.getByName(i):getUnits()[1]:getPlayerName() == args.receiver then 
+                        receiverGp = Group.getByName(i).id_
+                    end
+                end
+                local msg = {}
+                msg.displayTime = 5
+                msg.sound = 'indirectKill.ogg'
+                msg.text = "You received $" .. tostring(args.amount) .. " from " .. args.sender .. ".\nYou have $" .. tostring(FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]]) .. " now."
+                trigger.action.outTextForGroup(receiverGp,msg.text,msg.displayTime)
+                trigger.action.outSoundForGroup(receiverGp,msg.sound)
+            else
+                local msg = {}
+                msg.displayTime = 5
+                msg.sound = 'fdsTroops.ogg'
+                msg.text = "Insuficient credits."
+                trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
+                trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
+            end
+        else
+			local msg = {}
+			msg.displayTime = 5
+			msg.sound = 'fdsTroops.ogg'
+			msg.text = "Invalid receiver, please try again."
+			trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
+			trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
+			FDS.refreshRadio(gp)
+        end
+     else
+		local msg = {}
+		msg.displayTime = 5
+		msg.sound = 'fdsTroops.ogg'
+		msg.text = "Invalid sender, please try again."
+		trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
+		trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
+		FDS.refreshRadio(gp)
+    end
+end
+
+function FDS.refreshRadio(gp)
+    pcall(missionCommands.removeItemForGroup,mist.DBs.humansByName[gp:getName()]['groupId'],'Current War Status')
+    mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[gp:getName()]['groupId'],'Current War Status',nil, FDS.warStatus, {gp.id_, gp:getCoalition(), gp:getUnits()[1]:getPlayerName()}},timer.getTime()+FDS.wtime)
+    mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[gp:getName()]['groupId'],'Where to Attack',nil, FDS.whereStrike, {gp.id_, gp:getCoalition(), gp:getName()}},timer.getTime()+FDS.wtime)
+    mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[gp:getName()]['groupId'],'Where to Defend',nil, FDS.whereDefend, {gp.id_, gp:getCoalition(), gp:getName()}},timer.getTime()+FDS.wtime)
+    mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[gp:getName()]['groupId'],'Drop Zones',nil, FDS.whereDropZones, {gp.id_, gp:getCoalition(), gp:getName()}},timer.getTime()+FDS.wtime)
+    FDS.addCreditsOptions(gp)
+end
+
 function FDS.addCreditsOptions(gp)
 	local rootCredits = missionCommands.addSubMenuForGroup(gp:getID(), "Use Credits")
+	-- Transfer Cretids
+	local rootCreditTransfer = missionCommands.addSubMenuForGroup(gp:getID(), "Transfer Credits", rootCredits)
+    local gpCoa = gp:getCoalition()
+    local gpPlayerName = gp:getUnits()[1]:getPlayerName()
+    missionCommands.addCommandForGroup(gp:getID(), "Refresh Player List", rootCreditTransfer, FDS.refreshOnLinePlayers, gp)
+    FDS.refreshOnLinePlayers()
+    local contactsNumber = 1
+    for playerName, playerUcid in pairs(FDS.alliedList[FDS.trueCoalitionCode[gp:getCoalition()]]) do
+		if playerName ~= gpPlayerName then 
+			if contactsNumber%8 == 0 then
+				rootCreditTransfer = missionCommands.addSubMenuForGroup(gp:getID(), "More", rootCreditTransfer)
+				contactsNumber = contactsNumber + 1
+			else
+				sendTo = missionCommands.addSubMenuForGroup(gp:getID(), playerName, rootCreditTransfer)
+				for _, transferValue in pairs(FDS.standardTransfer) do
+					missionCommands.addCommandForGroup(gp:getID(), '$'..tostring(transferValue) , sendTo, FDS.transferNow, {['gp'] = gp, ['gpCoa'] = gpCoa, ['sender'] = gpPlayerName, ['amount'] = transferValue, ['receiver'] = playerName})
+				end
+				contactsNumber = contactsNumber + 1
+			end
+		end
+    end
 	-- Air Support
 	local rootAirSupport = missionCommands.addSubMenuForGroup(gp:getID(), "Air Support", rootCredits)
 	local jtacAS = ''
@@ -833,6 +938,7 @@ function FDS.addCreditsOptions(gp)
 		missionCommands.addCommandForGroup(gp:getID(), "Deliver", variousGoods, FDS.validateDropBoard,{['rawData'] = {gp,-1}, ['dropCase'] = FDS.deliverGoods, ['dropCaseString'] = 'deliverGoods'})
 	end
 end
+
 
 function FDS.checkFarpDefences()
 	if FDS.farpEverCaptured and StaticObject.getByName("Mid_Helipad"):getCoalition() == 3 then
