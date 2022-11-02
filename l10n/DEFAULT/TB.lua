@@ -23,6 +23,7 @@ FDS.valuableList = {}
 FDS.deployedUnits = {} -- All deployed units
 FDS.isName = false
 FDS.isOnline = true
+FDS.isDedicatedServer = true
 FDS.zoneSts = {}
 FDS.standardTransfer = {10,20,50,100,200,500,1000,2000}
 FDS.redZones = {'Red Zone 1','Red Zone 2'}
@@ -769,10 +770,12 @@ function FDS.refreshOnLinePlayers()
 	local alliedListRed = {}
     local alliedListBlue = {}
 	for i, j in pairs(jog) do
-		if net.get_player_info(j).side == 1 then
-    		alliedListRed[net.get_player_info(j).name] = net.get_player_info(j).ucid
-        else
-            alliedListBlue[net.get_player_info(j).name] = net.get_player_info(j).ucid
+		if not FDS.isDedicatedServer or (FDS.isDedicatedServer and not net.get_player_info(j).id == 1) then
+			if net.get_player_info(j).side == 1 then
+				alliedListRed[net.get_player_info(j).name] = net.get_player_info(j).ucid
+			else
+				alliedListBlue[net.get_player_info(j).name] = net.get_player_info(j).ucid
+			end
 		end
 	end
     FDS.alliedList['red'] = alliedListRed
