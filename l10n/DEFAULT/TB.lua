@@ -774,6 +774,7 @@ function FDS.refreshOnLinePlayers()
 			alliedListRed[net.get_player_info(j).name] = net.get_player_info(j).ucid
 		else if net.get_player_info(j).side == 2 then
 			alliedListBlue[net.get_player_info(j).name] = net.get_player_info(j).ucid
+		else
 		end
 	end
     FDS.alliedList['red'] = alliedListRed
