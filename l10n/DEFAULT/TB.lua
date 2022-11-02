@@ -850,7 +850,7 @@ function FDS.addCreditsOptions(gp)
 	local rootCreditTransfer = missionCommands.addSubMenuForGroup(gp:getID(), "Transfer Credits", rootCredits)
     local gpCoa = gp:getCoalition()
     local gpPlayerName = gp:getUnits()[1]:getPlayerName()
-    missionCommands.addCommandForGroup(gp:getID(), "Refresh Player List", rootCreditTransfer, FDS.refreshOnLinePlayers, gp)
+    missionCommands.addCommandForGroup(gp:getID(), "Refresh Player List", rootCreditTransfer, FDS.refreshRadio, gp)
     FDS.refreshOnLinePlayers()
     local contactsNumber = 1
     for playerName, playerUcid in pairs(FDS.alliedList[FDS.trueCoalitionCode[gp:getCoalition()]]) do
