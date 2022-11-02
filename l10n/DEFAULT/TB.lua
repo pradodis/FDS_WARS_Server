@@ -785,7 +785,7 @@ function FDS.transferNow(args)
     FDS.refreshOnLinePlayers()
     if FDS.alliedList[trueCoa][args.sender] ~= nil then 
         if FDS.alliedList[trueCoa][args.receiver] ~= nil then 
-            if FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] - args.amount > 0 then
+            if FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] - args.amount >= 0 then
         		FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] = FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] - args.amount
         		FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]] = FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]] + args.amount
                 local msg = {}
