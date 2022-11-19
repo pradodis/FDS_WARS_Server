@@ -163,7 +163,7 @@ FDS.respawnTankerTime = 600.0
 FDS.fuelTankerRestart = 14400.0
 
 -- DropZones
-FDS.randomDropValue = 100.
+FDS.randomDropValue = 250.
 FDS.randomDropTime = 300.
 FDS.hoveringAltitude = 100.0
 FDS.hoveringRadius = 150.0
@@ -264,6 +264,8 @@ FDS.TunguskaWeight = 3000 -- kg
 FDS.TORWeight = 3000 -- kg
 FDS.ammoWeight = 500 -- kg
 FDS.JTACWeight = 250 -- kg
+FDS.ewrWeight = 100 -- kg
+----
 FDS.minAltitude = 11000.0
 FDS.maxAltitude = 22000.0
 FDS.goldenBars = {
@@ -302,7 +304,8 @@ FDS.troopAssetsNumbered = {
 	{name = "Strela", cost = 300, mass = {FDS.StrelaWeight}, slots = 5, variability = {}},
 	{name = "Tunguska", cost = 600, mass = {FDS.TunguskaWeight}, slots = 10, variability = {}},
 	{name = "TOR", cost = 600, mass = {FDS.TORWeight}, slots = 10, variability = {}},
-	{name = "Ammo", cost = 80, mass = {FDS.ammoWeight}, slots = 2, variability = {}}
+	{name = "Ammo", cost = 80, mass = {FDS.ammoWeight}, slots = 2, variability = {}},
+	{name = "EWR", cost = 50, mass = {FDS.ewrWeight}, slots = 4, variability = {}}
 }
 FDS.troopAssets = {}
 for _, i in pairs(FDS.troopAssetsNumbered) do
@@ -3857,8 +3860,7 @@ if FDS.exportDataSite then
 end
 
 for _,i in pairs(FDS.coalitionCode) do
-	--FDS.resAWACSTime[i][2] = mist.scheduleFunction(respawnAWACSFuel, {i},timer.getTime()+FDS.fuelAWACSRestart)
-	FDS.resAWACSTime[i][2] = mist.scheduleFunction(protectCall,{respawnAWACSFuel, i},timer.getTime()+FDS.fuelAWACSRestart)
+	--FDS.resAWACSTime[i][2] = mist.scheduleFunction(protectCall,{respawnAWACSFuel, i},timer.getTime()+FDS.fuelAWACSRestart)
 	FDS.resTankerTime[i][2] = mist.scheduleFunction(protectCall,{respawnTankerFuel, i},timer.getTime()+FDS.fuelTankerRestart)
 	FDS.resMPRSTankerTime[i][2] = mist.scheduleFunction(protectCall,{respawnMPRSTankerFuel, i},timer.getTime()+FDS.fuelTankerRestart)
 end
