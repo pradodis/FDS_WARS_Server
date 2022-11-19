@@ -265,6 +265,10 @@ FDS.TORWeight = 3000 -- kg
 FDS.ammoWeight = 500 -- kg
 FDS.JTACWeight = 250 -- kg
 FDS.ewrWeight = 100 -- kg
+FDS.BMP2Weight = 1500 -- kg
+FDS.BMP3Weight = 1500 -- kg
+FDS.M2A2Weight = 1500 -- kg
+FDS.T90Weight = 3000 -- kg
 ----
 FDS.minAltitude = 11000.0
 FDS.maxAltitude = 22000.0
@@ -294,18 +298,25 @@ FDS.heliSlots = {
 	['SA342Mistral'] = 2,
 	['Mi-24P'] = 8
 }
+-- inf -> 0 -- armor -> 1 -- anti-air -> 2 -- utilities -> 3
+FDS.transportTypes = {'Infantry', 'Armor', 'Anti-Air', 'Utilities', 'Artillery'}
 FDS.troopAssetsNumbered = {
-	{name = "AK Soldier", cost = 15, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}},
-	{name = "MG Soldier", cost = 30, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}},
-	{name = "RPG Soldier", cost = 80, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.rpgWeight}, slots = 1, variability = {{90,120}}},
-	{name = "Igla", cost = 150, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.manpadWeight}, slots = 1, variability = {{90,120}}},
+	{name = "AK Soldier", cost = 30, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	{name = "MG Soldier", cost = 60, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	{name = "RPG Soldier", cost = 80, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.rpgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	{name = "BMP2", cost = 300, mass = {FDS.BMP2Weight}, slots = 4, variability = {}, type = 'Armor'},
+	{name = "BMP3", cost = 300, mass = {FDS.BMP3Weight}, slots = 4, variability = {}, type = 'Armor'},
+	{name = "M2A2", cost = 300, mass = {FDS.M2A2Weight}, slots = 4, variability = {}, type = 'Armor'},
+	{name = "T90", cost = 600, mass = {FDS.T90Weight}, slots = 6, variability = {}, type = 'Armor'},
+	{name = "Igla", cost = 200, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.manpadWeight}, slots = 1, variability = {{90,120}}, type = 'Anti-Air'},
 	--{name = "JTAC Team", cost = 250, mass = {FDS.JTACWeight, FDS.soldierWeight, FDS.soldierWeight}, slots = 2, variability = {nil,{90,120},{90,120}}, deafultCode = '1688', su25TCode = '1113'},
-	{name = "Shilka", cost = 200, mass = {FDS.ShilkaWeight}, slots = 5, variability = {}},
-	{name = "Strela", cost = 300, mass = {FDS.StrelaWeight}, slots = 5, variability = {}},
-	{name = "Tunguska", cost = 600, mass = {FDS.TunguskaWeight}, slots = 10, variability = {}},
-	{name = "TOR", cost = 600, mass = {FDS.TORWeight}, slots = 10, variability = {}},
-	{name = "Ammo", cost = 80, mass = {FDS.ammoWeight}, slots = 2, variability = {}},
-	{name = "EWR", cost = 50, mass = {FDS.ewrWeight}, slots = 4, variability = {}}
+	{name = "Shilka", cost = 300, mass = {FDS.ShilkaWeight}, slots = 5, variability = {}, type = 'Anti-Air'},
+	{name = "Strela", cost = 350, mass = {FDS.StrelaWeight}, slots = 5, variability = {}, type = 'Anti-Air'},
+	{name = "Tunguska", cost = 800, mass = {FDS.TunguskaWeight}, slots = 10, variability = {}, type = 'Anti-Air'},
+	{name = "TOR", cost = 800, mass = {FDS.TORWeight}, slots = 10, variability = {}, type = 'Anti-Air'},
+	{name = "Ammo", cost = 100, mass = {FDS.ammoWeight}, slots = 2, variability = {}, type = 'Utilities'},
+	{name = "EWR", cost = 250, mass = {FDS.ewrWeight}, slots = 4, variability = {}, type = 'Utilities'},
+	{name = "Mortar", cost = 250, mass = {FDS.ewrWeight}, slots = 1, variability = {}, type = 'Artillery'}
 }
 FDS.troopAssets = {}
 for _, i in pairs(FDS.troopAssetsNumbered) do
@@ -866,6 +877,7 @@ function FDS.addCreditsOptions(gp)
 				for _, transferValue in pairs(FDS.standardTransfer) do
 					missionCommands.addCommandForGroup(gp:getID(), '$'..tostring(transferValue) , sendTo, FDS.transferNow, {['gp'] = gp, ['gpCoa'] = gpCoa, ['sender'] = gpPlayerName, ['amount'] = transferValue, ['receiver'] = playerName})
 				end
+				missionCommands.addCommandForGroup(gp:getID(), 'All' , sendTo, FDS.transferNow, {['gp'] = gp, ['gpCoa'] = gpCoa, ['sender'] = gpPlayerName, ['amount'] = FDS.playersCredits[FDS.trueCoalitionCode[gpCoa]][gpPlayerName], ['receiver'] = playerName})
 				contactsNumber = contactsNumber + 1
 			end
 		end
@@ -902,28 +914,33 @@ function FDS.addCreditsOptions(gp)
 		end
 	end
 	if hasTransport then
-		local rootTroops = missionCommands.addSubMenuForGroup(gp:getID(), "Troop Transport", rootCredits)
+		local rootTroops = missionCommands.addSubMenuForGroup(gp:getID(), "Transport", rootCredits)
 		local jtacTT = ''
-		for _, i in pairs(FDS.troopAssetsNumbered) do
-			if i.name == "JTAC Team" then
-				jtacTT = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($" .. tostring(i.cost) .. ")", rootTroops)
-				for label, code in pairs(FDS.laserCodes) do
-					missionCommands.addCommandForGroup(gp:getID(), "Laser code: " .. code .. " (" .. label .. ")", jtacTT, FDS.validateDropBoard, {['rawData'] = {gp, i.name,1, code}, ['dropCase'] = FDS.loadCargo, ['dropCaseString'] = 'loadCargo'})
-				end
-				jtacTTCustom = missionCommands.addSubMenuForGroup(gp:getID(), "Custom laser code: 1", jtacTT)
-				for _, digit in pairs(FDS.validLaserDigits[1]) do
-					jtacTTCustomDigit1 = missionCommands.addSubMenuForGroup(gp:getID(), digit, jtacTTCustom)
-					for _, digit2 in pairs(FDS.validLaserDigits[2]) do
-						jtacTTCustomDigit2 = missionCommands.addSubMenuForGroup(gp:getID(), digit2, jtacTTCustomDigit1)
-						for _, digit3 in pairs(FDS.validLaserDigits[3]) do
-							missionCommands.addCommandForGroup(gp:getID(), digit3, jtacTTCustomDigit2, FDS.validateDropBoard, {['rawData'] = {gp, i.name, 1, '1' .. digit .. digit2 .. digit3}, ['dropCase'] = FDS.loadCargo, ['dropCaseString'] = 'loadCargo'})
+		for _, aType in pairs(FDS.transportTypes) do
+			local rootType = missionCommands.addSubMenuForGroup(gp:getID(), aType, rootTroops) 
+			for _, i in pairs(FDS.troopAssetsNumbered) do
+				if aType == i.type then
+					if i.name == "JTAC Team" then
+						jtacTT = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($" .. tostring(i.cost) .. ")", rootType)
+						for label, code in pairs(FDS.laserCodes) do
+							missionCommands.addCommandForGroup(gp:getID(), "Laser code: " .. code .. " (" .. label .. ")", jtacTT, FDS.validateDropBoard, {['rawData'] = {gp, i.name,1, code}, ['dropCase'] = FDS.loadCargo, ['dropCaseString'] = 'loadCargo'})
+						end
+						jtacTTCustom = missionCommands.addSubMenuForGroup(gp:getID(), "Custom laser code: 1", jtacTT)
+						for _, digit in pairs(FDS.validLaserDigits[1]) do
+							jtacTTCustomDigit1 = missionCommands.addSubMenuForGroup(gp:getID(), digit, jtacTTCustom)
+							for _, digit2 in pairs(FDS.validLaserDigits[2]) do
+								jtacTTCustomDigit2 = missionCommands.addSubMenuForGroup(gp:getID(), digit2, jtacTTCustomDigit1)
+								for _, digit3 in pairs(FDS.validLaserDigits[3]) do
+									missionCommands.addCommandForGroup(gp:getID(), digit3, jtacTTCustomDigit2, FDS.validateDropBoard, {['rawData'] = {gp, i.name, 1, '1' .. digit .. digit2 .. digit3}, ['dropCase'] = FDS.loadCargo, ['dropCaseString'] = 'loadCargo'})
+								end
+							end
+						end
+					else
+						local troopType = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($".. i.cost ..")", rootType)
+						for j=1,10,1 do  
+							missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), troopType, FDS.validateDropBoard, {['rawData'] = {gp, i.name, j}, ['dropCase'] = FDS.loadCargo, ['dropCaseString'] = 'loadCargo'})
 						end
 					end
-				end
-			else
-				local troopType = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($".. i.cost ..")", rootTroops)
-				for j=1,10,1 do  
-					missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), troopType, FDS.validateDropBoard, {['rawData'] = {gp, i.name, j}, ['dropCase'] = FDS.loadCargo, ['dropCaseString'] = 'loadCargo'})
 				end
 			end
 		end
