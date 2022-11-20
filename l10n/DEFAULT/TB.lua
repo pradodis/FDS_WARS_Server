@@ -246,7 +246,7 @@ FDS.bypassSpeed = false
 FDS.bypassAlt = false
 FDS.bypassCredits = false
 -- Position
-FDS.dropDistance = 15
+FDS.dropDistance = 30
 FDS.dropTroopDistance = 6
 FDS.advanceDistance = 10
 --Mass
@@ -797,56 +797,66 @@ end
 function FDS.transferNow(args)
     local trueCoa = FDS.trueCoalitionCode[args.gpCoa]
     FDS.refreshOnLinePlayers()
-    if FDS.alliedList[trueCoa][args.sender] ~= nil then 
-        if FDS.alliedList[trueCoa][args.receiver] ~= nil then 
-            if FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] - args.amount >= 0 then
-        		FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] = FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] - args.amount
-        		FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]] = FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]] + args.amount
-                local msg = {}
-                msg.displayTime = 5
-                msg.sound = 'fdsTroops.ogg'
-                msg.text = "You transfered $" .. tostring(args.amount) .. " to " .. args.receiver .. ".\nYou have $" .. tostring(FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]]) .. " remaining."
-                trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
-                trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
-                local playerCrafts = mist.DBs.humansByName
-                local receiverGp = nil
-                for i,j in pairs(playerCrafts) do
-                    if Group.getByName(i) ~= nil and Group.getByName(i):getUnits()[1]:getPlayerName() == args.receiver then 
-                        receiverGp = Group.getByName(i).id_
-                    end
-                end
-                local msg = {}
-                msg.displayTime = 5
-                msg.sound = 'indirectKill.ogg'
-                msg.text = "You received $" .. tostring(args.amount) .. " from " .. args.sender .. ".\nYou have $" .. tostring(FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]]) .. " now."
-                trigger.action.outTextForGroup(receiverGp,msg.text,msg.displayTime)
-                trigger.action.outSoundForGroup(receiverGp,msg.sound)
-            else
-                local msg = {}
-                msg.displayTime = 5
-                msg.sound = 'fdsTroops.ogg'
-                msg.text = "Insuficient credits."
-                trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
-                trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
-            end
-        else
+	if args.amount > 0 then
+		if FDS.alliedList[trueCoa][args.sender] ~= nil then 
+			if FDS.alliedList[trueCoa][args.receiver] ~= nil then 
+				if FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] - args.amount >= 0 then
+					FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] = FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]] - args.amount
+					FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]] = FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]] + args.amount
+					local msg = {}
+					msg.displayTime = 5
+					msg.sound = 'fdsTroops.ogg'
+					msg.text = "You transfered $" .. tostring(args.amount) .. " to " .. args.receiver .. ".\nYou have $" .. tostring(FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.sender]]) .. " remaining."
+					trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
+					trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
+					local playerCrafts = mist.DBs.humansByName
+					local receiverGp = nil
+					for i,j in pairs(playerCrafts) do
+						if Group.getByName(i) ~= nil and Group.getByName(i):getUnits()[1]:getPlayerName() == args.receiver then 
+							receiverGp = Group.getByName(i).id_
+						end
+					end
+					local msg = {}
+					msg.displayTime = 5
+					msg.sound = 'indirectKill.ogg'
+					msg.text = "You received $" .. tostring(args.amount) .. " from " .. args.sender .. ".\nYou have $" .. tostring(FDS.playersCredits[trueCoa][FDS.alliedList[trueCoa][args.receiver]]) .. " now."
+					trigger.action.outTextForGroup(receiverGp,msg.text,msg.displayTime)
+					trigger.action.outSoundForGroup(receiverGp,msg.sound)
+				else
+					local msg = {}
+					msg.displayTime = 5
+					msg.sound = 'fdsTroops.ogg'
+					msg.text = "Insuficient credits."
+					trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
+					trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
+				end
+			else
+				local msg = {}
+				msg.displayTime = 5
+				msg.sound = 'fdsTroops.ogg'
+				msg.text = "Invalid receiver, please try again."
+				trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
+				trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
+				FDS.refreshRadio(gp)
+			end
+		else
 			local msg = {}
 			msg.displayTime = 5
 			msg.sound = 'fdsTroops.ogg'
-			msg.text = "Invalid receiver, please try again."
+			msg.text = "Invalid sender, please try again."
 			trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
 			trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
 			FDS.refreshRadio(gp)
-        end
-     else
+		end
+	else
 		local msg = {}
 		msg.displayTime = 5
 		msg.sound = 'fdsTroops.ogg'
-		msg.text = "Invalid sender, please try again."
+		msg.text = "You have no credits to transfer."
 		trigger.action.outTextForGroup(args.gp:getID(),msg.text,msg.displayTime)
 		trigger.action.outSoundForGroup(args.gp:getID(),msg.sound)
-		FDS.refreshRadio(gp)
-    end
+		FDS.refreshRadio(gp)		
+	end
 end
 
 function FDS.refreshRadio(gp)
@@ -877,7 +887,7 @@ function FDS.addCreditsOptions(gp)
 				for _, transferValue in pairs(FDS.standardTransfer) do
 					missionCommands.addCommandForGroup(gp:getID(), '$'..tostring(transferValue) , sendTo, FDS.transferNow, {['gp'] = gp, ['gpCoa'] = gpCoa, ['sender'] = gpPlayerName, ['amount'] = transferValue, ['receiver'] = playerName})
 				end
-				missionCommands.addCommandForGroup(gp:getID(), 'All' , sendTo, FDS.transferNow, {['gp'] = gp, ['gpCoa'] = gpCoa, ['sender'] = gpPlayerName, ['amount'] = FDS.playersCredits[FDS.trueCoalitionCode[gpCoa]][gpPlayerName], ['receiver'] = playerName})
+				missionCommands.addCommandForGroup(gp:getID(), 'All' , sendTo, FDS.transferNow, {['gp'] = gp, ['gpCoa'] = gpCoa, ['sender'] = gpPlayerName, ['amount'] = FDS.playersCredits[FDS.trueCoalitionCode[gpCoa]][FDS.alliedList[FDS.trueCoalitionCode[gpCoa]][gpPlayerName]], ['receiver'] = playerName})
 				contactsNumber = contactsNumber + 1
 			end
 		end
