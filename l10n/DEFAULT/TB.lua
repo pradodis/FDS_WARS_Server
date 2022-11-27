@@ -163,6 +163,7 @@ FDS.respawnTankerTime = 600.0
 FDS.fuelTankerRestart = 14400.0
 
 -- DropZones
+-- Minimum dist is 8 nm from enemy field and helipad
 FDS.randomDropValue = 250.
 FDS.randomDropTime = 300.
 FDS.hoveringAltitude = 100.0
@@ -268,6 +269,7 @@ FDS.ewrWeight = 100 -- kg
 FDS.BMP2Weight = 1500 -- kg
 FDS.BMP3Weight = 1500 -- kg
 FDS.M2A2Weight = 1500 -- kg
+FDS.T72Weight = 2500 -- kg
 FDS.T90Weight = 3000 -- kg
 ----
 FDS.minAltitude = 11000.0
@@ -307,6 +309,7 @@ FDS.troopAssetsNumbered = {
 	{name = "BMP2", cost = 300, mass = {FDS.BMP2Weight}, slots = 4, variability = {}, type = 'Armor'},
 	{name = "BMP3", cost = 300, mass = {FDS.BMP3Weight}, slots = 4, variability = {}, type = 'Armor'},
 	{name = "M2A2", cost = 300, mass = {FDS.M2A2Weight}, slots = 4, variability = {}, type = 'Armor'},
+	{name = "T72", cost = 500, mass = {FDS.T72Weight}, slots = 6, variability = {}, type = 'Armor'},
 	{name = "T90", cost = 600, mass = {FDS.T90Weight}, slots = 6, variability = {}, type = 'Armor'},
 	{name = "Igla", cost = 200, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.manpadWeight}, slots = 1, variability = {{90,120}}, type = 'Anti-Air'},
 	--{name = "JTAC Team", cost = 250, mass = {FDS.JTACWeight, FDS.soldierWeight, FDS.soldierWeight}, slots = 2, variability = {nil,{90,120},{90,120}}, deafultCode = '1688', su25TCode = '1113'},
@@ -1032,20 +1035,20 @@ function creatingBases()
 	FDS.initTgtObj = {}
 
     FDS.tgtQty = {
-        ['Paratrooper AKS-74'] = FDS.InfAK, 
-        ['Paratrooper RPG-16'] = FDS.InfRPG,
-        ['Ural-4320T'] = FDS.ArmTrucks, 
-        ['BMP-1'] = FDS.ArmBMP1, 
-        ['BMP-2'] = FDS.ArmBMP2, 
-        ['T-55'] = FDS.ArmT55 , 
-        ['T-72B'] = FDS.ArmT72, 
-        ['T-80UD'] = FDS.ArmT80 , 
-        ['ZSU-23-4 Shilka'] = FDS.AAA, 
-        ['2S6 Tunguska'] = FDS.AATung, 
-        ['Strela-1 9P31'] = FDS.AAStrela1, 
-        ['Strela-10M3'] = FDS.AAStrela2, 
-        ['SA-18 Igla-S manpad'] = FDS.AAIgla,
-    	['Tor 9A331'] = FDS.AATor}
+        ['Paratrooper AKS-74'] = {FDS.InfAK,'Inf_AK'}, 
+        ['Paratrooper RPG-16'] = {FDS.InfRPG,'Inf_RPG'},
+        ['Ural-4320T'] = {FDS.ArmTrucks,'STrucks'}, 
+        ['BMP-1'] = {FDS.ArmBMP1,'Arm_BMP1'}, 
+        ['BMP-2'] = {FDS.ArmBMP2,'Arm_BMP2'}, 
+        ['T-55'] = {FDS.ArmT55,'Arm_T55'} , 
+        ['T-72B'] = {FDS.ArmT72,'Arm_T72'}, 
+        ['T-80UD'] = {FDS.ArmT80,'Arm_T80'} , 
+        ['ZSU-23-4 Shilka'] = {FDS.AAA,'AAA'}, 
+        ['2S6 Tunguska'] = {FDS.AATung,'AA_Tung'}, 
+        ['Strela-1 9P31'] = {FDS.AAStrela1,'AA_Strela1'}, 
+        ['Strela-10M3'] = {FDS.AAStrela2,'AA_Strela2'}, 
+        ['SA-18 Igla-S manpad'] = {FDS.AAIgla,'AA_Igla'},
+    	['Tor 9A331'] = {FDS.AATor,'AA_Tor'}}
     
 	FDS.joinedZones = {}
 	zones = mist.DBs.zonesByName
@@ -1215,7 +1218,7 @@ function creatingBases()
 		end
         -- Ground Units
         for unc, qt in pairs(FDS.tgtQty) do
-            for unitNumber = 0,qt,1 do
+            for unitNumber = 0,qt[1],1 do
 				if unitNumber ~= 0 then
 					checkP = true
 					it = 0
@@ -1235,22 +1238,39 @@ function creatingBases()
 							checkP = false
 						end
 					end
-
 					addUnit = {}
-					addUnit.x = bornPoint.x
-					addUnit.y = bornPoint.y
-					addUnit.type = unc
-					addUnit.skill = 'Ace'
-					addUnit.heading = math.random(0.0,359.0)
+					mockName = ''
+					if cc == 1 then
+						mockName = 'Blue_' .. qt[2]
+					else
+						mockName = 'Red_' .. qt[2]
+					end
+					-- Strap
+					gp = Group.getByName(mockName)
+					gPData = mist.getGroupData(mockName,true)
+					gpR = mist.getGroupRoute(gp:getName(),true)
+					addUnit_gp = mist.utils.deepCopy(gpR)
+					addUnit = mist.utils.deepCopy(gPData)
+					--
+					--addUnit.x = bornPoint.x
+					--addUnit.y = bornPoint.y
+					--addUnit.type = unc
+					--addUnit.skill = 'Ace'
+					--addUnit.heading = math.random(0.0,359.0)
 
-					allUnits = {}
-					table.insert(allUnits,addUnit)
+					--allUnits = {}
+					--table.insert(allUnits,addUnit)
 
-					addO = {}
-					addO.units = allUnits
+					addO = addUnit
+					--addO = {}
+					--addO.units = allUnits
 					addO.country = cc
 					addO.category = 2
 					addO.visible = true
+					addO.clone = true
+					addO.units[1].x = bornPoint.x
+					addO.units[1].y = bornPoint.y
+					addO.units[1].heading =  math.random(0.0,359.0)
 					addUni = mist.dynAdd(addO)
 
 					boxPos = {}
@@ -3515,7 +3535,7 @@ FDS.eventActions = FDS.switch {
 						mist.scheduleFunction(clearRetrieved, {retId}, timer.getTime()+300.)
 						table.remove(FDS.dropZones,drop)
 					end
-				end 
+				end
 			end
 		end
 		if _local:getName() == "Mid_Helipad" and _local:getCoalition() == _initEnt:getCoalition() then
