@@ -271,6 +271,9 @@ FDS.BMP3Weight = 1500 -- kg
 FDS.M2A2Weight = 1500 -- kg
 FDS.T72Weight = 2500 -- kg
 FDS.T90Weight = 3000 -- kg
+FDS.GovWeight = 2000 -- kg
+FDS.AkaWeight = 2800 -- kg
+FDS.MstWeight = 3500 -- kg
 ----
 FDS.minAltitude = 11000.0
 FDS.maxAltitude = 22000.0
@@ -319,7 +322,10 @@ FDS.troopAssetsNumbered = {
 	{name = "TOR", cost = 800, mass = {FDS.TORWeight}, slots = 10, variability = {}, type = 'Anti-Air'},
 	{name = "Ammo", cost = 100, mass = {FDS.ammoWeight}, slots = 2, variability = {}, type = 'Utilities'},
 	{name = "EWR", cost = 250, mass = {FDS.ewrWeight}, slots = 4, variability = {}, type = 'Utilities'},
-	{name = "Mortar", cost = 250, mass = {FDS.ewrWeight}, slots = 1, variability = {}, type = 'Artillery'}
+	{name = "Mortar", cost = 250, mass = {FDS.ewrWeight}, slots = 1, variability = {}, type = 'Artillery'},
+	{name = "Gvozdika", cost = 600, mass = {FDS.GovWeight}, slots = 6, variability = {}, type = 'Artillery'},
+	{name = "Akatsia", cost = 1200, mass = {FDS.AkaWeight}, slots = 8, variability = {}, type = 'Artillery'},
+	{name = "Msta", cost = 1800, mass = {FDS.MstWeight}, slots = 12, variability = {}, type = 'Artillery'}
 }
 FDS.troopAssets = {}
 for _, i in pairs(FDS.troopAssetsNumbered) do
