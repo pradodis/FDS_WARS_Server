@@ -144,6 +144,15 @@ FDS.lastDropTime = {
 	['blue'] = -(FDS.refreshTime - FDS.firstGroupTime),
 	['red'] = -(FDS.refreshTime - FDS.firstGroupTime) 
 } 
+FDS.cargoFSTable = {['fighter']={{},{}},['interceptor']={{},{}}}
+FDS.cargoFSInterval = 300.0
+FDS.cargoChance1h = 0.80
+FDS.chanceTrial = 1-(1-FDS.cargoChance1h)^(1/(3600/FDS.cargoFSInterval))
+FDS.timeMaxVariance = 0.0 
+
+FDS.deleteTime = 3600.0
+FDS.retryTime = 600.0
+FDS.transportFSSpeed = 200.0
 
 -- Bombers
 FDS.bomberQuantity = 10
@@ -274,6 +283,7 @@ FDS.T90Weight = 3000 -- kg
 FDS.GovWeight = 2000 -- kg
 FDS.AkaWeight = 2800 -- kg
 FDS.MstWeight = 3500 -- kg
+FDS.GradWeight = 2800 -- kg
 ----
 FDS.minAltitude = 11000.0
 FDS.maxAltitude = 22000.0
@@ -325,7 +335,8 @@ FDS.troopAssetsNumbered = {
 	{name = "Mortar", cost = 250, mass = {FDS.ewrWeight}, slots = 1, variability = {}, type = 'Artillery'},
 	{name = "Gvozdika", cost = 600, mass = {FDS.GovWeight}, slots = 6, variability = {}, type = 'Artillery'},
 	{name = "Akatsia", cost = 1200, mass = {FDS.AkaWeight}, slots = 8, variability = {}, type = 'Artillery'},
-	{name = "Msta", cost = 1800, mass = {FDS.MstWeight}, slots = 12, variability = {}, type = 'Artillery'}
+	{name = "Msta", cost = 1800, mass = {FDS.MstWeight}, slots = 12, variability = {}, type = 'Artillery'},
+	{name = "MLRSGrad", cost = 1200, mass = {FDS.GradWeight}, slots = 8, variability = {}, type = 'Artillery'}
 }
 FDS.troopAssets = {}
 for _, i in pairs(FDS.troopAssetsNumbered) do
@@ -1574,6 +1585,184 @@ function FDS.createASupport(args)
 	end
 	trigger.action.outTextForGroup(args[1]:getID(),msg.text,msg.displayTime)
 	trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
+end
+
+function checkAirbornFighters(coa)
+	coaKeys = {[1]='red',[2]='blue'}
+	counterKeys = {[1]='blue',[2]='red'}
+	interceptorKeys = {"M-2000C", "Mirage-F1CE", "MiG-21Bis", "F-5E-3"}
+	fighterKeys = {"F-16C_50", "F-15C", "FA-18C_hornet", "F-14B", "MiG-29G", "JF-17", "Su-33", "MiG-29S", "Su-27", "F-14A-135-GR", "J-11A", "MiG-29A", }
+	gPData = mist.DBs.humansByName
+	nFighter = 0
+	counterFighter = 0
+	nInterceptor = 0
+	counterInterceptor = 0
+	for i,j in pairs(gPData) do
+		if j.coalition == coaKeys[coa] and Group.getByName(i) ~= nil and Group.getByName(i):getUnits()[1]:getPlayerName() ~= nil then
+			for _,tp in pairs(fighterKeys) do
+				if j.type == tp then
+					nFighter = nFighter +1
+				end
+			end
+			for _,tp in pairs(interceptorKeys) do
+				if j.type == tp then
+					nInterceptor = nInterceptor +1
+				end
+			end
+		elseif j.coalition == counterKeys[coa] and Group.getByName(i) ~= nil and Group.getByName(i):getUnits()[1]:getPlayerName() ~= nil then
+			for _,tp in pairs(fighterKeys) do
+				if j.type == tp then
+					counterFighter = counterFighter +1
+				end
+			end
+			for _,tp in pairs(interceptorKeys) do
+				if j.type == tp then
+					counterInterceptor = counterInterceptor +1
+				end
+			end
+		end
+	end
+	if nFighter - counterFighter >= 0 then
+		nFighter = nFighter - counterFighter
+	else
+		nFighter = 0
+	end
+	if nInterceptor - counterInterceptor >= 0 then
+		nInterceptor = nInterceptor - counterInterceptor
+	else
+		if nFighter + (nInterceptor - counterInterceptor) >= 0 then
+			nFighter = nFighter + (nInterceptor - counterInterceptor)
+		else
+			nFighter = 0
+		end
+		nInterceptor = 0
+	end
+
+	return {['fighter'] = nFighter, ['interceptor'] = nInterceptor, ['total'] = nFighter+nInterceptor}
+end
+
+function spawnCargoFS(coa,number,typeFS,fORi)
+	coaFSKeys = {[1]='Red',[2]='Blue'}
+	number = number - #FDS.cargoFSTable[fORi][coa]
+	if number > 0 then
+        fighterIteration = 0
+        for i = 1, 1 + math.floor((number-1)/4) do
+            gPData = mist.getGroupData(coaFSKeys[coa] .. '_Cargo_Sweep_' .. tostring(typeFS),true)
+            gpMockStart = mist.getGroupRoute(coaFSKeys[coa] .. '_Cargo_Sweep_1',true)
+            gpMockWP = mist.getGroupRoute(coaFSKeys[coa] .. '_Transport_Goods',true)
+            gpR = mist.getGroupRoute(coaFSKeys[coa] .. '_Cargo_Sweep_1',true)
+
+            new_GPR = mist.utils.deepCopy(gpR)
+            new_gPData = mist.utils.deepCopy(gPData)
+
+            new_gPData.route = new_GPR 
+            new_gPData.groupId = nil
+            new_gPData.groupName = nil
+            new_gPData.name = nil
+            new_gPData.route = gpMockStart
+			local factor = math.random(100)/100
+            new_gPData.route[1].x = gpMockStart[2].x + (gpMockStart[3].x - gpMockStart[2].x)* factor
+            new_gPData.route[1].y = gpMockStart[2].y + (gpMockStart[3].y - gpMockStart[2].y)* factor
+            new_gPData.route[2].x = gpMockWP[1].x
+            new_gPData.route[2].y = gpMockWP[1].y
+            new_gPData.route[3].x = gpMockWP[2].x
+            new_gPData.route[3].y = gpMockWP[2].y
+            
+            if fighterIteration == math.floor((number-1)/4) and number - 4*math.floor((number-1)/4) < 4 then
+                for deleteUnit = 1, 4 - (number - 4*math.floor((number-1)/4)) do
+                    new_gPData.units[5-deleteUnit] = nil
+                end
+            end
+            new_gPData.units[1].x = new_gPData.route[1].x
+            new_gPData.units[1].y = new_gPData.route[1].y
+
+            new_gPData.units[1].alt = new_gPData.units[1].alt + 25*(math.random(1,200)-100.0)
+            for index, _ in pairs(new_gPData.units) do
+                if coa == 2 then
+                    new_gPData.units[index].heading = 4.36332
+                else
+                    new_gPData.units[index].heading = 1.18682
+                end
+            end
+            new_gPData.route[1].alt = new_gPData.units[1].alt 
+            new_gPData.route[2].alt = new_gPData.units[1].alt
+            new_gPData.route[3].alt = new_gPData.units[1].alt
+            new_gPData.route[1].speed = FDS.transportFSSpeed
+            new_gPData.route[2].speed = FDS.transportFSSpeed
+            new_gPData.route[3].speed = FDS.transportFSSpeed
+            new_gPData.clone = true
+
+            newGp = mist.dynAdd(new_gPData)
+			for _, unitName in pairs(Group.getByName(newGp.name):getUnits()) do
+				FDS.cargoFSTable[fORi][coa][#FDS.cargoFSTable[fORi][coa]+1] = unitName:getName()
+			end
+            mist.scheduleFunction(killCargoFS,{Group.getByName(newGp.name)},timer.getTime()+FDS.deleteTime)
+
+            fighterIteration = fighterIteration + 1
+        end
+    end
+end
+
+function botCargoFS(coa)
+	numberPlanes = checkAirbornFighters(coa)
+	reactNumberF = 0
+    reactNumberI = 0
+	if numberPlanes.fighter > 0 then
+		reactNumberF = math.random(4,17)
+	elseif numberPlanes.interceptor > 0 then
+		reactNumberI = math.random(1,3)
+	end
+	if numberPlanes.fighter > 0 then
+		spawnCargoFS(coa,numberPlanes.fighter,reactNumberF,'fighter')
+	end
+	if numberPlanes.interceptor > 0 then
+		spawnCargoFS(coa,numberPlanes.interceptor,reactNumberI,'interceptor')
+	end
+end
+
+function checkCargoZones(coa)
+	coaKeys = {[1]='red',[2]='blue'}
+    zoneKeys = {[1] = 'cargoCombatZoneBlue', [2] = 'cargoCombatZoneRed'}
+	gPData = mist.DBs.humansByName
+    local unitNames = {}
+	for i,j in pairs(gPData) do
+		if j.coalition == coaKeys[coa] then
+            table.insert(unitNames,i)
+		end
+	end
+    local unitsLock = mist.getUnitsInZones(unitNames,{zoneKeys[coa]})
+    if #unitsLock > 0 then
+        return false
+    else
+        return true
+    end
+end
+
+function killCargoFS(gp)
+    if checkCargoZones(gp.coalition) then 
+        gp:destroy()
+	else
+		mist.scheduleFunction(killCargoFS,{gp},timer.getTime()+FDS.retryTime)
+    end
+end
+
+function cleanFSTable(coa)
+	for ind,_ in pairs(FDS.cargoFSTable) do
+		for i,j in pairs(FDS.cargoFSTable[ind][coa]) do
+			if Unit.getByName(j) == nil then
+				FDS.cargoFSTable[ind][coa][i] = nil
+			end
+		end
+	end
+end
+
+function tryCargoFS(coa)
+	cleanFSTable(coa)
+	local trialSeed = math.random(0,1000000)/1000000
+	if trialSeed < FDS.chanceTrial then
+		botCargoFS(coa)
+	end
+	mist.scheduleFunction(tryCargoFS,{coa},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance)
 end
 
 function bombingRun(coa)
@@ -3496,7 +3685,7 @@ FDS.eventActions = FDS.switch {
 					end
 				end
 			elseif initCheck and initCoaCheck and _initEnt:getPlayerName() and #FDS.dropZones ~= 0 then
-				for i, j in pairs(FDS.dropZones) do 
+				--[[ for i, j in pairs(FDS.dropZones) do 
 					if not distDZ or distDZ > mist.utils.get3DDist(_initEnt:getPosition().p, j[1]) then
 						distDZ = mist.utils.get3DDist(_initEnt:getPosition().p, j[1])
 						drop = i
@@ -3541,7 +3730,7 @@ FDS.eventActions = FDS.switch {
 						mist.scheduleFunction(clearRetrieved, {retId}, timer.getTime()+300.)
 						table.remove(FDS.dropZones,drop)
 					end
-				end
+				end ]]
 			end
 		end
 		if _local:getName() == "Mid_Helipad" and _local:getCoalition() == _initEnt:getCoalition() then
@@ -3917,6 +4106,9 @@ for _,i in pairs(FDS.coalitionCode) do
 	FDS.resTankerTime[i][2] = mist.scheduleFunction(protectCall,{respawnTankerFuel, i},timer.getTime()+FDS.fuelTankerRestart)
 	FDS.resMPRSTankerTime[i][2] = mist.scheduleFunction(protectCall,{respawnMPRSTankerFuel, i},timer.getTime()+FDS.fuelTankerRestart)
 end
+-- Cargo Fighter Sweep
+mist.scheduleFunction(tryCargoFS,{1},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance)
+mist.scheduleFunction(tryCargoFS,{2},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance)
 
 --Events
 world.addEventHandler(FDS.eventHandler)
