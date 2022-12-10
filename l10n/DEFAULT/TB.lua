@@ -146,9 +146,9 @@ FDS.lastDropTime = {
 } 
 FDS.cargoFSTable = {['fighter']={{},{}},['interceptor']={{},{}}}
 FDS.cargoFSInterval = 300.0
-FDS.cargoChance1h = 0.80
-FDS.chanceTrial = 1-(1-FDS.cargoChance1h)^(1/(3600/FDS.cargoFSInterval))
-FDS.timeMaxVariance = 0.0 
+FDS.cargoChance30min = 0.90
+FDS.chanceTrial = 1-(1-FDS.cargoChance30min)^(1/(1800/FDS.cargoFSInterval))
+FDS.timeMaxVariance = 0.0
 
 FDS.deleteTime = 3600.0
 FDS.retryTime = 600.0
@@ -1642,7 +1642,7 @@ function checkAirbornFighters(coa)
 end
 
 function spawnCargoFS(coa,number,typeFS,fORi)
-	coaFSKeys = {[1]='Red',[2]='Blue'}
+	coaFSKeys = {[1]='Blue',[2]='Red'}
 	number = number - #FDS.cargoFSTable[fORi][coa]
 	if number > 0 then
         fighterIteration = 0
@@ -1693,6 +1693,7 @@ function spawnCargoFS(coa,number,typeFS,fORi)
             new_gPData.clone = true
 
             newGp = mist.dynAdd(new_gPData)
+			--ping('Criei!! Criei!!! Criei!!!!!')
 			for _, unitName in pairs(Group.getByName(newGp.name):getUnits()) do
 				FDS.cargoFSTable[fORi][coa][#FDS.cargoFSTable[fORi][coa]+1] = unitName:getName()
 			end
@@ -1713,9 +1714,11 @@ function botCargoFS(coa)
 		reactNumberI = math.random(1,3)
 	end
 	if numberPlanes.fighter > 0 then
+		--ping('Venha Fighter')
 		spawnCargoFS(coa,numberPlanes.fighter,reactNumberF,'fighter')
 	end
 	if numberPlanes.interceptor > 0 then
+		--ping('Venha Interceptor')
 		spawnCargoFS(coa,numberPlanes.interceptor,reactNumberI,'interceptor')
 	end
 end
@@ -1759,6 +1762,7 @@ end
 function tryCargoFS(coa)
 	cleanFSTable(coa)
 	local trialSeed = math.random(0,1000000)/1000000
+	--ping('Sorteio: ' .. trialSeed .. ' -- Target: ' .. FDS.chanceTrial)
 	if trialSeed < FDS.chanceTrial then
 		botCargoFS(coa)
 	end
