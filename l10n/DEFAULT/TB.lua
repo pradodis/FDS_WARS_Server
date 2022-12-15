@@ -108,6 +108,7 @@ FDS.exportPath = 'C:\\fdsServerData\\'
 FDS.killEventNumber = 0
 FDS.killEventVector = {}
 FDS.sendDataFreq = 1.0
+FDS.exportPlayerUnits = true
 FDS.exportDataSite = true -- use false for non-multiplayer games
 FDS.errorLogMis = true
 
@@ -146,7 +147,7 @@ FDS.lastDropTime = {
 } 
 FDS.cargoFSTable = {['fighter']={{},{}},['interceptor']={{},{}}}
 FDS.cargoFSInterval = 300.0
-FDS.cargoChance30min = 0.90
+FDS.cargoChance30min = 0.75
 FDS.chanceTrial = 1-(1-FDS.cargoChance30min)^(1/(1800/FDS.cargoFSInterval))
 FDS.timeMaxVariance = 0.0
 
@@ -194,13 +195,13 @@ FDS.ArmT55 = 2
 FDS.ArmT72 = 2
 FDS.ArmT80 = 2
 
-FDS.AAA = 2
-FDS.AATung = 1
-FDS.AAStrela1 = 0
-FDS.AAStrela2 = 1
-FDS.AAIgla = 3
-FDS.AATor = 1
-FDS.SAM = 0
+FDS.AAA = math.random(1,3)
+FDS.AATung = math.random(1,3)
+FDS.AAStrela1 = math.random(1,3)
+FDS.AAStrela2 = math.random(1,3)
+FDS.AAIgla = math.random(2,5)
+FDS.AATor = math.random(1,3)
+FDS.SAM = math.random(0,1)
 
 FDS.unitsInZones = {}
 FDS.countUCat = {}
@@ -256,9 +257,12 @@ FDS.bypassSpeed = false
 FDS.bypassAlt = false
 FDS.bypassCredits = false
 -- Position
-FDS.dropDistance = 30
+FDS.dropDistance = 45
 FDS.dropTroopDistance = 6
 FDS.advanceDistance = 10
+-- Life span in reboots
+FDS.unitLifeSpan = 3
+FDS.exportUnitsT = 300
 --Mass
 FDS.soldierWeight = 80 -- kg
 FDS.kitWeight = 20 -- kg
@@ -354,6 +358,7 @@ if FDS.exportDataSite then
 	file:write(nil)
 	file:close()
 end
+
 if FDS.errorLogMis then
 	lfs.mkdir(FDS.exportPath)
 	local file = io.open(FDS.exportPath .. "missionError.log", "w")
@@ -708,9 +713,18 @@ function FDS.dropTroops(args)
 				local namePart = string.gsub(FDS.cargoList[tostring(args[1]:getName())][1].name, " ", "_")
 				mockUpName = mockUpName .. "Blue_" .. namePart .. "_Deploy"
 			end
+			local listName = FDS.cargoList[tostring(args[1]:getName())][1].name
 			gp = Group.getByName(mockUpName)
 			gPData = mist.getGroupData(mockUpName,true)
-			gpR = mist.getGroupRoute(mockUpName,true)
+			if FDS.troopAssets[listName].type == 'Artillery' then
+				if args[1]:getCoalition() == 1 then
+					gpR = mist.getGroupRoute("Red_Msta_Deploy",true)
+				elseif args[1]:getCoalition() == 2 then
+					gpR = mist.getGroupRoute("Blue_Msta_Deploy",true)
+				end
+			else
+				gpR = mist.getGroupRoute(mockUpName,true)
+			end
 			new_GPR = mist.utils.deepCopy(gpR)
 			new_gPData = mist.utils.deepCopy(gPData)
 			new_gPData.units[1].x = dropPoint.x
@@ -721,19 +735,62 @@ function FDS.dropTroops(args)
 			new_GPR[1].y = dropPoint.z
 			new_GPR[2].x = dropPoint.x + headingDev.x*FDS.advanceDistance
 			new_GPR[2].y = dropPoint.z + headingDev.z*FDS.advanceDistance
+			--- Artillery TGT
+			if FDS.troopAssets[listName].type == 'Artillery' then
+				local tgtZN = nil
+				local zonasDB = mist.DBs.zonesByName
+				if args[1]:getCoalition() == 1 then
+					local minDist = nil
+					for zoneN,zoneData in pairs(FDS.blueZones) do
+						if minDist ~= nil then
+							if mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y}) < minDist then
+								minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+								tgtZN = zoneN
+							end
+						else
+							minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+							tgtZN = zoneN
+						end
+					end
+				elseif args[1]:getCoalition() == 2 then
+					local minDist = nil
+					for zoneN,zoneData in pairs(FDS.redZones) do
+						if minDist ~= nil then
+							if mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y}) < minDist then
+								minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+								tgtZN = zoneN
+							end
+						else
+							minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+							tgtZN = zoneN
+						end
+					end
+				end
+				for iter = 1, 2, 1 do
+					for taskNumber,task in pairs(new_GPR[iter].task.params.tasks) do
+						if task.name == 'Z' .. tostring(tgtZN) then
+							new_GPR[iter].task.params.tasks[taskNumber].enabled = true
+							new_GPR[iter].task.params.tasks[taskNumber].enabled = true
+						end
+					end
+				end
+			end
 			new_gPData.clone = true
 			new_gPData.route = new_GPR
 			local returnZone = mist.getUnitsInZones({args[1]:getUnits()[1]:getName()},FDS.coalitionAceptZones[FDS.trueCoalitionCode[args[1]:getCoalition()]]['pick'],'cylinder')
 			if #returnZone < 1 then
 				local newTroop = mist.dynAdd(new_gPData)
+				mist.goRoute(Group.getByName(newTroop.name), new_GPR)
+				mist.scheduleFunction(mist.goRoute,{Group.getByName(newTroop.name), new_GPR},timer.getTime()+1)
 				if FDS.cargoList[tostring(args[1]:getName())][1].code ~= nil then
 					ctld.JTACAutoLase(newTroop.name, FDS.cargoList[tostring(args[1]:getName())][1].code, false,"all") 
 				end
 				local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
 				trigger.action.setUnitInternalCargo(args[1]:getName(),massaFinal)
 				deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
-				FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = deployerID
+				FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[listName].type, ['coa'] = args[1]:getCoalition()}}
 				table.remove(FDS.cargoList[args[1]:getName()],1)
+				exportCreatedUnits()
 				msg.text = "Troops deployed.\n"
 			else
 				local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
@@ -1376,6 +1433,106 @@ function createJSONEntities()
 	return entStart
 end
 
+-- Exporting created units
+function exportCreatedUnits()
+	if FDS.exportPlayerUnits then
+		local file = io.open(FDS.exportPath .. "playerUnits.json", "w")
+		if file == nil then
+			lfs.mkdir(FDS.exportPath)
+			file:write(nil)
+		end
+		local playerUnitsExport = {['blue'] = {}, ['red'] = {}}
+		for team,units in pairs(FDS.deployedUnits) do
+			for index, unitData in pairs(units) do
+				if Unit.getByName(index) ~= nil and Unit.getByName(index):isExist() and unitData.groupData ~= nil and unitData.age < FDS.unitLifeSpan then
+					local placedUnit = Unit.getByName(index)
+					unitData.groupData.x = placedUnit:getPosition().p.x
+					unitData.groupData.z = placedUnit:getPosition().p.z
+					playerUnitsExport[team][index] = unitData
+				end  
+			end
+		end
+		jsonExport = net.lua2json(playerUnitsExport)
+		file:write(jsonExport)
+		file:close()
+	end
+end
+
+function importPlayerUnits()
+	if FDS.exportPlayerUnits then
+		local file = io.open(FDS.exportPath .. "playerUnits.json", "r")
+		if file ~= nil then
+			importedUnits = file:read "*a"
+			importedUnits = net.json2lua(importedUnits)
+			file:close()
+			for team, unit in pairs(importedUnits) do
+				for name, data in pairs(unit) do
+					local updateAge = data.age + 1
+					gp = Group.getByName(data.groupData.mockUpName)
+					gPData = mist.getGroupData(data.groupData.mockUpName,true)
+					gpR = mist.getGroupRoute(data.groupData.mockUpName,true)
+					new_GPR = mist.utils.deepCopy(gpR)
+					new_gPData = mist.utils.deepCopy(gPData)
+					new_gPData.units[1].x = data.groupData.x
+					new_gPData.units[1].y = data.groupData.z
+					new_gPData.units[1].alt = land.getHeight({x = data.groupData.x, y = data.groupData.z})
+					new_gPData.units[1].heading = math.atan2(data.groupData.hz, data.groupData.hx)
+					new_GPR[1].x = data.groupData.x
+					new_GPR[1].y = data.groupData.z
+					new_GPR[2].x = data.groupData.x + data.groupData.hx*FDS.advanceDistance
+					new_GPR[2].y = data.groupData.z + data.groupData.hz*FDS.advanceDistance
+					if data.groupData.type == 'Artillery' then
+						local tgtZN = nil
+						local zonasDB = mist.DBs.zonesByName
+						if data.groupData.coa == 1 then
+							local minDist = nil
+							for zoneN,zoneData in pairs(FDS.blueZones) do
+								if minDist ~= nil then
+									if mist.utils.get2DDist({['x'] = data.groupData.x, ['y'] = data.groupData.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y}) < minDist then
+										minDist = mist.utils.get2DDist({['x'] = data.groupData.x, ['y'] = data.groupData.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+										tgtZN = zoneN
+									end
+								else
+									minDist = mist.utils.get2DDist({['x'] = data.groupData.x, ['y'] = data.groupData.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+									tgtZN = zoneN
+								end
+							end
+						elseif data.groupData.coa == 2 then
+							local minDist = nil
+							for zoneN,zoneData in pairs(FDS.redZones) do
+								if minDist ~= nil then
+									if mist.utils.get2DDist({['x'] = data.groupData.x, ['y'] = data.groupData.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y}) < minDist then
+										minDist = mist.utils.get2DDist({['x'] = data.groupData.x, ['y'] = data.groupData.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+										tgtZN = zoneN
+									end
+								else
+									minDist = mist.utils.get2DDist({['x'] = data.groupData.x, ['y'] = data.groupData.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+									tgtZN = zoneN
+								end
+							end
+						end
+						ping(tostring(tgtZN))
+						for iter = 1, 2, 1 do
+							for taskNumber,task in pairs(new_GPR[iter].task.params.tasks) do
+								if task.name == 'Z' .. tostring(tgtZN) then
+									new_GPR[iter].task.params.tasks[taskNumber].enabled = true
+									new_GPR[iter].task.params.tasks[taskNumber].enabled = true
+								end
+							end
+						end
+					end
+					new_gPData.clone = true
+					new_gPData.route = new_GPR
+					local newTroop = mist.dynAdd(new_gPData)
+					mist.goRoute(Group.getByName(newTroop.name), new_GPR)
+					mist.scheduleFunction(mist.goRoute,{Group.getByName(newTroop.name), new_GPR},timer.getTime()+1)
+					FDS.deployedUnits[team][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = data.owner, ['age'] = updateAge, ['groupData'] = {['mockUpName'] = data.groupData.mockUpName,['x'] = data.groupData.x, ['z'] = data.groupData.z, ['hz'] = data.groupData.hz, ['hx'] = data.groupData.hx, ['type'] = data.groupData.type, ['coa'] = data.groupData.coa}}
+				end
+			end
+		end
+	end
+end
+
 -- Creating export vector
 function exportMisData()
     FDS.exportVector = {}
@@ -1576,7 +1733,7 @@ function FDS.createASupport(args)
 	if FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] >= FDS.airSupportAssetsKeys[args[2]].cost or FDS.bypassCredits then
 		FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] - FDS.airSupportAssetsKeys[args[2]].cost
 		local newAS = mist.dynAdd(new_gPData)
-		FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newAS.name):getUnits()[1]:getName()] = deployerID
+		FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newAS.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['age'] = 0}
 		msg.text = "Air support is on the way.\nRemaining Credits: $" .. tostring(FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID])
 		msg.sound = 'fdsTroops.ogg'	
 	else
@@ -3212,8 +3369,10 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 		local plCOA = plGrp:getCoalition()
 		local unitCOA = _initEnt:getCoalition()
 		tgtName = FDS.retrieveUcid(tgtName,FDS.isName)
+		local foundIt = false
 		for k,w in pairs(FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]]) do
 			if plName == k then
+				foundIt = true
 				local msgKill = {}
 				msgKill.displayTime = 20
 				msgKill.sound = 'indirectKill.ogg'
@@ -3247,6 +3406,27 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 						trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
 						trigger.action.outSoundForGroup(plID,msgKill.sound)	
 					end
+				end
+			end
+		end
+		if foundIt == false then
+			if FDS.lastHits[_targetEnt:getID()] ~= nil then
+				if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
+					if tgtName ~= nil and tgtName ~= '' then
+						if tgtName ~= plName then
+							FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playerReward
+						end
+					else
+						FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.rewardDict[rewardType]
+					end
+				end
+			elseif forceAward then
+				if tgtName ~= nil and tgtName ~= '' then
+					if tgtName ~= plName then
+						FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playerReward
+					end
+				else
+					FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.rewardDict[rewardType]
 				end
 			end
 		end
@@ -3790,6 +3970,9 @@ FDS.eventActions = FDS.switch {
 		end
 	end,
 	[world.event.S_EVENT_MISSION_END] = function(x, param)
+		if FDS.exportPlayerUnits then
+			exportCreatedUnits()
+		end
 		if FDS.exportDataSite then
 			local infile = io.open(FDS.exportPath .. "killRecord.json", "r")
 			local instr = infile:read("*a")
@@ -4076,6 +4259,7 @@ end
 -- Creating Bases, Zones and SAMs
 --mist.scheduleFunction(creatingBases, {},timer.getTime()+1)
 mist.scheduleFunction(protectCall, {creatingBases},timer.getTime()+1)
+mist.scheduleFunction(protectCall, {importPlayerUnits},timer.getTime()+2)
 -- Updating Players
 --mist.scheduleFunction(checkPlayersOn, {},timer.getTime()+1.5,5)
 --mist.scheduleFunction(protectCall, {checkPlayersOn},timer.getTime()+1.5,5)
@@ -4111,8 +4295,11 @@ for _,i in pairs(FDS.coalitionCode) do
 	FDS.resMPRSTankerTime[i][2] = mist.scheduleFunction(protectCall,{respawnMPRSTankerFuel, i},timer.getTime()+FDS.fuelTankerRestart)
 end
 -- Cargo Fighter Sweep
-mist.scheduleFunction(tryCargoFS,{1},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance)
-mist.scheduleFunction(tryCargoFS,{2},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance)
+mist.scheduleFunction(tryCargoFS,{1},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance, FDS.cargoFSInterval+FDS.timeMaxVariance)
+mist.scheduleFunction(tryCargoFS,{2},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance, FDS.cargoFSInterval+FDS.timeMaxVariance)
+
+-- Exporting units
+mist.scheduleFunction(exportCreatedUnits,{},timer.getTime()+FDS.exportUnitsT,FDS.exportUnitsT)
 
 --Events
 world.addEventHandler(FDS.eventHandler)
