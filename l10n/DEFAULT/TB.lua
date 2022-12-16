@@ -3259,7 +3259,7 @@ function assembleKillObject(initCheck, targetCheck, _event, _eventComplementar, 
 	end
 	if editFDS and eventExport['targetPlayerName'] == nil then
 		if _event['target'] and _event['target'] ~= nil and _event['target']:getCategory() ~= nil then
-			if _event['target']:getCategory() == 3 then
+			if _event['target']:getGroup() and _event['target']:getCategory() == 3 then
 				FDS.killedByEntity[eventExport['targetName']] = eventExport
 			else
 				FDS.killedByEntity[_event['target']:getGroup():getName()] = eventExport
@@ -3357,7 +3357,7 @@ end
 
 function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
 	if FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()] ~= nil then
-		local plName = FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()]
+		local plName = FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()].owner
 		local tgtName = nil
 		if _targetEnt:getCategory() == 3 then
 			tgtName = nil
@@ -3365,9 +3365,13 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 			tgtName = _targetEnt:getPlayerName()
 		end
 		local plGrp = FDS.checkPlayerOnline(plName,FDS.isName,FDS.isOnline)
-		local plID = plGrp:getID()
-		local plCOA = plGrp:getCoalition()
+		local plID = nil
+		local plCOA = nil
 		local unitCOA = _initEnt:getCoalition()
+		if plGrp ~= "" then
+			local plID = plGrp:getID()
+			local plCOA = plGrp:getCoalition()
+		end
 		tgtName = FDS.retrieveUcid(tgtName,FDS.isName)
 		local foundIt = false
 		for k,w in pairs(FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]]) do
@@ -3414,19 +3418,19 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 				if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
 					if tgtName ~= nil and tgtName ~= '' then
 						if tgtName ~= plName then
-							FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playerReward
+							FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][plName] = FDS.playerReward
 						end
 					else
-						FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.rewardDict[rewardType]
+						FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][plName] = FDS.rewardDict[rewardType]
 					end
 				end
 			elseif forceAward then
 				if tgtName ~= nil and tgtName ~= '' then
 					if tgtName ~= plName then
-						FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playerReward
+						FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][plName] = FDS.playerReward
 					end
 				else
-					FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.rewardDict[rewardType]
+					FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][plName] = FDS.rewardDict[rewardType]
 				end
 			end
 		end
