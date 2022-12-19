@@ -428,7 +428,7 @@ end
 function FDS.checkPlayerOnline(arg,name,online)
 	local gpMsg = ""
 	local activePlayerList = net.get_player_list()	
-	if online then
+	if online == true then
 		for _, i in pairs(activePlayerList) do
 			local playerData = net.get_player_info(i)
 			if not name and playerData.ucid == arg then
@@ -1511,7 +1511,6 @@ function importPlayerUnits()
 								end
 							end
 						end
-						ping(tostring(tgtZN))
 						for iter = 1, 2, 1 do
 							for taskNumber,task in pairs(new_GPR[iter].task.params.tasks) do
 								if task.name == 'Z' .. tostring(tgtZN) then
@@ -3258,7 +3257,7 @@ function assembleKillObject(initCheck, targetCheck, _event, _eventComplementar, 
 		end
 	end
 	if editFDS and eventExport['targetPlayerName'] == nil then
-		if _event['target'] and _event['target'] ~= nil and _event['target']:getCategory() ~= nil then
+		if _event['target'] and _event['target'] ~= nil and _event['target']:getCategory() ~= nil and _event['target']:getGroup() ~= nil and _event['target']:getGroup():getName() ~= nil and eventExport['targetName'] ~= nil then
 			if _event['target']:getGroup() and _event['target']:getCategory() == 3 then
 				FDS.killedByEntity[eventExport['targetName']] = eventExport
 			else
@@ -3356,7 +3355,7 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 end
 
 function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
-	if FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()] ~= nil then
+	if _initEnt:getName() ~= nil and _initEnt:getCoalition() ~= nil and FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()] ~= nil then
 		local plName = FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()].owner
 		local tgtName = nil
 		if _targetEnt:getCategory() == 3 then
@@ -3369,8 +3368,8 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 		local plCOA = nil
 		local unitCOA = _initEnt:getCoalition()
 		if plGrp ~= "" then
-			local plID = plGrp:getID()
-			local plCOA = plGrp:getCoalition()
+			plID = plGrp:getID()
+			plCOA = plGrp:getCoalition()
 		end
 		tgtName = FDS.retrieveUcid(tgtName,FDS.isName)
 		local foundIt = false
@@ -3378,7 +3377,7 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 			if plName == k then
 				foundIt = true
 				local msgKill = {}
-				msgKill.displayTime = 20
+				msgKill.displayTime = 10
 				msgKill.sound = 'indirectKill.ogg'
 				if FDS.lastHits[_targetEnt:getID()] ~= nil then
 					if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
@@ -3530,7 +3529,7 @@ FDS.eventActions = FDS.switch {
 			end ]]
 			--Exporting event record
 			if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
-				if FDS.exportDataSite then
+				if FDS.exportDataSite and FDS.lastHits[_targetEnt:getID()] ~= nil then
 					if FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
 						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, FDS.lastHits[_targetEntLocal:getID()][1], not FDS.lastHits[_targetEntLocal:getID()][2], true)
 						exportKill(killObject)
@@ -3550,7 +3549,9 @@ FDS.eventActions = FDS.switch {
 				end
 				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
-				FDS.lastHits[_initEnt:getID()][2] = true
+				if FDS.lastHits[_targetEnt:getID()] ~= nil then
+					FDS.lastHits[_initEnt:getID()][2] = true
+				end
 			end
 		end
 	end,
@@ -3573,7 +3574,7 @@ FDS.eventActions = FDS.switch {
 		if pcall(checkTPName, _event) and _event ~= nil and _event.target ~= nil and playerCheck2 and _event.target:getPlayerName() ~= nil then
 			debugInfo['pName'] = _event.target:getPlayerName()
 		end
-		if _init ~= nil and _currentTgt ~= nil and _init:getCategory() and _currentTgt:getCategory() and  isUnitorStructure(_init,_currentTgt) then 
+		if _init ~= nil and _currentTgt ~= nil and _init:getCategory() and _currentTgt:getCategory() and  isUnitorStructure(_init,_currentTgt) and _init:getPlayerName() ~= nil then 
 			local hitObjectInfo = assembleKillObject(initCheck, targetCheck, _event, {}, false, false)
 			if _init and _init ~= nil and _init:getID() and _init:getID() ~= nil and _currentTgt ~= nil and _currentTgt:getID() and _currentTgt:getID() ~= nil and FDS.lastHits[_currentTgt:getID()] ~= 'DEAD' then
 				-- [Target ID] = {INFO for JSON, Already paid, Author ID, Copy}
@@ -3696,7 +3697,7 @@ FDS.eventActions = FDS.switch {
 			local rewardType = ''
 			--Exporting event record
 			if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
-				if FDS.exportDataSite then
+				if FDS.exportDataSite and FDS.lastHits[_targetEnt:getID()] ~= nil then
 					if FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
 						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, FDS.lastHits[_targetEntLocal:getID()][1], not FDS.lastHits[_targetEntLocal:getID()][2], true)
 						exportKill(killObject)
@@ -3716,7 +3717,9 @@ FDS.eventActions = FDS.switch {
 				end
 				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
-				FDS.lastHits[_initEnt:getID()][2] = true
+				if FDS.lastHits[_targetEnt:getID()] ~= nil then
+					FDS.lastHits[_initEnt:getID()][2] = true
+				end
 			end
 		end
 	end,
@@ -3772,7 +3775,7 @@ FDS.eventActions = FDS.switch {
 				local rewardType = ''
 				--Exporting event record
 				if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
-					if FDS.exportDataSite then
+					if FDS.exportDataSite and FDS.lastHits[_targetEnt:getID()] ~= nil then
 						if FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
 							local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, FDS.lastHits[_targetEntLocal:getID()][1], not FDS.lastHits[_targetEntLocal:getID()][2], true)
 							exportKill(killObject)
@@ -3792,7 +3795,9 @@ FDS.eventActions = FDS.switch {
 					end
 					awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 					awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
-					FDS.lastHits[_initEnt:getID()][2] = true
+					if FDS.lastHits[_targetEnt:getID()] ~= nil then
+						FDS.lastHits[_initEnt:getID()][2] = true
+					end
 				end
 			end
 		end
@@ -3949,8 +3954,8 @@ FDS.eventActions = FDS.switch {
 
 		--Exporting event record
 		if _initEnt ~= nil and _targetEnt ~= nil and _initEnt:getCategory() and _targetEnt:getCategory() and isUnitorStructure(_initEnt,_targetEnt) then
-			if FDS.exportDataSite then
-				if FDS.lastHits[_targetEnt:getID()] ~= nil and FDS.lastHits[_targetEnt:getID()] ~= nil then 
+			if FDS.exportDataSite and FDS.lastHits[_targetEnt:getID()] ~= nil then
+				if _targetEnt:getID() ~= nil then 
 					local killObject = assembleKillObject(initCheck, targetCheck, _event, FDS.lastHits[_targetEnt:getID()][1], not FDS.lastHits[_targetEnt:getID()][2], false)
 					exportKill(killObject)
 				else
@@ -3969,8 +3974,10 @@ FDS.eventActions = FDS.switch {
 			end
 			awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, true)
 			awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, true)
-			FDS.lastHits[_targetEnt:getID()][2] = true
-			FDS.lastHits[_targetEnt:getID()] = 'DEAD'
+			if FDS.lastHits[_targetEnt:getID()] ~= nil then
+				FDS.lastHits[_targetEnt:getID()][2] = true
+				FDS.lastHits[_targetEnt:getID()] = 'DEAD'
+			end
 		end
 	end,
 	[world.event.S_EVENT_MISSION_END] = function(x, param)
@@ -4209,7 +4216,7 @@ FDS.eventActions = FDS.switch {
 			local rewardType = ''
 			--Exporting event record
 			if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
-				if FDS.exportDataSite then
+				if FDS.exportDataSite and FDS.lastHits[_targetEnt:getID()] ~= nil then
 					if FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
 						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, FDS.lastHits[_targetEntLocal:getID()][1], not FDS.lastHits[_targetEntLocal:getID()][2], true)
 						exportKill(killObject)
@@ -4229,7 +4236,9 @@ FDS.eventActions = FDS.switch {
 				end
 				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
-				FDS.lastHits[_initEnt:getID()][2] = true
+				if FDS.lastHits[_targetEnt:getID()] ~= nil then
+					FDS.lastHits[_initEnt:getID()][2] = true
+				end
 			end
 		end
 		-- Clean Deploy
