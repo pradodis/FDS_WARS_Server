@@ -117,7 +117,7 @@ FDS.playerReward = 250.0
 FDS.enemyReward = 30.0
 FDS.fuelReward = 75.0
 FDS.shelterReward = 100.0
-FDS.commandPostReward = 100.0
+FDS.commandPostReward = 150.0
 FDS.f18Reward = 100.0
 FDS.f4Reward = 100.0
 FDS.f5Reward = 100.0
@@ -3339,6 +3339,11 @@ end
 function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
 	if initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa and _initEnt:isExist() then
 		local plName = _initEnt:getPlayerName()
+		--local plType = nil
+		--local typeFactor = 1.0
+		--if _initEnt ~= nil and _initEnt:getPlayerName() ~= nil and _initEnt:getDesc().typeName then
+		--	if FDS.typeFactor[_initEnt:getDesc().typeName] 
+		--end
 		local tgtName = nil
 		if _targetEnt:getCategory() == 3 then
 			tgtName = nil
