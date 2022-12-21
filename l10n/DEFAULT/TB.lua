@@ -135,9 +135,9 @@ FDS.mig31Reward = 100.0
 FDS.su27Reward = 100.0
 FDS.su33Reward = 100.0
 FDS.su30Reward = 100.0
-FDS.cargoReward = 50.0
-FDS.infAKReward = 2.0
-FDS.infRPGReward = 4.0
+FDS.cargoReward = 100.0
+FDS.infAKReward = 5.0
+FDS.infRPGReward = 10.0
 
 FDS.rewardDict = {
 	['.Command Center'] = FDS.commandPostReward,
