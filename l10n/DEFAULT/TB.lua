@@ -43,10 +43,6 @@ FDS.alliedList = {
 	['blue'] = {},
 	['red'] = {}
 }
-FDS.resAWACSTime = {
-	['blue'] = {'Blue_AWACS_1', 0},
-	['red'] = {'Red_AWACS_1', 0}
-}
 FDS.resTankerTime = {
 	['blue'] = {'Blue_Tanker_1_Cesta', 0},
 	['red'] = {'Red_Tanker_1_Cesta', 0}
@@ -109,6 +105,10 @@ FDS.killEventNumber = 0
 FDS.killEventVector = {}
 FDS.sendDataFreq = 1.0
 FDS.exportPlayerUnits = true
+FDS.exportPlayerData = true
+FDS.importTax = {0.5}
+FDS.taxFreeValue = {100}
+FDS.fixedImportValue = 100
 FDS.exportDataSite = true -- use false for non-multiplayer games
 FDS.errorLogMis = true
 
@@ -171,7 +171,7 @@ FDS.rewardDict = {
 -- Transport
 FDS.refreshTime = 2400.
 FDS.squadSize = 4
-FDS.rewardCargo = 50.
+FDS.rewardCargo = 100.
 FDS.firstGroupTime = 300.0
 FDS.lastDropTime = {
 	['blue'] = -(FDS.refreshTime - FDS.firstGroupTime),
@@ -197,9 +197,18 @@ FDS.bomberQty = {
 }
 
 -- AWACS Respawn
+FDS.awacsMode = 'buyable' -- 'towers-only', 'buyable', 'respawnable'
+FDS.awacsActive = {
+	['blue'] = false,
+	['red'] = false
+}
+FDS.awacsRefreshCheck = 5 -- seconds
 FDS.respawnAWACSTime = 1200.0
 FDS.fuelAWACSRestart = 14400.0
-
+FDS.resAWACSTime = {
+	['blue'] = {'Blue_AWACS_1', 0},
+	['red'] = {'Red_AWACS_1', 0}
+}
 -- Tanker Respawn
 FDS.respawnTankerTime = 600.0
 FDS.fuelTankerRestart = 14400.0
@@ -244,6 +253,9 @@ FDS.bluecountUCat = {}
 FDS.blueunitsInZone = {}
 
 -- FARP Logic
+FDS.farpReliever = true
+FDS.markUpNumber = 0
+FDS.farpTextID = 0
 FDS.farpOwner = {}
 FDS.farpEverCaptured = false
 FDS.refreshFARPScan = 5.0
@@ -288,6 +300,16 @@ FDS.bypassPlace = false
 FDS.bypassSpeed = false
 FDS.bypassAlt = false
 FDS.bypassCredits = false
+FDS.bypassAllowedZone = false
+FDS.allowedZones = {'droppableZone1', 'droppableZone2', 'droppableZone3'}
+-- JTAC Parameters
+FDS.jtacRefresh = 5.0
+FDS.jtacID = 0
+FDS.maxJTACRange = 7 -- nm
+FDS.allJtacs = {
+	['blue'] = {},
+	['red'] = {}
+}
 -- Position
 FDS.dropDistance = 45
 FDS.dropTroopDistance = 6
@@ -340,8 +362,9 @@ FDS.validLaserDigits={
 FDS.airSupportAssets = {
 	{name = "Mig-19", cost = 500, groupName = "_AS_LVL1"},
 	{name = "Mig-23", cost = 750, groupName = "_AS_LVL2"},
-	{name = "Mig-29", cost = 1000, groupName = "_AS_LVL3"}
-	--{name = "JTAC UAV", cost = 300, groupName = "_Spy_Drone", deafultCode = '1688', su25TCode = '1113'}
+	{name = "Mig-29", cost = 1000, groupName = "_AS_LVL3"},
+	{name = "JTAC UAV", cost = 500, groupName = "_Spy_Drone", deafultCode = '1688', su25TCode = '1113'},
+	{name = "E-2D AWACS", cost = 2000}
 }
 FDS.heliSlots = {
 	['UH-1H'] = 12,
@@ -361,7 +384,7 @@ FDS.troopAssetsNumbered = {
 	{name = "T72", cost = 500, mass = {FDS.T72Weight}, slots = 6, variability = {}, type = 'Armor'},
 	{name = "T90", cost = 600, mass = {FDS.T90Weight}, slots = 6, variability = {}, type = 'Armor'},
 	{name = "Igla", cost = 200, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.manpadWeight}, slots = 1, variability = {{90,120}}, type = 'Anti-Air'},
-	--{name = "JTAC Team", cost = 250, mass = {FDS.JTACWeight, FDS.soldierWeight, FDS.soldierWeight}, slots = 2, variability = {nil,{90,120},{90,120}}, deafultCode = '1688', su25TCode = '1113'},
+	{name = "JTAC Team", cost = 300, mass = {FDS.JTACWeight, FDS.soldierWeight, FDS.soldierWeight}, slots = 2, variability = {nil,{90,120},{90,120}}, deafultCode = '1688', su25TCode = '1113', type = 'Utilities'},
 	{name = "Shilka", cost = 300, mass = {FDS.ShilkaWeight}, slots = 5, variability = {}, type = 'Anti-Air'},
 	{name = "Strela", cost = 350, mass = {FDS.StrelaWeight}, slots = 5, variability = {}, type = 'Anti-Air'},
 	{name = "Tunguska", cost = 800, mass = {FDS.TunguskaWeight}, slots = 10, variability = {}, type = 'Anti-Air'},
@@ -704,142 +727,155 @@ function FDS.dropTroops(args)
 	else
 		iterationNumber = args[2]
 	end
-	if #FDS.cargoList[tostring(args[1]:getName())] > 0 then
-		for i = 1, iterationNumber, 1 do
-			usedSlots, totalInternalMass = unpack(calculateWeight(args[1]:getUnits()[1]))
-			local dropPoint = args[1]:getUnits()[1]:getPosition().p
-			local headingDev = args[1]:getUnits()[1]:getPosition().x
-			local adjHeading = 0
-			local compz = 0
-			local compx = 0
-			local degreeHeading = math.atan2(headingDev.z, headingDev.x)*57.2958
-			if degreeHeading < 0 then
-				degreeHeading = 360 + degreeHeading
-			end
-			varDeg = 90
-			if degreeHeading + varDeg > 360 then
-				adjHeading = degreeHeading + varDeg - 360
-			elseif degreeHeading + varDeg < 0 then
-				adjHeading = degreeHeading + varDeg + 360
-			else
-				adjHeading = degreeHeading + varDeg
-			end
-			compz = math.sqrt(1/((math.tan(adjHeading*0.0174533)^2) + 1))
-			compx = compz*math.tan(adjHeading * 0.0174533)
-			if elementNumber == 1 then
-				numberAdjust = {x = 0, z = 0}
-			elseif (elementNumber % 2 == 0) then
-				numberAdjust = {z = FDS.dropTroopDistance*compx*math.floor(elementNumber/2), x = FDS.dropTroopDistance*compz*math.floor(elementNumber/2)}
-			else
-				numberAdjust = {z = -FDS.dropTroopDistance*compx*math.floor(elementNumber/2), x = -FDS.dropTroopDistance*compz*math.floor(elementNumber/2)}
-			end
-			elementNumber = elementNumber+1
-			dropPoint.x = dropPoint.x + headingDev.x*FDS.dropDistance + numberAdjust.x
-			dropPoint.z = dropPoint.z + headingDev.z*FDS.dropDistance + numberAdjust.z
-			local height = land.getHeight({x = dropPoint.x, y = dropPoint.z})
-			mockUpName = ""
-			if args[1]:getCoalition() == 1 then
-				local namePart = string.gsub(FDS.cargoList[tostring(args[1]:getName())][1].name, " ", "_")
-				mockUpName = mockUpName .. "Red_" .. namePart .. "_Deploy"
-			elseif args[1]:getCoalition() == 2 then
-				local namePart = string.gsub(FDS.cargoList[tostring(args[1]:getName())][1].name, " ", "_")
-				mockUpName = mockUpName .. "Blue_" .. namePart .. "_Deploy"
-			end
-			local listName = FDS.cargoList[tostring(args[1]:getName())][1].name
-			gp = Group.getByName(mockUpName)
-			gPData = mist.getGroupData(mockUpName,true)
-			if FDS.troopAssets[listName].type == 'Artillery' then
-				if args[1]:getCoalition() == 1 then
-					gpR = mist.getGroupRoute("Red_Msta_Deploy",true)
-				elseif args[1]:getCoalition() == 2 then
-					gpR = mist.getGroupRoute("Blue_Msta_Deploy",true)
-				end
-			else
-				gpR = mist.getGroupRoute(mockUpName,true)
-			end
-			new_GPR = mist.utils.deepCopy(gpR)
-			new_gPData = mist.utils.deepCopy(gPData)
-			new_gPData.units[1].x = dropPoint.x
-			new_gPData.units[1].y = dropPoint.z
-			new_gPData.units[1].alt = height
-			new_gPData.units[1].heading = math.atan2(headingDev.z, headingDev.x)
-			new_GPR[1].x = dropPoint.x
-			new_GPR[1].y = dropPoint.z
-			new_GPR[2].x = dropPoint.x + headingDev.x*FDS.advanceDistance
-			new_GPR[2].y = dropPoint.z + headingDev.z*FDS.advanceDistance
-			--- Artillery TGT
-			if FDS.troopAssets[listName].type == 'Artillery' then
-				local tgtZN = nil
-				local zonasDB = mist.DBs.zonesByName
-				if args[1]:getCoalition() == 1 then
-					local minDist = nil
-					for zoneN,zoneData in pairs(FDS.blueZones) do
-						if minDist ~= nil then
-							if mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y}) < minDist then
-								minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
-								tgtZN = zoneN
-							end
-						else
-							minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
-							tgtZN = zoneN
-						end
-					end
-				elseif args[1]:getCoalition() == 2 then
-					local minDist = nil
-					for zoneN,zoneData in pairs(FDS.redZones) do
-						if minDist ~= nil then
-							if mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y}) < minDist then
-								minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
-								tgtZN = zoneN
-							end
-						else
-							minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
-							tgtZN = zoneN
-						end
-					end
-				end
-				for iter = 1, 2, 1 do
-					for taskNumber,task in pairs(new_GPR[iter].task.params.tasks) do
-						if task.name == 'Z' .. tostring(tgtZN) then
-							new_GPR[iter].task.params.tasks[taskNumber].enabled = true
-							new_GPR[iter].task.params.tasks[taskNumber].enabled = true
-						end
-					end
-				end
-			end
-			new_gPData.clone = true
-			new_gPData.route = new_GPR
-			local returnZone = mist.getUnitsInZones({args[1]:getUnits()[1]:getName()},FDS.coalitionAceptZones[FDS.trueCoalitionCode[args[1]:getCoalition()]]['pick'],'cylinder')
-			if #returnZone < 1 then
-				local newTroop = mist.dynAdd(new_gPData)
-				mist.goRoute(Group.getByName(newTroop.name), new_GPR)
-				mist.scheduleFunction(mist.goRoute,{Group.getByName(newTroop.name), new_GPR},timer.getTime()+1)
-				if FDS.cargoList[tostring(args[1]:getName())][1].code ~= nil then
-					ctld.JTACAutoLase(newTroop.name, FDS.cargoList[tostring(args[1]:getName())][1].code, false,"all") 
-				end
-				local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
-				trigger.action.setUnitInternalCargo(args[1]:getName(),massaFinal)
-				deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
-				FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[listName].type, ['coa'] = args[1]:getCoalition()}}
-				table.remove(FDS.cargoList[args[1]:getName()],1)
-				exportCreatedUnits()
-				msg.text = "Troops deployed.\n"
-			else
-				local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
-				trigger.action.setUnitInternalCargo(args[1]:getName(),massaFinal)
-				local gpUcid = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
-				local cargoName = FDS.cargoList[tostring(args[1]:getName())][1].name
-				FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][gpUcid] + FDS.troopAssets[cargoName].cost
-				table.remove(FDS.cargoList[args[1]:getName()],1)
-				msg.text = "Troops went back to base.\n"
-			end
+	local checkZone = true
+	if not FDS.bypassAllowedZone then
+		local isAllowed = mist.getUnitsInZones({args[1]:getName()},FDS.allowedZones,'cylinder')
+		if #isAllowed == 0 then
+			checkZone = false
 		end
-		msg.displayTime = 10
-		msg.sound = 'fdsTroops.ogg'
+	end
+	if checkZone then
+		if #FDS.cargoList[tostring(args[1]:getName())] > 0 then
+			for i = 1, iterationNumber, 1 do
+				usedSlots, totalInternalMass = unpack(calculateWeight(args[1]:getUnits()[1]))
+				local dropPoint = args[1]:getUnits()[1]:getPosition().p
+				local headingDev = args[1]:getUnits()[1]:getPosition().x
+				local adjHeading = 0
+				local compz = 0
+				local compx = 0
+				local degreeHeading = math.atan2(headingDev.z, headingDev.x)*57.2958
+				if degreeHeading < 0 then
+					degreeHeading = 360 + degreeHeading
+				end
+				varDeg = 90
+				if degreeHeading + varDeg > 360 then
+					adjHeading = degreeHeading + varDeg - 360
+				elseif degreeHeading + varDeg < 0 then
+					adjHeading = degreeHeading + varDeg + 360
+				else
+					adjHeading = degreeHeading + varDeg
+				end
+				compz = math.sqrt(1/((math.tan(adjHeading*0.0174533)^2) + 1))
+				compx = compz*math.tan(adjHeading * 0.0174533)
+				if elementNumber == 1 then
+					numberAdjust = {x = 0, z = 0}
+				elseif (elementNumber % 2 == 0) then
+					numberAdjust = {z = FDS.dropTroopDistance*compx*math.floor(elementNumber/2), x = FDS.dropTroopDistance*compz*math.floor(elementNumber/2)}
+				else
+					numberAdjust = {z = -FDS.dropTroopDistance*compx*math.floor(elementNumber/2), x = -FDS.dropTroopDistance*compz*math.floor(elementNumber/2)}
+				end
+				elementNumber = elementNumber+1
+				dropPoint.x = dropPoint.x + headingDev.x*FDS.dropDistance + numberAdjust.x
+				dropPoint.z = dropPoint.z + headingDev.z*FDS.dropDistance + numberAdjust.z
+				local height = land.getHeight({x = dropPoint.x, y = dropPoint.z})
+				mockUpName = ""
+				if args[1]:getCoalition() == 1 then
+					local namePart = string.gsub(FDS.cargoList[tostring(args[1]:getName())][1].name, " ", "_")
+					mockUpName = mockUpName .. "Red_" .. namePart .. "_Deploy"
+				elseif args[1]:getCoalition() == 2 then
+					local namePart = string.gsub(FDS.cargoList[tostring(args[1]:getName())][1].name, " ", "_")
+					mockUpName = mockUpName .. "Blue_" .. namePart .. "_Deploy"
+				end
+				local listName = FDS.cargoList[tostring(args[1]:getName())][1].name
+				gp = Group.getByName(mockUpName)
+				gPData = mist.getGroupData(mockUpName,true)
+				if FDS.troopAssets[listName].type == 'Artillery' then
+					if args[1]:getCoalition() == 1 then
+						gpR = mist.getGroupRoute("Red_Msta_Deploy",true)
+					elseif args[1]:getCoalition() == 2 then
+						gpR = mist.getGroupRoute("Blue_Msta_Deploy",true)
+					end
+				else
+					gpR = mist.getGroupRoute(mockUpName,true)
+				end
+				new_GPR = mist.utils.deepCopy(gpR)
+				new_gPData = mist.utils.deepCopy(gPData)
+				new_gPData.units[1].x = dropPoint.x
+				new_gPData.units[1].y = dropPoint.z
+				new_gPData.units[1].alt = height
+				new_gPData.units[1].heading = math.atan2(headingDev.z, headingDev.x)
+				new_GPR[1].x = dropPoint.x
+				new_GPR[1].y = dropPoint.z
+				new_GPR[2].x = dropPoint.x + headingDev.x*FDS.advanceDistance
+				new_GPR[2].y = dropPoint.z + headingDev.z*FDS.advanceDistance
+				--- Artillery TGT
+				if FDS.troopAssets[listName].type == 'Artillery' then
+					local tgtZN = nil
+					local zonasDB = mist.DBs.zonesByName
+					if args[1]:getCoalition() == 1 then
+						local minDist = nil
+						for zoneN,zoneData in pairs(FDS.blueZones) do
+							if minDist ~= nil then
+								if mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y}) < minDist then
+									minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+									tgtZN = zoneN
+								end
+							else
+								minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+								tgtZN = zoneN
+							end
+						end
+					elseif args[1]:getCoalition() == 2 then
+						local minDist = nil
+						for zoneN,zoneData in pairs(FDS.redZones) do
+							if minDist ~= nil then
+								if mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y}) < minDist then
+									minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+									tgtZN = zoneN
+								end
+							else
+								minDist = mist.utils.get2DDist({['x'] = dropPoint.x, ['y'] = dropPoint.z},{['x'] = zonasDB[zoneData].x, ['y'] = zonasDB[zoneData].y})
+								tgtZN = zoneN
+							end
+						end
+					end
+					for iter = 1, 2, 1 do
+						for taskNumber,task in pairs(new_GPR[iter].task.params.tasks) do
+							if task.name == 'Z' .. tostring(tgtZN) then
+								new_GPR[iter].task.params.tasks[taskNumber].enabled = true
+								new_GPR[iter].task.params.tasks[taskNumber].enabled = true
+							end
+						end
+					end
+				end
+				new_gPData.clone = true
+				new_gPData.route = new_GPR
+				local returnZone = mist.getUnitsInZones({args[1]:getUnits()[1]:getName()},FDS.coalitionAceptZones[FDS.trueCoalitionCode[args[1]:getCoalition()]]['pick'],'cylinder')
+				if #returnZone < 1 then
+					local newTroop = mist.dynAdd(new_gPData)
+					mist.goRoute(Group.getByName(newTroop.name), new_GPR)
+					mist.scheduleFunction(mist.goRoute,{Group.getByName(newTroop.name), new_GPR},timer.getTime()+1)
+					if FDS.cargoList[tostring(args[1]:getName())][1].code ~= nil then
+						FDS.createJTACJeep({args[1], tostring(FDS.cargoList[tostring(args[1]:getName())][1].code), Group.getByName(newTroop.name)}) 
+					end
+					local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
+					trigger.action.setUnitInternalCargo(args[1]:getName(),massaFinal)
+					deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+					FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[listName].type, ['coa'] = args[1]:getCoalition()}}
+					table.remove(FDS.cargoList[args[1]:getName()],1)
+					exportCreatedUnits()
+					msg.text = "Troops deployed.\n"
+				else
+					local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
+					trigger.action.setUnitInternalCargo(args[1]:getName(),massaFinal)
+					local gpUcid = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+					local cargoName = FDS.cargoList[tostring(args[1]:getName())][1].name
+					FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][gpUcid] + FDS.troopAssets[cargoName].cost
+					table.remove(FDS.cargoList[args[1]:getName()],1)
+					msg.text = "Troops went back to base.\n"
+				end
+			end
+			msg.displayTime = 10
+			msg.sound = 'fdsTroops.ogg'
+		else
+			msg.text = "No troops to drop off.\n"
+			msg.displayTime = 10
+			msg.sound = 'fdsTroops.ogg'
+		end
 	else
-		msg.text = "No troops to drop off.\n"
+		msg.text = "You cannot drop troops outside the allowed zone.\n"
 		msg.displayTime = 10
-		msg.sound = 'fdsTroops.ogg'
+		msg.sound = 'fdsTroops.ogg'		
 	end
 	trigger.action.outTextForGroup(args[1]:getID(),msg.text,msg.displayTime)
 	trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
@@ -974,7 +1010,26 @@ function FDS.refreshRadio(gp)
     mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[gp:getName()]['groupId'],'Where to Attack',nil, FDS.whereStrike, {gp.id_, gp:getCoalition(), gp:getName()}},timer.getTime()+FDS.wtime)
     mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[gp:getName()]['groupId'],'Where to Defend',nil, FDS.whereDefend, {gp.id_, gp:getCoalition(), gp:getName()}},timer.getTime()+FDS.wtime)
     mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[gp:getName()]['groupId'],'Drop Zones',nil, FDS.whereDropZones, {gp.id_, gp:getCoalition(), gp:getName()}},timer.getTime()+FDS.wtime)
-    FDS.addCreditsOptions(gp)
+	--mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[gp:getName()]['groupId'],'JTAC Status',nil, FDS.jtacStatus, {gp.id_, gp:getCoalition(), gp:getName()}},timer.getTime()+FDS.wtime)
+	FDS.addCreditsOptions(gp)
+	FDS.addJtacOption(gp)
+end
+
+function FDS.addJtacOption(gp)
+	local rootJtacs = missionCommands.addSubMenuForGroup(gp:getID(), "Jtac Status")
+	-- Transfer Cretids
+	missionCommands.addCommandForGroup(gp:getID(), 'Refresh JTAC IDs', rootJtacs, FDS.refreshRadio, gp)
+	missionCommands.addCommandForGroup(gp:getID(), 'General Summary', rootJtacs, FDS.jtacSummary, {gp.id_, gp:getCoalition(), gp:getName()})
+	local contactsNumber = 2
+    for jtacName, jtacData in pairs(FDS.allJtacs[FDS.trueCoalitionCode[gp:getCoalition()]]) do
+		if contactsNumber%8 == 0 then
+			rootJtacs = missionCommands.addSubMenuForGroup(gp:getID(), "More", rootJtacs)
+			contactsNumber = contactsNumber + 1
+		else
+			missionCommands.addCommandForGroup(gp:getID(), 'JTAC ' .. tostring(FDS.allJtacs[FDS.trueCoalitionCode[gp:getCoalition()]][jtacName].jtacID), rootJtacs, FDS.jtacStatus, {gp.id_, gp:getCoalition(), jtacName, gp})
+			contactsNumber = contactsNumber + 1
+		end
+    end
 end
 
 function FDS.addCreditsOptions(gp)
@@ -1020,6 +1075,10 @@ function FDS.addCreditsOptions(gp)
 						missionCommands.addCommandForGroup(gp:getID(), digit3, jtacASCustomDigit2, FDS.createJTACDrone, {gp, i.name, '1' .. digit .. digit2 .. digit3})
 					end
 				end
+			end
+		elseif i.name == "E-2D AWACS" then
+			if FDS.awacsMode == 'buyable' then
+				missionCommands.addCommandForGroup(gp:getID(), i.name .. " - ($" .. tostring(i.cost) .. ")", rootAirSupport, buyAwacs, {gp, i.name})
 			end
 		else
 			missionCommands.addCommandForGroup(gp:getID(), i.name .. " - ($" .. tostring(i.cost) .. ")", rootAirSupport, FDS.createASupport, {gp, i.name})
@@ -1169,6 +1228,10 @@ function creatingBases()
         tgtObj.red[FDS.redZones[i]] = {}
 	end
 
+	FDS.markUpNumber = FDS.markUpNumber + 1
+	trigger.action.textToAll(-1, FDS.markUpNumber, trigger.misc.getZone('cZone_1').point, {1, 1, 1, 1} , {1, 1, 1, 0.3} , 20, true , 'Capturable FARP: Neutral' )
+	FDS.farpTextID = FDS.markUpNumber
+
 	for i = 1,2,1 do
 		activePl = coalition.getPlayers(i)
 		if #activePl ~= 0 then
@@ -1200,7 +1263,9 @@ function creatingBases()
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Where to Attack',nil, FDS.whereStrike, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Where to Defend',nil, FDS.whereDefend, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Drop Zones',nil, FDS.whereDropZones, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
+					--mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'JTAC Status',nil, FDS.jtacStatus, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					FDS.addCreditsOptions(gp)
+					FDS.addJtacOption(gp)
 					mist.scheduleFunction(trigger.action.outTextForGroup,{gpId,msg.text,msg.displayTime},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(trigger.action.outSoundForGroup,{gpId,msg.sound},timer.getTime()+FDS.wtime)
 					if i == 1 then 
@@ -1238,7 +1303,9 @@ function creatingBases()
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Where to Attack',nil, FDS.whereStrike, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Where to Defend',nil, FDS.whereDefend, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Drop Zones',nil, FDS.whereDropZones, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
+					--mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'JTAC Status',nil, FDS.jtacStatus, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					FDS.addCreditsOptions(gp)
+					FDS.addJtacOption(gp)
 					mist.scheduleFunction(trigger.action.outTextForGroup,{gpId,msg.text,msg.displayTime},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(trigger.action.outSoundForGroup,{gpId,msg.sound},timer.getTime()+FDS.wtime)
 					if i == 1 then 
@@ -1490,6 +1557,55 @@ function exportCreatedUnits()
 	end
 end
 
+function exportPlayerDataNow()
+	if FDS.exportPlayerData then
+		local file = io.open(FDS.exportPath .. "playerData.json", "w")
+		if file == nil then
+			lfs.mkdir(FDS.exportPath)
+			file:write(nil)
+		end
+		local playerDataExport = {['blue'] = {}, ['red'] = {}}
+		for team,players in pairs(FDS.playersCredits) do
+			for playerName, playerData in pairs(players) do
+				playerDataExport[team][playerName] = playerData
+			end
+		end
+		jsonExport = net.lua2json(playerDataExport)
+		file:write(jsonExport)
+		file:close()
+	end
+end
+
+function importPlayerDataNow()
+	if FDS.exportPlayerData then
+		local file = io.open(FDS.exportPath .. "playerData.json", "r")
+		if file ~= nil then
+			importedUnits = file:read "*a"
+			importedUnits = net.json2lua(importedUnits)
+			file:close()
+            local playerDataExport = {['blue'] = {}, ['red'] = {}}
+			for team,players in pairs(importedUnits) do
+				for playerName, playerData in pairs(players) do
+                	if playerData > FDS.fixedImportValue then
+                    	playerData = playerData - FDS.fixedImportValue
+                    	if playerData > FDS.taxFreeValue[1] then
+                        	playerDataExport[team][playerName] = FDS.taxFreeValue[1]
+                        	playerData = playerData - FDS.taxFreeValue[1]
+                        	playerDataExport[team][playerName] = playerDataExport[team][playerName] + playerData*FDS.importTax[1]
+                            ping(tostring(playerDataExport[team][playerName]))
+                    	else
+                        	playerDataExport[team][playerName] = playerData
+                    	end
+                	else
+                    	playerDataExport[team][playerName] = 0
+                	end
+				end
+			end
+            FDS.playersCredits = playerDataExport
+		end
+	end
+end
+
 function importPlayerUnits()
 	if FDS.exportPlayerUnits then
 		local file = io.open(FDS.exportPath .. "playerUnits.json", "r")
@@ -1711,37 +1827,459 @@ function createAG(name, coa)
 	mist.goRoute(name,new_GPR)
 end
 
-function FDS.createJTACDrone(args)
-	local point3 = args[1]:getUnits()[1]:getPosition().p
-	local heightD = ''
-	if point3.y/0.3048 > FDS.minAltitude then
-		heightD = point3.y/0.3048
+function FDS.createJTACJeep(args)
+	local msg = {}
+	msg.displayTime = 10
+	local deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+	if FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] >= FDS.troopAssets["JTAC Team"].cost or FDS.bypassCredits then
+		FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] - FDS.troopAssets["JTAC Team"].cost
+		local point3 = args[1]:getUnits()[1]:getPosition().p
+		local goodDist = true
+		for key, jtac in pairs(FDS.allJtacs[FDS.trueCoalitionCode[args[1]:getCoalition()]]) do
+			if args[3] == jtac.code and math.sqrt((point3.x - jtac.position[1])^2 + (point3.z - jtac.position[2])^2 + (heightD - jtac.position[3])^2) < FDS.maxJTACRange*1852*2 then
+				goodDist = false
+			end
+		end
+		if goodDist then
+			local mockUpName = ''
+			local circleColor1 = {}
+			local circleColor2 = {}
+			local textColor1 = {}
+			local textColor2 = {}
+			if args[1]:getCoalition() == 1 then
+				mockUpName = "Red_JTAC_Team_Deploy"
+				circleColor1 = {1, 0, 0, 0.75}
+				circleColor2 = {0.3, 0, 0.0, 0.25}
+				textColor1 = {1, 0, 0, 1}
+				textColor2 = {0, 0, 0, 0}
+			elseif args[1]:getCoalition() == 2 then
+				mockUpName = "Blue_JTAC_Team_Deploy"
+				circleColor1 = {0, 0, 1, 0.85}
+				circleColor2 = {0, 0, 0.3, 0.15}
+				textColor1 = {0, 0, 1, 1}
+				textColor2 = {0, 0, 0, 0}
+			end
+			local deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+			FDS.markUpNumber = FDS.markUpNumber + 1
+			trigger.action.circleToAll(args[1]:getCoalition() , FDS.markUpNumber, point3, FDS.maxJTACRange*1852 , circleColor1 , circleColor2 , 3 , true)
+			local circleNumber = FDS.markUpNumber
+			FDS.markUpNumber = FDS.markUpNumber + 1
+			FDS.jtacID = FDS.jtacID + 1
+			trigger.action.textToAll(args[1]:getCoalition(), FDS.markUpNumber, point3, textColor1 , textColor2 , 20, true , 'Ground JTAC ' .. tostring(FDS.jtacID) ..' laser code: ' .. tostring(args[2]))
+			local textNumber = FDS.markUpNumber
+			FDS.allJtacs[FDS.trueCoalitionCode[args[1]:getCoalition()]][args[3]:getName()] = {['owner'] = deployerID, ['coalition'] = args[1]:getCoalition(), ['group'] = args[3], ['drawId'] = {circleNumber, textNumber}, ['position'] = {point3.x, point3.z, point3.y}, ['status'] = 'searching', ['sight'] = {}, ['target'] = nil, ['jtacID'] = FDS.jtacID, ['code'] = args[2], ['laserSpot'] = nil}
+			msg.text = 'JTAC created.'
+			msg.sound = 'fdsTroops.ogg'
+		else
+			msg.text = 'You are too close from another JTAC with the same laser code.'
+			msg.sound = 'fdsTroops.ogg'
+		end
 	else
-		heightD = mist.random(100)
-		local variation = (FDS.maxAltitude - FDS.minAltitude)/100
-		heightD = (11000 + 100*heightD)*0.3048
+		msg.text = 'Insuficient credits.'
+		msg.sound = 'fdsTroops.ogg'
 	end
-	local mockUpName = ''
-	if args[1]:getCoalition() == 1 then
-		mockUpName = "Red_Spy_Drone"
-	elseif args[1]:getCoalition() == 2 then
-		mockUpName = "Blue_Spy_Drone"
+	trigger.action.outTextForGroup(args[1]:getID(), msg.text, msg.displayTime)
+	trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
+end
+
+function FDS.createJTACDrone(args)
+	local msg = {}
+	msg.displayTime = 10
+	local deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+	if FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] >= FDS.airSupportAssetsKeys[args[2]].cost or FDS.bypassCredits then
+		FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] - FDS.airSupportAssetsKeys[args[2]].cost
+		local point3 = args[1]:getUnits()[1]:getPosition().p
+		local heightD = ''
+		if point3.y/0.3048 > FDS.minAltitude then
+			heightD = point3.y/0.3048
+		else
+			heightD = mist.random(100)
+			local variation = (FDS.maxAltitude - FDS.minAltitude)/100
+			heightD = (11000 + 100*heightD)*0.3048
+		end
+		local goodDist = true
+		for key, jtac in pairs(FDS.allJtacs[FDS.trueCoalitionCode[args[1]:getCoalition()]]) do
+			if args[3] == jtac.code and math.sqrt((point3.x - jtac.position[1])^2 + (point3.z - jtac.position[2])^2 + (heightD - jtac.position[3])^2) < FDS.maxJTACRange*1852*2 then
+				goodDist = false
+			end
+		end
+		if goodDist then
+			local mockUpName = ''
+			local circleColor1 = {}
+			local circleColor2 = {}
+			local textColor1 = {}
+			local textColor2 = {}
+			if args[1]:getCoalition() == 1 then
+				mockUpName = "Red_Spy_Drone"
+				circleColor1 = {1, 0, 0, 0.75}
+				circleColor2 = {0.3, 0, 0.0, 0.25}
+				textColor1 = {1, 0, 0, 1}
+				textColor2 = {0, 0, 0, 0}
+			elseif args[1]:getCoalition() == 2 then
+				mockUpName = "Blue_Spy_Drone"
+				circleColor1 = {0, 0, 1, 0.75}
+				circleColor2 = {0, 0, 0.3, 0.25}
+				textColor1 = {0, 0, 1, 1}
+				textColor2 = {0, 0, 0, 0}
+			end
+			gp = Group.getByName(mockUpName)
+			gPData = mist.getGroupData(mockUpName,true)
+			gpR = mist.getGroupRoute(gp:getName(),true)
+			new_GPR = mist.utils.deepCopy(gpR)
+			new_gPData = mist.utils.deepCopy(gPData)
+			new_gPData.units[1].x = point3.x
+			new_gPData.units[1].y = point3.z
+			new_gPData.units[1].alt = heightD
+			new_GPR[1].task.params.tasks[7].params.altitude = heightD
+			new_GPR[1].x = point3.x
+			new_GPR[1].y = point3.z
+			new_gPData.clone = true
+			new_gPData.route = new_GPR
+			local newDrone = mist.dynAdd(new_gPData)
+			local deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+			FDS.markUpNumber = FDS.markUpNumber + 1
+			trigger.action.circleToAll(args[1]:getCoalition() , FDS.markUpNumber, point3, FDS.maxJTACRange*1852 , circleColor1 , circleColor2 , 2 , true)
+			local circleNumber = FDS.markUpNumber
+			FDS.markUpNumber = FDS.markUpNumber + 1
+			FDS.jtacID = FDS.jtacID + 1
+			trigger.action.textToAll(args[1]:getCoalition(), FDS.markUpNumber, point3, textColor1 , textColor2 , 20, true , 'JTAC ' .. tostring(FDS.jtacID) ..' laser code: ' .. tostring(args[3]))
+			local textNumber = FDS.markUpNumber
+			FDS.allJtacs[FDS.trueCoalitionCode[args[1]:getCoalition()]][newDrone.name] = {['owner'] = deployerID, ['coalition'] = args[1]:getCoalition(), ['group'] = Group.getByName(newDrone.name), ['drawId'] = {circleNumber, textNumber}, ['position'] = {point3.x, point3.z, heightD}, ['status'] = 'searching', ['sight'] = {}, ['target'] = nil, ['jtacID'] = FDS.jtacID, ['code'] = args[3], ['laserSpot'] = nil}
+			msg.text = 'JTAC created.'
+			msg.sound = 'fdsTroops.ogg'
+		else
+			msg.text = 'You are too close from another JTAC with the same laser code.'
+			msg.sound = 'fdsTroops.ogg'
+		end
+	else
+		msg.text = 'Insuficient credits.'
+		msg.sound = 'fdsTroops.ogg'
 	end
-	gp = Group.getByName(mockUpName)
-	gPData = mist.getGroupData(mockUpName,true)
-	gpR = mist.getGroupRoute(gp:getName(),true)
-	new_GPR = mist.utils.deepCopy(gpR)
-	new_gPData = mist.utils.deepCopy(gPData)
-	new_gPData.units[1].x = point3.x
-	new_gPData.units[1].y = point3.z
-	new_gPData.units[1].alt = heightD
-	new_GPR[1].task.params.tasks[7].params.altitude = heightD
-	new_GPR[1].x = point3.x
-	new_GPR[1].y = point3.z
-	new_gPData.clone = true
-	new_gPData.route = new_GPR
-	local newDrone = mist.dynAdd(new_gPData)
-	ctld.JTACAutoLase(newDrone.name, args[3], false,"all") 
+	trigger.action.outTextForGroup(args[1]:getID(), msg.text, msg.displayTime)
+	trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
+end
+
+function JTACSearch(args)
+	local allUnits = {}
+	-- Search for vehicles
+	local coaName = nil
+	if args.coalition == 1 then
+		allUnits = mist.makeUnitTable({'[blue][vehicle]'})
+		coaName = 'red'
+	elseif args.coalition == 2 then
+		coaName = 'blue'
+		allUnits = mist.makeUnitTable({'[red][vehicle]'})
+	end
+	jtacPos = FDS.allJtacs[coaName][args.name].position
+	local unitsInSight = {}
+	local newVehicles = {}
+    local lostUnitsNumber = 0
+    local newUnitsNumber = 0
+	local quantType = {}
+	local tgtLost = true
+    if FDS.allJtacs[coaName][args.name].target == nil then
+        tgtLost = false
+    end
+	local tgtDestroyed = false
+	local uni = ''
+	local lastSight = mist.utils.deepCopy(FDS.allJtacs[coaName][args.name].sight)
+    local noOne = true
+	for i,j in pairs(allUnits) do
+		local isNew = true
+		uni = Unit.getByName(j)
+		if uni ~= nil and uni:isActive() then
+			uniPos = uni:getPosition().p
+			dist = math.sqrt((jtacPos[1] - uniPos.x)^2 + (jtacPos[3] - uniPos.y)^2 + (jtacPos[2] - uniPos.z)^2)
+			vis = land.isVisible({['x'] = jtacPos[1], ['y'] = jtacPos[3], ['z'] = jtacPos[2]} , uniPos )
+			uniLL = {coord.LOtoLL({['x'] = jtacPos[1], ['y'] = jtacPos[3], ['z'] = jtacPos[2]})}
+			ll1 = mist.tostringLL(uniLL[1] , uniLL[2], 4)
+			ll1 = mysplit(ll1, '\t')
+			uniMGRS = coord.LLtoMGRS(uniLL[1] , uniLL[2])
+			uniMGRSCorrected = uniMGRS.UTMZone .. ' ' .. uniMGRS.MGRSDigraph .. ' ' .. uniMGRS.Easting .. ' ' .. uniMGRS.Northing
+			local var = {}
+			local jtacPosVec = {['x'] = jtacPos[1], ['y'] = jtacPos[3], ['z'] = jtacPos[2]}
+			var.units = {j} -- Name Unit
+			var.ref = jtacPosVec
+			var.alt = 0
+			bra =  mist.getBRString(var)
+			bra2 = mysplit(bra,' ')
+			bra3 = bra2[1] - mist.utils.toDegree(mist.getNorthCorrection(jtacPosVec))
+			if vis and dist < FDS.maxJTACRange*1852 then
+                for index, object in pairs(FDS.allJtacs[coaName][args.name].sight) do
+                    if uni ~= nil and uni:isActive() and object.name == j then
+                        noOne = false
+                        lastSight[index] = nil
+						isNew = false
+						if FDS.allJtacs[coaName][args.name].target ~= nil and FDS.allJtacs[coaName][args.name].target.name == object.name then
+							tgtLost = false
+						end
+                    end
+                end
+                if FDS.allJtacs[coaName][args.name].target ~= nil and (Unit.getByName(FDS.allJtacs[coaName][args.name].target.name) == nil or not Unit.getByName(FDS.allJtacs[coaName][args.name].target.name):isExist()) then
+                    tgtLost = true
+                end
+				if isNew then
+					newVehicles[i] = j
+                    newUnitsNumber = newUnitsNumber + 1
+				end
+				if tgtLost then
+					if FDS.allJtacs[coaName][args.name].target ~= nil and Unit.getByName(FDS.allJtacs[coaName][args.name].target.name) == nil or not Unit.getByName(FDS.allJtacs[coaName][args.name].target.name):isExist() then
+						tgtDestroyed = true
+						for index, object in pairs(lastSight) do
+							if FDS.allJtacs[coaName][args.name].target.name == object.name then
+								lastSight[index] = nil
+							end
+						end
+					end
+				end
+				table.insert(unitsInSight,{['name'] = j, ['uniType'] = uni:getDesc().typeName, ['coordLL'] = {['coord'] = ll1[1] .. ' ' .. ll1[2], ['elev'] = uniPos.y*3.28084}, ['coordMGRS'] = uniMGRSCorrected, ['bra'] = {['bearing'] = math.floor(bra3+0.7), ['range'] = bra2[3], ['altitude'] = uniPos.y*3.28084}})
+			end
+		end
+	end
+    if noOne and FDS.allJtacs[coaName][args.name].target ~= nil then
+        tgtDestroyed = true
+    end
+
+    local aliveEnemies = {}
+    local aENumber = 0
+    local destroyedEnemies = {}
+    local dENumber = 0
+    for _, object in pairs(lastSight) do
+        lostUnitsNumber = lostUnitsNumber + 1
+    end
+    if lostUnitsNumber > 0 or newUnitsNumber > 0 or tgtDestroyed then
+        if tgtDestroyed then
+            dENumber = dENumber + 1
+        end
+        for index, object in pairs(lastSight) do
+            if Unit.getByName(object.name) ~= nil and Unit.getByName(object.name):isExist() then
+                aliveEnemies[index] = object
+                aENumber = aENumber + 1
+            else
+                destroyedEnemies[index] = object
+                dENumber = dENumber + 1
+            end
+        end
+        local msg = {}
+        msg.text = ""
+		if newUnitsNumber > 0 then
+			msg.text = msg.text .. "Jtac " .. tostring(args.id) .. " has new enemies in sight. " .. tostring(newUnitsNumber) .. " contacts.\nNew units:\n"
+            for index, object in pairs(newVehicles) do
+                msg.text = msg.text .. Unit.getByName(object):getDesc().typeName .. "\n"
+            end 
+		end
+        if aENumber > 0 then
+            if tgtLost and not tgtDestroyed then
+                msg.text = msg.text .. "Jtac " .. tostring(args.id) .. " reporting: Target left my sight! Laser off and resuming search.\n\n"
+                FDS.allJtacs[coaName][args.name].status = 'searching'
+                FDS.allJtacs[coaName][args.name].target = nil
+                FDS.allJtacs[coaName][args.name].laserSpot:destroy()
+                FDS.allJtacs[coaName][args.name].laserSpot = {}
+			end
+			msg.text = msg.text .. "Jtac " .. tostring(args.id) .. " lost sight of " .. tostring(aENumber) .. " contacts. \nLost units:\n"
+			for index, object in pairs(aliveEnemies) do
+				msg.text = msg.text .. object.uniType .. " - Last seen at BRA (from JTAC " .. tostring(args.id) .. "): " .. object.bra["bearing"] .. " for " .. object.bra["range"] .. " at " .. tostring(math.floor(object.bra["altitude"])) .. " ft.\n"
+			end 
+		end
+        if dENumber > 0 then
+            if tgtLost and tgtDestroyed then
+                msg.text = msg.text .. "Jtac " .. tostring(args.id) .. " reporting: Target destroyed! Laser off and resuming search.\n\n"
+                FDS.allJtacs[coaName][args.name].status = 'searching'
+                FDS.allJtacs[coaName][args.name].target = nil
+                FDS.allJtacs[coaName][args.name].laserSpot:destroy()
+                FDS.allJtacs[coaName][args.name].laserSpot = {}
+			end
+			msg.text =  msg.text .. "Jtac " .. tostring(args.id) .. " reporting: Enemy destroyed! Total:" .. tostring(dENumber) .. " units.\nKilled units:\n"
+			for index, object in pairs(destroyedEnemies) do
+				msg.text = msg.text .. object.uniType .. ".\n"
+			end
+        end
+        msg.displayTime = 10
+        msg.sound = 'Jtac.ogg'	
+        trigger.action.outTextForCoalition(args.coalition,msg.text,msg.displayTime)
+        trigger.action.outSoundForCoalition(args.coalition,msg.sound)
+    end
+	FDS.allJtacs[coaName][args.name].sight = unitsInSight
+    if FDS.allJtacs[coaName][args.name].status == 'searching' and #FDS.allJtacs[coaName][args.name].sight > 0 then
+		local samElements = {}
+		local armorElements = {}
+		local infantryElements = {}
+		local unknownType = {}
+		local readyToInsert = true
+		for _, dados in pairs(FDS.allJtacs[coaName][args.name].sight) do
+			readyToInsert = true
+			if Unit.getByName(dados.name):hasAttribute('SAM') or Unit.getByName(dados.name):hasAttribute('SAM elements') then
+				for jtacName, jtacData in pairs(FDS.allJtacs[coaName]) do
+					if jtacName ~= args.name and jtacData.target ~= nil and jtacData.target.name == dados.name then
+						readyToInsert = false
+					end
+				end
+				if readyToInsert then
+					table.insert(samElements, dados)
+					readyToInsert = true
+				end
+			elseif Unit.getByName(dados.name):hasAttribute('Tanks') or Unit.getByName(dados.name):hasAttribute('Trucks') or Unit.getByName(dados.name):hasAttribute('IFV') then 
+				for jtacName, jtacData in pairs(FDS.allJtacs[coaName]) do
+					if jtacName ~= args.name and jtacData.target ~= nil and jtacData.target.name == dados.name then
+						readyToInsert = false
+					end
+				end
+				if readyToInsert then
+					table.insert(armorElements, dados)
+					readyToInsert = true
+				end
+			elseif Unit.getByName(dados.name):hasAttribute('Infantry') then 
+				for jtacName, jtacData in pairs(FDS.allJtacs[coaName]) do
+					if jtacName ~= args.name and jtacData.target ~= nil and jtacData.target.name == dados.name then
+						readyToInsert = false
+					end
+				end
+				if readyToInsert then
+					table.insert(infantryElements, dados)
+					readyToInsert = true
+				end
+			else
+				for jtacName, jtacData in pairs(FDS.allJtacs[coaName]) do
+					if jtacName ~= args.name and jtacData.target ~= nil and jtacData.target.name == dados.name then
+						readyToInsert = false
+					end
+				end
+				if readyToInsert then
+					table.insert(unknownType, dados)
+					readyToInsert = true
+				end
+			end
+		end
+		local selectTarget = ''
+        --local selectTarget = FDS.allJtacs[coaName][args.name].sight[math.random(1, #FDS.allJtacs[coaName][args.name].sight)]
+		if #samElements > 0 then
+			selectTarget = samElements[math.random(1, #samElements)]
+		elseif #armorElements > 0 then
+			selectTarget = armorElements[math.random(1, #armorElements)]
+		elseif #infantryElements > 0 then
+			selectTarget = infantryElements[math.random(1, #infantryElements)]
+		elseif #unknownType > 0 then
+			selectTarget = unknownType[math.random(1, #unknownType)]
+		end
+		if selectTarget ~= '' then
+			local laserSpot = Spot.createLaser(Group.getByName(args.name):getUnits()[1], {x = 0, y = 1, z = 0}, Unit.getByName(selectTarget.name):getPoint(), args.code)
+			FDS.allJtacs[coaName][args.name].target = selectTarget
+			FDS.allJtacs[coaName][args.name].status = 'lasing'
+			FDS.allJtacs[coaName][args.name].laserSpot = laserSpot
+			local msg = {}
+			msg.text = "Lasing target with code " .. tostring(args.code) .. "\nTarget: " .. selectTarget.uniType .. " | BRA (from JTAC) --> " .. tostring(selectTarget.bra.bearing) .. " for " .. tostring(selectTarget.bra.range) .. ' nm at ' .. tostring(math.floor(selectTarget.bra.altitude)) .. '\nCoord. LL --> ' .. tostring(selectTarget.coordLL.coord) .. ' | MGRS --> ' .. tostring(selectTarget.coordMGRS) .. '\n'
+			msg.displayTime = 10
+			msg.sound = 'Jtac.ogg'
+			--trigger.action.outTextForCoalition(args.coalition,msg.text,msg.displayTime)
+			--trigger.action.outSoundForCoalition(args.coalition,msg.sound)
+			mist.scheduleFunction(trigger.action.outTextForCoalition,{args.coalition,msg.text,msg.displayTime},timer.getTime()+1)
+			mist.scheduleFunction(trigger.action.outSoundForCoalition,{args.coalition,msg.sound},timer.getTime()+1)
+		end
+    end
+end
+
+function jtacRefresh()
+	for coalition, jtac in pairs(FDS.allJtacs) do
+		for jtacName, jtacInfo in pairs(jtac) do
+			if Group.getByName(jtacName) ~= nil and Group.getByName(jtacName):isExist() then
+				args = {}
+				args.name = jtacName
+				args.coalition = FDS.allJtacs[coalition][jtacName].coalition
+				args.id = FDS.allJtacs[coalition][jtacName].jtacID
+				args.code = FDS.allJtacs[coalition][jtacName].code
+				JTACSearch(args)
+			else
+				trigger.action.removeMark(jtacInfo.drawId[1])
+				trigger.action.removeMark(jtacInfo.drawId[2])
+				msg = {}
+				msg.text = "Our Jtac " .. tostring(jtacInfo.jtacID) .. " has been destroyed."
+				msg.displayTime = 10
+				msg.sound = 'fdsTroops.ogg'
+				mist.scheduleFunction(trigger.action.outTextForCoalition,{jtacInfo.coalition,msg.text,msg.displayTime},timer.getTime()+1)
+				mist.scheduleFunction(trigger.action.outSoundForCoalition,{jtacInfo.coalition,msg.sound},timer.getTime()+1)
+				local inverseCoalition = {2,1}
+				msg.text = "Enemy Jtac " .. tostring(jtacInfo.jtacID) .. " has been destroyed."
+				mist.scheduleFunction(trigger.action.outTextForCoalition,{inverseCoalition[jtacInfo.coalition],msg.text,msg.displayTime},timer.getTime()+1)
+				mist.scheduleFunction(trigger.action.outSoundForCoalition,{inverseCoalition[jtacInfo.coalition],msg.sound},timer.getTime()+1)
+				FDS.allJtacs[coalition][jtacName] = nil
+			end
+		end
+	end
+end
+
+function FDS.jtacSummary(g_id)
+	local msg = {}
+	local jtacNumber = 0
+	for key,_ in pairs(FDS.allJtacs[FDS.trueCoalitionCode[g_id[2]]]) do
+		jtacNumber = jtacNumber + 1
+	end
+	if jtacNumber > 0 then
+		msg.text = 'JTAC Summary:\n'
+	else
+		msg.text = 'No JTACs available.\n'
+	end
+   	msg.displayTime = 30
+   	msg.sound = 'Msg.ogg'
+	   for _, jtac in pairs(FDS.allJtacs[FDS.trueCoalitionCode[g_id[2]]]) do
+		local unitCount = {}
+		local totalEnemies = 0
+		msg.text = msg.text .. 'JTAC ' .. tostring(jtac.jtacID) .. ': Laser code --> ' .. tostring(jtac.code) .. ' | Status --> ' .. tostring(jtac.status)
+		for _, contact in pairs(jtac.sight) do
+            --if jtac.target.name ~= contact.name then
+			if unitCount[contact.uniType] == nil then
+				unitCount[contact.uniType] = 1
+			else
+				unitCount[contact.uniType] = unitCount[contact.uniType] + 1
+			end
+            --end
+		end
+		for contactType, contactNumber in pairs(unitCount) do
+			totalEnemies = totalEnemies + contactNumber
+		end
+		msg.text = msg.text .. ' - Total enemies: ' .. tostring(totalEnemies) .. '\n\n'
+	end
+	trigger.action.outTextForGroup(g_id[1], msg.text, msg.displayTime)
+	trigger.action.outSoundForGroup(g_id[1],msg.sound)
+end
+
+function FDS.jtacStatus(g_id)
+	local msg = {}
+	msg.displayTime = 30
+	msg.sound = 'Msg.ogg'
+	local jtac = FDS.allJtacs[FDS.trueCoalitionCode[g_id[2]]][g_id[3]]
+	if jtac ~= nil then
+		local jtacNumber = 0
+		for key,_ in pairs(FDS.allJtacs[FDS.trueCoalitionCode[g_id[2]]]) do
+			jtacNumber = jtacNumber + 1
+		end
+		if jtacNumber > 0 then
+			msg.text = 'Jtac Status:\n'
+		else
+			msg.text = 'No JTACs available.\n'
+		end
+		local unitCount = {}
+		msg.text = msg.text .. 'JTAC ' .. tostring(jtac.jtacID) .. ': Laser code --> ' .. tostring(jtac.code) .. ' | Status --> ' .. tostring(jtac.status) .. '\n'
+		if jtac.status == 'lasing' then
+			msg.text = msg.text .. 'Target --> ' .. jtac.target.uniType .. ' | BRA (from JTAC) --> ' .. tostring(jtac.target.bra.bearing) .. ' for ' .. tostring(jtac.target.bra.range) .. ' nm at ' .. tostring(math.floor(jtac.target.bra.altitude)) .. '\nCoord. LL --> ' .. tostring(jtac.target.coordLL.coord) .. ' | MGRS --> ' .. tostring(jtac.target.coordMGRS) .. '\n'
+		end
+		for _, contact in pairs(jtac.sight) do
+			if jtac.target ~= nil and jtac.target.name ~= contact.name then
+				if unitCount[contact.uniType] == nil then
+					unitCount[contact.uniType] = 1
+				else
+					unitCount[contact.uniType] = unitCount[contact.uniType] + 1
+				end
+			end
+		end
+		msg.text = msg.text .. '---------------------------------- Total units in sight ----------------------------------\n'
+		for contactType, contactNumber in pairs(unitCount) do
+			msg.text = msg.text .. contactType .. ' = ' .. tostring(contactNumber) .. '\n'
+		end
+	else
+		msg.text = 'JTAC number might be incorrect update the JTAC list and try again.'
+	end
+	trigger.action.outTextForGroup(g_id[1], msg.text, msg.displayTime)
+	trigger.action.outSoundForGroup(g_id[1],msg.sound)
 end
 
 function FDS.createASupport(args)
@@ -2353,6 +2891,28 @@ function respawnAWACS(coa)
 	trigger.action.outSoundForCoalition(sideAWACS[coa][2],msgAWACSBack.sound) 
 end
 
+function buyAwacs(args)
+	sideAWACS = {{'Red_AWACS_1', 1, 2,'red'}, {'Blue_AWACS_1', 2, 1,'blue'}}
+	msgAWACSBack = {}
+	msgAWACSBack.displayTime = 10
+	msgAWACSBack.sound = 'fdsTroops.ogg'
+	local deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
+	if FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] >= FDS.airSupportAssetsKeys[args[2]].cost or FDS.bypassCredits then
+		if not FDS.awacsActive[sideAWACS[args[1]:getCoalition()][4]] then
+			FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] - FDS.airSupportAssetsKeys[args[2]].cost
+			mist.respawnGroup(sideAWACS[args[1]:getCoalition()][1], true)	
+			msgAWACSBack.text = 'Our AWACS is now active.'
+			FDS.awacsActive[sideAWACS[args[1]:getCoalition()][4]] = true
+		else
+			msgAWACSBack.text = 'Our AWACS is already active.'
+		end
+	else
+		msgAWACSBack.text = "Insuficient credits.\n"
+	end
+	trigger.action.outTextForCoalition(sideAWACS[args[1]:getCoalition()][2], msgAWACSBack.text, msgAWACSBack.displayTime)
+	trigger.action.outSoundForCoalition(sideAWACS[args[1]:getCoalition()][2],msgAWACSBack.sound)
+end
+
 function respawnTanker(coa)
 	sideTanker = {{'Red_Tanker_1_Cesta', 1, 2,'red'}, {'Blue_Tanker_1_Cesta', 2, 1,'blue'}}
 	mist.respawnGroup(sideTanker[coa][1], true)
@@ -2481,6 +3041,20 @@ table.inc = function(t, item, inc)
     end
 end
 
+function FDS.checkAWACSStatus()
+	local blueAWACS = 'Inactive'
+	if Unit.getByName('Blue_AWACS_1') ~= nil and Unit.getByName('Blue_AWACS_1'):isActive() then
+		blueAWACS = 'Active'
+		FDS.awacsActive['blue'] = true
+	end
+	local redAWACS = 'Inactive'
+	if Unit.getByName('Red_AWACS_1') ~= nil and Unit.getByName('Red_AWACS_1'):isActive() then
+		redAWACS = 'Active'
+		FDS.awacsActive['red'] = true
+	end
+	return blueAWACS, redAWACS 
+end
+
 --Battle Status
 function FDS.warStatus(g_id)
 	local msg = {}
@@ -2545,14 +3119,9 @@ function FDS.warStatus(g_id)
 
 	if g_id[2] == 2 then
 		local blueAWACS = 'Inactive'
-		if Unit.getByName('Blue_AWACS_1') then
-			blueAWACS = 'Active'
-		end
-		msg.text = msg.text .. 'Blue AWACS: '.. blueAWACS
 		local redAWACS = 'Inactive'
-		if Unit.getByName('Red_AWACS_1') then
-			redAWACS = 'Active'
-		end
+		blueAWACS, redAWACS = FDS.checkAWACSStatus()
+		msg.text = msg.text .. 'Blue AWACS: '.. blueAWACS
 		msg.text = msg.text .. '\nRed AWACS: '.. redAWACS .. '\n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
 		msg.text = msg.text .. 'Base points: ' .. tostring(FDS.teamPoints.blue.Base) .. '\nYour plane is carrying ' .. tostring(FDS.teamPoints.blue['Players'][g_id[3]]) .. ' points. \n'
@@ -2574,7 +3143,6 @@ function FDS.warStatus(g_id)
 		msg.text = msg.text .. '\n -------------------- \n \n'
 		msg.text = msg.text .. 'Your Credits: ' .. tostring(FDS.playersCredits.red[gpUcid])
 	end
-
 	trigger.action.outTextForGroup(g_id[1], msg.text, msg.displayTime)
 	trigger.action.outSoundForGroup(g_id[1],msg.sound)
 end
@@ -3033,7 +3601,7 @@ function detectHover()
 		[3] = "The points have been recovered."
 	}
 	for _,i in pairs(mist.DBs.aliveUnits) do
-		if i.category == 'helicopter' and (i.type == 'UH-1H' or i.type == 'Mi-8MT' or i.type == 'SA342Mistral' or i.type =='Mi-24P') then
+		if i.unit ~= nil and i.category == 'helicopter' and (i.type == 'UH-1H' or i.type == 'Mi-8MT' or i.type == 'SA342Mistral' or i.type =='Mi-24P') then
 			table.insert(activeHelicopters, i)
             table.insert(activeHelicopterPositions, i.pos)
 			if FDS.positionHist[i.unit:getPlayerName()] == nil then 
@@ -3470,6 +4038,7 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 				end
 			end
 		end
+		exportPlayerDataNow()
 	end
 end
 
@@ -3566,7 +4135,7 @@ FDS.eventActions = FDS.switch {
 			end ]]
 			--Exporting event record
 			if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
-				if FDS.exportDataSite and FDS.lastHits[_targetEnt:getID()] ~= nil then
+				if _targetEnt ~= nil and _targetEnt:getID() ~= nil and FDS.exportDataSite and FDS.lastHits[_targetEnt:getID()] ~= nil then
 					if FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
 						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, FDS.lastHits[_targetEntLocal:getID()][1], not FDS.lastHits[_targetEntLocal:getID()][2], true)
 						exportKill(killObject)
@@ -3586,7 +4155,7 @@ FDS.eventActions = FDS.switch {
 				end
 				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
-				if FDS.lastHits[_targetEnt:getID()] ~= nil then
+				if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_targetEnt:getID()] ~= nil then
 					FDS.lastHits[_initEnt:getID()][2] = true
 				end
 			end
@@ -3882,6 +4451,7 @@ FDS.eventActions = FDS.switch {
 					FDS.teamPoints.blue.Base = FDS.teamPoints.blue.Base + FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()]
 					FDS.playersCredits.blue[gpUcid] = FDS.playersCredits.blue[gpUcid] + FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()]
 					FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] = 0.0
+					exportPlayerDataNow()
 					if FDS.teamPoints.blue.Base >= FDS.callCost then 
 						local bombTimes = math.floor(FDS.teamPoints.blue.Base/FDS.callCost)
 						for callIt = 1, bombTimes do
@@ -3905,6 +4475,7 @@ FDS.eventActions = FDS.switch {
 					FDS.teamPoints.red.Base = FDS.teamPoints.red.Base + FDS.teamPoints.red['Players'][_initEnt:getPlayerName()]
 					FDS.playersCredits.red[gpUcid] = FDS.playersCredits.red[gpUcid] + FDS.teamPoints.red['Players'][_initEnt:getPlayerName()]
 					FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] = 0.0
+					exportPlayerDataNow()
 					if FDS.teamPoints.red.Base >= FDS.callCost then 
 						local bombTimes = math.floor(FDS.teamPoints.red.Base/FDS.callCost)
 						for callIt = 1, bombTimes do
@@ -3963,7 +4534,7 @@ FDS.eventActions = FDS.switch {
 				end ]]
 			end
 		end
-		if _local:getName() == "Mid_Helipad" and _local:getCoalition() == _initEnt:getCoalition() then
+		if _local ~= nil and _local:getName() == "Mid_Helipad" and _local:getCoalition() == _initEnt:getCoalition() then
 			local msgLand = {}
 			local gp = _initEnt:getGroup()
 			msgLand.text = 'Here can load valuable goods to deliver to your base helipad. \nEach item weighs ' .. tostring(FDS.goldenBars.weight) .. ' kg, and is worth $' .. tostring(FDS.goldenBars.value) .. ' credits. Access the radio via F10 to load.'
@@ -4021,6 +4592,9 @@ FDS.eventActions = FDS.switch {
 		if FDS.exportPlayerUnits then
 			exportCreatedUnits()
 		end
+		if FDS.exportPlayerData then
+			exportPlayerDataNow()
+		end
 		if FDS.exportDataSite then
 			local infile = io.open(FDS.exportPath .. "killRecord.json", "r")
 			local instr = infile:read("*a")
@@ -4058,9 +4632,33 @@ FDS.eventActions = FDS.switch {
 			end
 			if _event.place:getCoalition() == 1 then
 				FDS.farpCoalition = 1
+				trigger.action.removeMark(FDS.farpTextID)
+				FDS.markUpNumber = FDS.markUpNumber + 1
+				trigger.action.textToAll(-1, FDS.markUpNumber, trigger.misc.getZone('cZone_1').point, {1, 0, 0, 1} , {1, 0, 0, 0.2} , 20, true , 'Capturable FARP: Red Control')
+				FDS.farpTextID = FDS.markUpNumber
+				if FDS.farpReliever then
+					table.insert(FDS.redRelieveZones, 'Mid_Helipad')
+					for index, str in pairs(FDS.blueRelieveZones) do
+						if str == 'Mid_Helipad' then
+							table.remove(FDS.blueRelieveZones,index)
+						end
+					end
+				end
 				guards = mist.cloneGroup("Red_Outpost_Crew", true)
 			elseif _event.place:getCoalition() == 2 then
 				FDS.farpCoalition = 2
+				trigger.action.removeMark(FDS.farpTextID)
+				FDS.markUpNumber = FDS.markUpNumber + 1
+				trigger.action.textToAll(-1, FDS.markUpNumber, trigger.misc.getZone('cZone_1').point, {0, 0, 1, 1} , {0, 0, 1, 0.2} , 20, true , 'Capturable FARP: Blue Control')
+				FDS.farpTextID = FDS.markUpNumber
+				if FDS.farpReliever then
+					table.insert(FDS.blueRelieveZones, 'Mid_Helipad')
+					for index, str in pairs(FDS.redRelieveZones) do
+						if str == 'Mid_Helipad' then
+							table.remove(FDS.redRelieveZones,index)
+						end
+					end
+				end
 				guards = mist.cloneGroup("Blue_Outpost_Crew", true)
 			end
 			FDS.farpOwner = {[FDS.trueCoalitionCode[_event.place:getCoalition()]] = guards.name}
@@ -4310,6 +4908,7 @@ end
 --mist.scheduleFunction(creatingBases, {},timer.getTime()+1)
 mist.scheduleFunction(protectCall, {creatingBases},timer.getTime()+1)
 mist.scheduleFunction(protectCall, {importPlayerUnits},timer.getTime()+2)
+mist.scheduleFunction(protectCall, {importPlayerDataNow},timer.getTime()+2)
 -- Updating Players
 --mist.scheduleFunction(checkPlayersOn, {},timer.getTime()+1.5,5)
 --mist.scheduleFunction(protectCall, {checkPlayersOn},timer.getTime()+1.5,5)
@@ -4338,12 +4937,20 @@ if FDS.exportDataSite then
 	--mist.scheduleFunction(exportMisData, {}, timer.getTime()+3.5, FDS.sendDataFreq)
 	mist.scheduleFunction(protectCall, {exportMisData}, timer.getTime()+3.5, FDS.sendDataFreq)
 end
-
+-- AWACS logic
 for _,i in pairs(FDS.coalitionCode) do
-	--FDS.resAWACSTime[i][2] = mist.scheduleFunction(protectCall,{respawnAWACSFuel, i},timer.getTime()+FDS.fuelAWACSRestart)
+	if FDS.awacsMode == 'respawnable' then
+		mist.respawnGroup('Blue_AWACS_1',true)
+		mist.respawnGroup('Red_AWACS_1',true)
+		FDS.resAWACSTime[i][2] = mist.scheduleFunction(protectCall,{respawnAWACSFuel, i},timer.getTime()+FDS.fuelAWACSRestart)
+	elseif FDS.awacsMode == 'buyable' then
+		mist.scheduleFunction(protectCall,{FDS.checkAWACSStatus},timer.getTime()+4, FDS.awacsRefreshCheck)
+	end
 	FDS.resTankerTime[i][2] = mist.scheduleFunction(protectCall,{respawnTankerFuel, i},timer.getTime()+FDS.fuelTankerRestart)
 	FDS.resMPRSTankerTime[i][2] = mist.scheduleFunction(protectCall,{respawnMPRSTankerFuel, i},timer.getTime()+FDS.fuelTankerRestart)
 end
+-- JTAC Logic
+mist.scheduleFunction(protectCall, {jtacRefresh}, timer.getTime()+4.0, FDS.jtacRefresh)
 -- Cargo Fighter Sweep
 mist.scheduleFunction(tryCargoFS,{1},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance, FDS.cargoFSInterval+FDS.timeMaxVariance)
 mist.scheduleFunction(tryCargoFS,{2},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance, FDS.cargoFSInterval+FDS.timeMaxVariance)
