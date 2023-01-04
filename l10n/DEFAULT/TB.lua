@@ -136,8 +136,8 @@ FDS.su27Reward = 100.0
 FDS.su33Reward = 100.0
 FDS.su30Reward = 100.0
 FDS.cargoReward = 100.0
-FDS.infAKReward = 5.0
-FDS.infRPGReward = 10.0
+FDS.infAKReward = 10.0
+FDS.infRPGReward = 15.0
 FDS.predatorJtac = 150.0
 FDS.hmmwvJtac = 150.0
 
@@ -4756,6 +4756,7 @@ FDS.eventActions = FDS.switch {
 									trigger.action.outSoundForCoalition(1,msgfinal.sound)
 									trigger.action.outSoundForCoalition(2,'zone_killed.ogg')
 									playWarning = false
+									cleanPoints()
 									endMission()
 								end	
 							end
@@ -4819,6 +4820,7 @@ FDS.eventActions = FDS.switch {
 									trigger.action.outSoundForCoalition(2,msgfinal.sound)
 									trigger.action.outSoundForCoalition(1,'zone_killed.ogg')
 									playWarning = false
+									cleanPoints()
 									endMission()
 								end
 							end
