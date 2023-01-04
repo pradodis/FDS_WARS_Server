@@ -114,10 +114,10 @@ FDS.errorLogMis = true
 
 -- Rewards
 FDS.playerReward = 250.0
-FDS.enemyReward = 30.0
-FDS.fuelReward = 75.0
-FDS.shelterReward = 100.0
-FDS.commandPostReward = 150.0
+FDS.enemyReward = 50.0
+FDS.fuelReward = 100.0
+FDS.shelterReward = 150.0
+FDS.commandPostReward = 200.0
 FDS.f18Reward = 100.0
 FDS.f4Reward = 100.0
 FDS.f5Reward = 100.0
@@ -138,6 +138,8 @@ FDS.su30Reward = 100.0
 FDS.cargoReward = 100.0
 FDS.infAKReward = 5.0
 FDS.infRPGReward = 10.0
+FDS.predatorJtac = 150.0
+FDS.hmmwvJtac = 150.0
 
 FDS.rewardDict = {
 	['.Command Center'] = FDS.commandPostReward,
@@ -165,6 +167,8 @@ FDS.rewardDict = {
 	['Paratrooper RPG-16'] = FDS.infRPGReward,
 	['Infantry AK ver3'] = FDS.infAKReward,
 	['Soldier M249'] = FDS.infAKReward,
+	['RQ-1A Predator'] = FDS.predatorJtac,
+	['M1043 HMMWV Armament'] = FDS.hmmwvJtac,
 	['Default'] = FDS.enemyReward
 }
 
@@ -1530,6 +1534,17 @@ function createJSONEntities()
 		end
 	end
 	return entStart
+end
+
+function cleanPoints()
+    for team, data in pairs(FDS.teamPoints) do
+        for name, points in pairs(data["Players"]) do
+            local gpUcid = FDS.retrieveUcid(name,FDS.isName)
+            if gpUcid ~= nil then
+                FDS.playersCredits[team][gpUcid] = FDS.playersCredits[team][gpUcid] + data['Players'][name]
+            end
+        end
+    end
 end
 
 -- Exporting created units
@@ -4075,6 +4090,7 @@ FDS.eventActions = FDS.switch {
 			mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[_initEnt:getName()]['groupId'],'Where to Defend',nil, FDS.whereDefend, {_initEnt:getGroup().id_, _initEnt:getCoalition(), _initEnt:getName()}},timer.getTime()+FDS.wtime)
 			mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[_initEnt:getName()]['groupId'],'Drop Zones',nil, FDS.whereDropZones, {_initEnt:getGroup().id_, _initEnt:getCoalition(), _initEnt:getName()}},timer.getTime()+FDS.wtime)
 			FDS.addCreditsOptions(_initEnt:getGroup())
+			FDS.addJtacOption(_initEnt:getGroup())
 			mist.scheduleFunction(trigger.action.outTextForGroup,{_initEnt:getGroup().id_,msg.text,msg.displayTime},timer.getTime()+FDS.wtime)
 			mist.scheduleFunction(trigger.action.outSoundForGroup,{_initEnt:getGroup().id_,msg.sound},timer.getTime()+FDS.wtime)
 
@@ -4593,6 +4609,7 @@ FDS.eventActions = FDS.switch {
 			exportCreatedUnits()
 		end
 		if FDS.exportPlayerData then
+			cleanPoints()
 			exportPlayerDataNow()
 		end
 		if FDS.exportDataSite then
