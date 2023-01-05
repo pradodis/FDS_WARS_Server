@@ -4171,7 +4171,7 @@ FDS.eventActions = FDS.switch {
 				end
 				awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
 				awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEntLocal, _targetEntLocal, rewardType, false)
-				if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_targetEnt:getID()] ~= nil then
+				if _initEnt ~= nil and _targetEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_targetEnt:getID()] ~= nil then
 					FDS.lastHits[_initEnt:getID()][2] = true
 				end
 			end
