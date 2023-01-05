@@ -3975,7 +3975,7 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 end
 
 function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
-	if _initEnt:getName() ~= nil and _initEnt:getCoalition() ~= nil and FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()] ~= nil then
+	if _initEnt ~= nil and _initEnt:isExist() and _initEnt:getName() ~= nil and _initEnt:getCoalition() ~= nil and FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()] ~= nil then
 		local plName = FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()].owner
 		local tgtName = nil
 		if _targetEnt:getCategory() == 3 then
