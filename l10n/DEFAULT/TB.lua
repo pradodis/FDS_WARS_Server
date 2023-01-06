@@ -83,6 +83,9 @@ for i,j in pairs{'blue','red'} do
 	end
 end
 
+FDS.discordAdvertisingTime = 1800
+FDS.discordAdvertisingTrue = true
+
 FDS.redTgt = {'Red_Inf_AK','Red_Inf_RPG','Red_Arm_BMP1','Red_Arm_BMP2','Red_Arm_T55','Red_Arm_T72','Red_Arm_T80','Red_AAA','Red_AA_Igla','Red_AA_Strela1','Red_AA_Strela2','Red_AA_Tung','Red_SAM','Red_STrucks'}
 
 FDS.blueTgt = {'blue_Inf_AK','blue_Inf_RPG','blue_Arm_BMP1','blue_Arm_BMP2','blue_Arm_T55','blue_Arm_T72','blue_Arm_T80','blue_AAA','blue_AA_Igla','blue_AA_Strela1','blue_AA_Strela2','blue_AA_Tung','blue_SAM','blue_STrucks'}
@@ -171,6 +174,10 @@ FDS.rewardDict = {
 	['M1043 HMMWV Armament'] = FDS.hmmwvJtac,
 	['Default'] = FDS.enemyReward
 }
+
+FDS.doubleGuard = {}
+FDS.doubleGuardTime = 1 -- seconds
+FDS.doubleGuardOn = true
 
 -- Transport
 FDS.refreshTime = 2400.
@@ -451,6 +458,15 @@ function FDS.switch(t,p)
     end
   end
   return t
+end
+
+function discordCall()
+	msg = {}
+	msg.text = '- Join our discord comunity for enhanced team play.\nAccess the website: "https://dcs.comicorama.com/" for the discord link.\n\n- Junte-se ao nosso canal de discord para melhor jogar em equipe.\nAcesse o site: "https://dcs.comicorama.com/" para o link do discord.\n'
+	msg.displayTime = 10
+	msg.sound = 'Msg.ogg'
+	trigger.action.outText(msg.text, msg.displayTime)
+	trigger.action.outSound(msg.sound)
 end
 
 function protectCall(f,arg)
@@ -1542,6 +1558,7 @@ function cleanPoints()
             local gpUcid = FDS.retrieveUcid(name,FDS.isName)
             if gpUcid ~= nil then
                 FDS.playersCredits[team][gpUcid] = FDS.playersCredits[team][gpUcid] + data['Players'][name]
+				FDS.teamPoints[team]["Players"][name] = 0
             end
         end
     end
@@ -2628,7 +2645,7 @@ function validateAliveUnits()
 						end
 						local msgclear = {}  
 						if allClearFlag then
-							msgclear.text = 'Congratulations! All enemy units are eliminated. Mission Accomplished! ByCorrection'
+							msgclear.text = 'Congratulations! All enemy units are eliminated. Mission Accomplished!'
 							msgclear.displayTime = 120
 						else
 							msgclear.text = numero2 .. ' has been cleared, there are no signs of enemy activities in this zone. Good work.'
@@ -3919,8 +3936,28 @@ function checkTPName(_event)
 	end
 end
 
+function removePair(args)
+	for index, pair in pairs(FDS.doubleGuard) do
+		if pair[1] == args[1] and pair[2] == args[2] then
+			FDS.doubleGuard[index] = nil
+		end
+	end
+end
+
+function doubleGuardCheck(init, target)
+	local doubleGuardCheckOK = false
+	if target ~= nil then
+		for index, pair in pairs(FDS.doubleGuard) do
+			if pair[1] == init and pair[2] == target then
+				doubleGuardCheckOK = true
+			end
+		end
+	end
+	return doubleGuardCheckOK
+end
+
 function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
-	if initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa and _initEnt:isExist() then
+	if _initEnt ~= nil and _targetEnt ~= nil and initCheck and initCoaCheck and targetCoaCheck and initCoa ~= targetCoa and _initEnt:isExist() then
 		local plName = _initEnt:getPlayerName()
 		--local plType = nil
 		--local typeFactor = 1.0
@@ -3935,15 +3972,31 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 		end
 		local plGrp = _initEnt:getGroup()
 		local plID = plGrp:getID()
-		for i,j in pairs(FDS.teamPoints) do
-			for k,w in pairs(FDS.teamPoints[i]['Players']) do
-				if plName == k then
-					local msgKill = {}
-					msgKill.displayTime = 20
-					msgKill.sound = 'Msg.ogg'
-					if FDS.lastHits[_targetEnt:getID()] ~= nil then
-						if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
-							if tgtName ~= nil then
+		if not doubleGuardCheck(_initEnt:getName(), _targetEnt:getName()) or not FDS.doubleGuardOn then
+			for i,j in pairs(FDS.teamPoints) do
+				for k,w in pairs(FDS.teamPoints[i]['Players']) do
+					if plName == k then
+						local msgKill = {}
+						msgKill.displayTime = 20
+						msgKill.sound = 'Msg.ogg'
+						if FDS.lastHits[_targetEnt:getID()] ~= nil then
+							if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
+								if tgtName ~= nil then
+									FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
+									msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
+									trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
+									trigger.action.outSoundForGroup(plID,msgKill.sound)
+								else
+									FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.rewardDict[rewardType]
+									msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' points for your kill.'
+									trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
+									trigger.action.outSoundForGroup(plID,msgKill.sound)	
+									table.insert(FDS.doubleGuard, {_initEnt:getName(), _targetEnt:getName()})
+									mist.scheduleFunction(removePair,{{_initEnt:getName(), _targetEnt:getName()}},timer.getTime()+FDS.doubleGuardTime)
+								end
+							end
+						elseif forceAward then
+							if tgtName ~= nil  then
 								FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
 								msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
 								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
@@ -3952,20 +4005,10 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 								FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.rewardDict[rewardType]
 								msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' points for your kill.'
 								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
-								trigger.action.outSoundForGroup(plID,msgKill.sound)	
+								trigger.action.outSoundForGroup(plID,msgKill.sound)
+								table.insert(FDS.doubleGuard, {_initEnt:getName(), _targetEnt:getName()})
+								mist.scheduleFunction(removePair,{{_initEnt:getName(), _targetEnt:getName()}},timer.getTime()+FDS.doubleGuardTime)
 							end
-						end
-					elseif forceAward then
-						if tgtName ~= nil  then
-							FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.playerReward
-							msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
-							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
-							trigger.action.outSoundForGroup(plID,msgKill.sound)
-						else
-							FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.rewardDict[rewardType]
-							msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' points for your kill.'
-							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
-							trigger.action.outSoundForGroup(plID,msgKill.sound)
 						end
 					end
 				end
@@ -3993,14 +4036,32 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 		end
 		tgtName = FDS.retrieveUcid(tgtName,FDS.isName)
 		local foundIt = false
-		for k,w in pairs(FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]]) do
-			if plName == k then
-				foundIt = true
-				local msgKill = {}
-				msgKill.displayTime = 10
-				msgKill.sound = 'indirectKill.ogg'
-				if FDS.lastHits[_targetEnt:getID()] ~= nil then
-					if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
+		if not doubleGuardCheck(_initEnt:getName(), _targetEnt:getName()) or not FDS.doubleGuardOn then
+			for k,w in pairs(FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]]) do
+				if plName == k then
+					foundIt = true
+					local msgKill = {}
+					msgKill.displayTime = 10
+					msgKill.sound = 'indirectKill.ogg'
+					if FDS.lastHits[_targetEnt:getID()] ~= nil then
+						if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
+							if tgtName ~= nil and tgtName ~= '' then
+								if tgtName ~= plName then
+									FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.playerReward
+									msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' credits because your troops killed an enemy.'
+								end
+							else
+								FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.rewardDict[rewardType]
+								msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' credits because your troops killed an enemy.'
+								table.insert(FDS.doubleGuard, {_initEnt:getName(), _targetEnt:getName()})
+								mist.scheduleFunction(removePair,{{_initEnt:getName(), _targetEnt:getName()}},timer.getTime()+FDS.doubleGuardTime)							
+							end
+							if plCOA == unitCOA then
+								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
+								trigger.action.outSoundForGroup(plID,msgKill.sound)	
+							end
+						end
+					elseif forceAward then
 						if tgtName ~= nil and tgtName ~= '' then
 							if tgtName ~= plName then
 								FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.playerReward
@@ -4009,25 +4070,13 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 						else
 							FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.rewardDict[rewardType]
 							msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' credits because your troops killed an enemy.'
+							table.insert(FDS.doubleGuard, {_initEnt:getName(), _targetEnt:getName()})
+							mist.scheduleFunction(removePair,{{_initEnt:getName(), _targetEnt:getName()}},timer.getTime()+FDS.doubleGuardTime)
 						end
 						if plCOA == unitCOA then
 							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
 							trigger.action.outSoundForGroup(plID,msgKill.sound)	
 						end
-					end
-				elseif forceAward then
-					if tgtName ~= nil and tgtName ~= '' then
-						if tgtName ~= plName then
-							FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.playerReward
-							msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' credits because your troops killed an enemy.'
-						end
-					else
-						FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.rewardDict[rewardType]
-						msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' credits because your troops killed an enemy.'
-					end
-					if plCOA == unitCOA then
-						trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
-						trigger.action.outSoundForGroup(plID,msgKill.sound)	
 					end
 				end
 			end
@@ -4150,9 +4199,9 @@ FDS.eventActions = FDS.switch {
 				end
 			end ]]
 			--Exporting event record
-			if _initEntLocal and _targetEntLocal and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
+			if _initEntLocal ~= nil and _targetEntLocal ~= nil and _initEntLocal:getCategory() and _targetEntLocal:getCategory() and isUnitorStructure(_initEntLocal,_targetEntLocal) then
 				if _targetEnt ~= nil and _targetEnt:getID() ~= nil and FDS.exportDataSite and FDS.lastHits[_targetEnt:getID()] ~= nil then
-					if FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
+					if _targetEntLocal ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= nil and FDS.lastHits[_targetEntLocal:getID()] ~= 'DEAD' then 
 						local killObject = assembleKillObject(initCheck, targetCheck, _eventLocal, FDS.lastHits[_targetEntLocal:getID()][1], not FDS.lastHits[_targetEntLocal:getID()][2], true)
 						exportKill(killObject)
 					else
@@ -4976,6 +5025,9 @@ mist.scheduleFunction(tryCargoFS,{2},timer.getTime()+FDS.cargoFSInterval+FDS.tim
 
 -- Exporting units
 mist.scheduleFunction(exportCreatedUnits,{},timer.getTime()+FDS.exportUnitsT,FDS.exportUnitsT)
+
+-- Discord Advert
+mist.scheduleFunction(discordCall,{},timer.getTime()+FDS.discordAdvertisingTime,FDS.discordAdvertisingTime)
 
 --Events
 world.addEventHandler(FDS.eventHandler)
