@@ -290,7 +290,7 @@ function checkIfNotEmpty(arg)
 end
 FDS.actionOption = {
 	['loadCargo'] = {'pick', checkIfNotEmpty, "You are not in your helipad/airfield."},
-	['dropTroops'] = {'disable', checkIfEmpty, "You cannot deploy troops here (too close from an enemy helipad/airfield)."},
+	['dropTroops'] = {'disable', checkIfEmpty, "You cannot deploy troops here (too close from an enemy helipad/airfield). Minimum allowed distance: 8mn."},
 	['loadValuableGoods'] = {'goods', checkIfNotEmpty, "You are not in the advanced FARP to load the goods."},
 	['deliverGoods'] = {'deliver', checkIfNotEmpty, "You cannot deliver goods here (too far from an allied helipad/airfield)."}
 }
@@ -816,8 +816,8 @@ function FDS.dropTroops(args)
 				new_gPData.units[1].heading = math.atan2(headingDev.z, headingDev.x)
 				new_GPR[1].x = dropPoint.x
 				new_GPR[1].y = dropPoint.z
-				new_GPR[2].x = dropPoint.x + headingDev.x*FDS.advanceDistance
-				new_GPR[2].y = dropPoint.z + headingDev.z*FDS.advanceDistance
+				--new_GPR[2].x = dropPoint.x + headingDev.x*FDS.advanceDistance
+				--new_GPR[2].y = dropPoint.z + headingDev.z*FDS.advanceDistance
 				--- Artillery TGT
 				if FDS.troopAssets[listName].type == 'Artillery' then
 					local tgtZN = nil
@@ -849,7 +849,7 @@ function FDS.dropTroops(args)
 							end
 						end
 					end
-					for iter = 1, 2, 1 do
+					for iter = 1, 1, 1 do
 						for taskNumber,task in pairs(new_GPR[iter].task.params.tasks) do
 							if task.name == 'Z' .. tostring(tgtZN) then
 								new_GPR[iter].task.params.tasks[taskNumber].enabled = true
