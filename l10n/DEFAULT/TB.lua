@@ -1659,8 +1659,8 @@ function importPlayerUnits()
 					new_gPData.units[1].heading = math.atan2(data.groupData.hz, data.groupData.hx)
 					new_GPR[1].x = data.groupData.x
 					new_GPR[1].y = data.groupData.z
-					new_GPR[2].x = data.groupData.x + data.groupData.hx*FDS.advanceDistance
-					new_GPR[2].y = data.groupData.z + data.groupData.hz*FDS.advanceDistance
+					--new_GPR[2].x = data.groupData.x + data.groupData.hx*FDS.advanceDistance
+					--new_GPR[2].y = data.groupData.z + data.groupData.hz*FDS.advanceDistance
 					if data.groupData.type == 'Artillery' then
 						local tgtZN = nil
 						local zonasDB = mist.DBs.zonesByName
@@ -1691,7 +1691,7 @@ function importPlayerUnits()
 								end
 							end
 						end
-						for iter = 1, 2, 1 do
+						for iter = 1, 1, 1 do
 							for taskNumber,task in pairs(new_GPR[iter].task.params.tasks) do
 								if task.name == 'Z' .. tostring(tgtZN) then
 									new_GPR[iter].task.params.tasks[taskNumber].enabled = true
