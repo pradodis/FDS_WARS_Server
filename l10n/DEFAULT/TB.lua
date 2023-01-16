@@ -4613,6 +4613,71 @@ FDS.eventActions = FDS.switch {
 			--end
 		end
 	end,
+	[world.event.S_EVENT_REFUELING] = function(x, param)
+		local _event = param.event
+		local _initEnt = _event.initiator
+		local initCheck = pcall(FDS.playerCheck,_initEnt)
+		local initCoa = 0
+		local initCoaCheck = pcall(FDS.coalitionCheck,_initEnt)
+		local gpUcid = FDS.retrieveUcid(_initEnt:getPlayerName(),FDS.isName)
+		if initCoaCheck then
+			initCoa = _initEnt:getCoalition()
+		end
+		if _initEnt ~= nil and _initEnt:getPlayerName() ~= nil then
+			if FDS.lastHits[_initEnt:getID()] ~= nil then
+				FDS.lastHits[_initEnt:getID()] = nil
+			end
+			if initCheck and initCoaCheck and initCoa == 2 and _initEnt:getPlayerName() and FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] > 0 then
+				local msgLand = {}
+				local gp = _initEnt:getGroup()
+				msgLand.text = 'You deliver ' .. FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] .. ' points to your team and receive ' .. FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] .. ' credits via air refuelling.'
+				msgLand.displayTime = 20  
+				msgLand.sound = 'Msg.ogg'
+				trigger.action.outTextForGroup(gp:getID(), msgLand.text, msgLand.displayTime)
+				trigger.action.outSoundForGroup(gp:getID(),msgLand.sound)
+				
+				-- Record land points
+				recordLandPoints(_initEnt, FDS.trueCoalitionCode[initCoa])
+
+				FDS.teamPoints.blue.Base = FDS.teamPoints.blue.Base + FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()]
+				FDS.playersCredits.blue[gpUcid] = FDS.playersCredits.blue[gpUcid] + FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()]
+				FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] = 0.0
+				exportPlayerDataNow()
+				if FDS.teamPoints.blue.Base >= FDS.callCost then 
+					local bombTimes = math.floor(FDS.teamPoints.blue.Base/FDS.callCost)
+					for callIt = 1, bombTimes do
+						--mist.scheduleFunction(bombingRun, {'blue'},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
+						mist.scheduleFunction(guidedBombingRun, {'blue'},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
+						FDS.teamPoints.blue.Base = FDS.teamPoints.blue.Base - FDS.callCost
+					end
+				end
+			elseif initCheck and initCoaCheck and initCoa == 1 and _initEnt:getPlayerName() and FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] > 0 then
+				local msgLand = {}
+				local gp = _initEnt:getGroup()
+				msgLand.text = 'You deliver ' .. FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] .. ' points to your team and receive ' .. FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] .. ' credits via air refuelling.'
+				msgLand.displayTime = 20  
+				msgLand.sound = 'Msg.ogg'
+				trigger.action.outTextForGroup(gp:getID(), msgLand.text, msgLand.displayTime)
+				trigger.action.outSoundForGroup(gp:getID(),msgLand.sound)
+
+				-- Record land points
+				recordLandPoints(_initEnt, FDS.trueCoalitionCode[initCoa])
+
+				FDS.teamPoints.red.Base = FDS.teamPoints.red.Base + FDS.teamPoints.red['Players'][_initEnt:getPlayerName()]
+				FDS.playersCredits.red[gpUcid] = FDS.playersCredits.red[gpUcid] + FDS.teamPoints.red['Players'][_initEnt:getPlayerName()]
+				FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] = 0.0
+				exportPlayerDataNow()
+				if FDS.teamPoints.red.Base >= FDS.callCost then 
+					local bombTimes = math.floor(FDS.teamPoints.red.Base/FDS.callCost)
+					for callIt = 1, bombTimes do
+						--mist.scheduleFunction(bombingRun, {'red'},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
+						mist.scheduleFunction(guidedBombingRun, {'red'},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
+						FDS.teamPoints.red.Base = FDS.teamPoints.red.Base - FDS.callCost
+					end
+				end
+			end
+		end
+	end,
 	[world.event.S_EVENT_KILL] = function(x, param)
 		local _event = param.event
 		local _initEnt = _event.initiator
