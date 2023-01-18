@@ -1256,7 +1256,7 @@ function creatingBases()
 		activePl = coalition.getPlayers(i)
 		if #activePl ~= 0 then
 			for j,k in pairs(activePl) do
-				if i == 1 then 
+				if i == 1 then
 					gp = k:getGroup()
 					gpId = gp:getID()
 					gpCoa = k:getCoalition()
@@ -5039,9 +5039,9 @@ end
 -- Main
 -- Creating Bases, Zones and SAMs
 --mist.scheduleFunction(creatingBases, {},timer.getTime()+1)
+mist.scheduleFunction(protectCall, {importPlayerDataNow},timer.getTime())
 mist.scheduleFunction(protectCall, {creatingBases},timer.getTime()+1)
 mist.scheduleFunction(protectCall, {importPlayerUnits},timer.getTime()+2)
-mist.scheduleFunction(protectCall, {importPlayerDataNow},timer.getTime()+2)
 -- Updating Players
 --mist.scheduleFunction(checkPlayersOn, {},timer.getTime()+1.5,5)
 --mist.scheduleFunction(protectCall, {checkPlayersOn},timer.getTime()+1.5,5)
