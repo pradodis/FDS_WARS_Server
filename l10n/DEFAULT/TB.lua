@@ -4614,7 +4614,6 @@ FDS.eventActions = FDS.switch {
 		end
 	end,
 	[world.event.S_EVENT_REFUELING] = function(x, param)
-		ping('Iniciando')
 		local _event = param.event
 		local _initEnt = _event.initiator
 		local initCheck = pcall(FDS.playerCheck,_initEnt)
@@ -4622,14 +4621,10 @@ FDS.eventActions = FDS.switch {
 		local initCoaCheck = pcall(FDS.coalitionCheck,_initEnt)
 		local gpUcid = FDS.retrieveUcid(_initEnt:getPlayerName(),FDS.isName)
 		if initCoaCheck then
-			ping('Coa Check OK')
 			initCoa = _initEnt:getCoalition()
-			ping('Coa: ' .. tostring(initCoa))
 		end
 		if _initEnt ~= nil and _initEnt:getPlayerName() ~= nil then
-			ping('Eh Jogador')
 			if initCheck and initCoaCheck and initCoa == 2 and _initEnt:getPlayerName() ~= nil and FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] ~= nil and FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] > 0 then
-				ping('Time Azul')
 				local msgLand = {}
 				local gp = _initEnt:getGroup()
 				msgLand.text = 'You deliver ' .. FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] .. ' points to your team and receive ' .. FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] .. ' credits via air refuelling.'
@@ -4654,7 +4649,6 @@ FDS.eventActions = FDS.switch {
 					end
 				end
 			elseif initCheck and initCoaCheck and initCoa == 1 and _initEnt:getPlayerName() ~= nil and FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] ~= nil and FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] > 0 then
-				ping('Time vermelho')
 				local msgLand = {}
 				local gp = _initEnt:getGroup()
 				msgLand.text = 'You deliver ' .. FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] .. ' points to your team and receive ' .. FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] .. ' credits via air refuelling.'
@@ -4678,8 +4672,6 @@ FDS.eventActions = FDS.switch {
 						FDS.teamPoints.red.Base = FDS.teamPoints.red.Base - FDS.callCost
 					end
 				end
-			else
-				ping('Falhou')
 			end
 		end
 	end,
@@ -5030,12 +5022,12 @@ FDS.eventActions = FDS.switch {
 FDS.eventHandler = {}
 function FDS.eventHandler:onEvent(_event)
 	-- Debug
-	--local msgfinal = {}
-	--local eventName = find(world.event, _event.id)
-	--msgfinal.text = tostring(eventName)
-	--msgfinal.displayTime = 5 
-	--msgfinal.sound = 'Msg.ogg' 
-	--trigger.action.outText(msgfinal.text, msgfinal.displayTime)
+	local msgfinal = {}
+	local eventName = find(world.event, _event.id)
+	msgfinal.text = tostring(eventName .. ' : ' .. _event.id)
+	msgfinal.displayTime = 5 
+	msgfinal.sound = 'Msg.ogg' 
+	trigger.action.outText(msgfinal.text, msgfinal.displayTime)
 	table.insert(FDS.exportVector,'evento')
 	FDS.eventActions:case(_event.id, {event = _event})
 	--pcall(FDS.eventActions:case(_event.id),{_event.id, {event = _event}})
