@@ -5022,12 +5022,12 @@ FDS.eventActions = FDS.switch {
 FDS.eventHandler = {}
 function FDS.eventHandler:onEvent(_event)
 	-- Debug
-	local msgfinal = {}
-	local eventName = find(world.event, _event.id)
-	msgfinal.text = tostring(eventName .. ' : ' .. _event.id)
-	msgfinal.displayTime = 5 
-	msgfinal.sound = 'Msg.ogg' 
-	trigger.action.outText(msgfinal.text, msgfinal.displayTime)
+	--local msgfinal = {}
+	--local eventName = find(world.event, _event.id)
+	--msgfinal.text = tostring(eventName .. ' : ' .. _event.id)
+	--msgfinal.displayTime = 5 
+	--msgfinal.sound = 'Msg.ogg' 
+	--trigger.action.outText(msgfinal.text, msgfinal.displayTime)
 	table.insert(FDS.exportVector,'evento')
 	FDS.eventActions:case(_event.id, {event = _event})
 	--pcall(FDS.eventActions:case(_event.id),{_event.id, {event = _event}})
