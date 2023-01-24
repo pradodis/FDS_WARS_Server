@@ -1556,9 +1556,14 @@ function cleanPoints()
     for team, data in pairs(FDS.teamPoints) do
         for name, points in pairs(data["Players"]) do
             local gpUcid = FDS.retrieveUcid(name,FDS.isName)
-            if gpUcid ~= nil then
-                FDS.playersCredits[team][gpUcid] = FDS.playersCredits[team][gpUcid] + data['Players'][name]
-				FDS.teamPoints[team]["Players"][name] = 0
+            if gpUcid ~= nil and points ~= nil then
+				if FDS.playersCredits[team][gpUcid] ~= nil then
+					FDS.playersCredits[team][gpUcid] = FDS.playersCredits[team][gpUcid] + points
+					FDS.teamPoints[team]["Players"][name] = 0
+				else
+					FDS.playersCredits[team][gpUcid] = points
+					FDS.teamPoints[team]["Players"][name] = 0
+				end
             end
         end
     end
