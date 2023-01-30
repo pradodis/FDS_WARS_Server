@@ -21,6 +21,8 @@ FDS.playersCredits = {}
 FDS.cargoList = {} -- Aircrafts with cargo
 FDS.valuableList = {}
 FDS.deployedUnits = {} -- All deployed units
+FDS.deployedTroopsMarks = {}
+FDS.fuelLevels = {}
 FDS.isName = false
 FDS.isOnline = true
 FDS.isDedicatedServer = true
@@ -180,6 +182,9 @@ FDS.doubleGuardTime = 1 -- seconds
 FDS.doubleGuardOn = true
 
 -- Transport
+FDS.deployedTroopsFontSizeText = 15
+FDS.deployedTroopsSymbolSize = 200
+FDS.updateTroopsRefresh = 120
 FDS.refreshTime = 2400.
 FDS.squadSize = 4
 FDS.rewardCargo = 100.
@@ -323,10 +328,10 @@ FDS.allJtacs = {
 }
 -- Position
 FDS.dropDistance = 45
-FDS.dropTroopDistance = 6
+FDS.dropTroopDistance = 20
 FDS.advanceDistance = 10
 -- Life span in reboots
-FDS.unitLifeSpan = 3
+FDS.unitLifeSpan = 5
 FDS.exportUnitsT = 300
 --Mass
 FDS.soldierWeight = 80 -- kg
@@ -497,6 +502,80 @@ function FDS.retrieveUcid(arg,name)
 		return arg
 	else
 		return gpUcid
+	end
+end
+
+function checkFuelLevels()
+	for name, data in pairs(allPlayers) do
+		if Unit.getByName(name) ~= nil and Unit.getByName(name):getPlayerName() ~= nil then
+			if FDS.fuelLevels[name] ~= nil then
+				if FDS.fuelLevels[name] < Unit.getByName(name):getFuel() and Unit.getByName(name):getPosition().p.y > 3048 then
+					local _initEnt = Unit.getByName(name):getGroup()
+					local initCheck = pcall(FDS.playerCheck,_initEnt)
+					local initCoa = 0
+					local initCoaCheck = pcall(FDS.coalitionCheck,_initEnt)
+					local gpUcid = FDS.retrieveUcid(_initEnt:getPlayerName(),FDS.isName)
+					if initCoaCheck then
+						initCoa = _initEnt:getCoalition()
+					end
+					if _initEnt ~= nil and _initEnt:getPlayerName() ~= nil then
+						if initCheck and initCoaCheck and initCoa == 2 and _initEnt:getPlayerName() ~= nil and FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] ~= nil and FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] > 0 then
+							local msgLand = {}
+							local gp = _initEnt:getGroup()
+							msgLand.text = 'You deliver ' .. FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] .. ' points to your team and receive ' .. FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] .. ' credits via air refuelling.'
+							msgLand.displayTime = 20  
+							msgLand.sound = 'Msg.ogg'
+							trigger.action.outTextForGroup(gp:getID(), msgLand.text, msgLand.displayTime)
+							trigger.action.outSoundForGroup(gp:getID(),msgLand.sound)
+							
+							-- Record land points
+							recordLandPoints(_initEnt, FDS.trueCoalitionCode[initCoa])
+			
+							FDS.teamPoints.blue.Base = FDS.teamPoints.blue.Base + FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()]
+							FDS.playersCredits.blue[gpUcid] = FDS.playersCredits.blue[gpUcid] + FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()]
+							FDS.teamPoints.blue['Players'][_initEnt:getPlayerName()] = 0.0
+							exportPlayerDataNow()
+							if FDS.teamPoints.blue.Base >= FDS.callCost then 
+								local bombTimes = math.floor(FDS.teamPoints.blue.Base/FDS.callCost)
+								for callIt = 1, bombTimes do
+									--mist.scheduleFunction(bombingRun, {'blue'},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
+									mist.scheduleFunction(guidedBombingRun, {'blue'},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
+									FDS.teamPoints.blue.Base = FDS.teamPoints.blue.Base - FDS.callCost
+								end
+							end
+						elseif initCheck and initCoaCheck and initCoa == 1 and _initEnt:getPlayerName() ~= nil and FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] ~= nil and FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] > 0 then
+							local msgLand = {}
+							local gp = _initEnt:getGroup()
+							msgLand.text = 'You deliver ' .. FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] .. ' points to your team and receive ' .. FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] .. ' credits via air refuelling.'
+							msgLand.displayTime = 20  
+							msgLand.sound = 'Msg.ogg'
+							trigger.action.outTextForGroup(gp:getID(), msgLand.text, msgLand.displayTime)
+							trigger.action.outSoundForGroup(gp:getID(),msgLand.sound)
+			
+							-- Record land points
+							recordLandPoints(_initEnt, FDS.trueCoalitionCode[initCoa])
+			
+							FDS.teamPoints.red.Base = FDS.teamPoints.red.Base + FDS.teamPoints.red['Players'][_initEnt:getPlayerName()]
+							FDS.playersCredits.red[gpUcid] = FDS.playersCredits.red[gpUcid] + FDS.teamPoints.red['Players'][_initEnt:getPlayerName()]
+							FDS.teamPoints.red['Players'][_initEnt:getPlayerName()] = 0.0
+							exportPlayerDataNow()
+							if FDS.teamPoints.red.Base >= FDS.callCost then 
+								local bombTimes = math.floor(FDS.teamPoints.red.Base/FDS.callCost)
+								for callIt = 1, bombTimes do
+									--mist.scheduleFunction(bombingRun, {'red'},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
+									mist.scheduleFunction(guidedBombingRun, {'red'},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
+									FDS.teamPoints.red.Base = FDS.teamPoints.red.Base - FDS.callCost
+								end
+							end
+						end
+					end				 
+				else
+					FDS.fuelLevels[name] = Unit.getByName(name):getFuel()
+				end
+			else
+				FDS.fuelLevels[name] = Unit.getByName(name):getFuel()
+			end
+		end
 	end
 end
 
@@ -731,6 +810,186 @@ function FDS.validateSpeed(args)
 	end
 end
 
+function FDS.baseSpawn(args)
+	local msg = {}
+	local elementNumber = 1
+	local numberAdjust = 0
+	local usedSlots = 0
+	local totalInternalMass = 0
+    local allMarks = world.getMarkPanels()
+	--for _, i in pairs(FDS.cargoList[tostring(args[1]:getName())]) do
+	--	usedSlots = usedSlots + i.slot
+	--	totalInternalMass = totalInternalMass + i.mass
+	--end
+	--Ref Points
+	local referenceMarks = {}
+    local checkMarkPoints = true
+    local senderGroups = {}
+	local markRef = {}
+	local gpUcid = FDS.retrieveUcid(args.requester:getUnits()[1]:getPlayerName(),FDS.isName)
+	if (FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] <= FDS.troopAssets[args.name].cost and not FDS.bypassCredits) then
+		local msg = {}
+		msg.displayTime = 10
+		msg.sound = 'fdsTroops.ogg'		
+		msg.text = "Insuficient credits."
+		trigger.action.outTextForGroup(args.requester:getID(),msg.text,msg.displayTime)
+		trigger.action.outSoundForGroup(args.requester:getID(),msg.sound)
+		checkMarkPoints = false
+	end
+	if checkMarkPoints then
+		for _, markData in pairs(allMarks) do
+			local markNameSpeed = {}
+			if args.requester:getUnits()[1]:getPlayerName() == markData.author and string.sub(markData.text, 1, 3) == 'gwp' and args.requester:getCoalition() == markData.coalition then
+				if string.find(string.sub(markData.text,4), "-") ~= nil then
+					for markTxt, markSpeed in string.gmatch(string.sub(markData.text, 4), "(%w+)-(%w+)") do
+						markNameSpeed = {markTxt, {markSpeed, markData.pos}}
+					end
+				else
+					markNameSpeed = {string.sub(markData.text, 4), {100,markData.pos}}
+				end
+				if senderGroups[tonumber(markNameSpeed[1])] == nil then
+					senderGroups[tonumber(markNameSpeed[1])] = markNameSpeed[2]
+				else
+					local msg = {}
+					msg.displayTime = 10
+					msg.sound = 'fdsTroops.ogg'
+					msg.text = "Two waypoints with the same number. Check your markpoints. \nThey must be created by you and named as 'gwp1', 'gwp2', 'gwp3'..."
+					trigger.action.outTextForGroup(args.requester:getID(),msg.text,msg.displayTime)
+					trigger.action.outSoundForGroup(args.requester:getID(),msg.sound)
+					checkMarkPoints = false
+				end
+			end
+		end
+		if senderGroups[1] == nil then
+			if args.requester ~= nil then
+				local msg = {}
+				msg.displayTime = 10
+				msg.sound = 'fdsTroops.ogg'
+				msg.text = "No suitable markpoints found. Check your markpoints. \nThey must be created by you and named as 'gwp1', 'gwp2', 'gwp3'..."
+				trigger.action.outTextForGroup(args.requester:getID(),msg.text,msg.displayTime)
+				trigger.action.outSoundForGroup(args.requester:getID(),msg.sound)
+				checkMarkPoints = false
+			else
+				checkMarkPoints = false
+			end
+		end
+	end
+	if checkMarkPoints then
+		for i = 1, args.number, 1 do
+			local refDropGroup = {}
+			if args.requester:getCoalition() == 1 then
+				refDropGroup = Group.getByName('Red_Base_Spawn_Mockup')
+			elseif args.requester:getCoalition() == 2 then
+				refDropGroup = Group.getByName('Blue_Base_Spawn_Mockup')
+			end
+			local dropPoint = refDropGroup:getUnits()[1]:getPosition().p
+			local headingDev = refDropGroup:getUnits()[1]:getPosition().x
+			local adjHeading = 0
+			local compz = 0
+			local compx = 0
+			local degreeHeading = math.atan2(headingDev.z, headingDev.x)*57.2958
+            varDeg = 90
+			if degreeHeading + varDeg > 360 then
+				adjHeading = degreeHeading + varDeg - 360
+			elseif degreeHeading + varDeg < 0 then
+				adjHeading = degreeHeading + varDeg + 360
+			else
+				adjHeading = degreeHeading + varDeg
+			end
+			compz = math.sqrt(1/((math.tan(adjHeading*0.0174533)^2) + 1))
+			compx = compz*math.tan(adjHeading * 0.0174533)
+			if elementNumber == 1 then
+				numberAdjust = {x = 0, z = 0}
+			elseif (elementNumber % 2 == 0) then
+				numberAdjust = {z = FDS.dropTroopDistance*compx*math.floor(elementNumber/2), x = FDS.dropTroopDistance*compz*math.floor(elementNumber/2)}
+			else
+				numberAdjust = {z = -FDS.dropTroopDistance*compx*math.floor(elementNumber/2), x = -FDS.dropTroopDistance*compz*math.floor(elementNumber/2)}
+			end
+			elementNumber = elementNumber+1
+			dropPoint.x = dropPoint.x + headingDev.x*FDS.dropDistance + numberAdjust.x
+			dropPoint.z = dropPoint.z + headingDev.z*FDS.dropDistance + numberAdjust.z
+			local height = land.getHeight({x = dropPoint.x, y = dropPoint.z})
+			mockUpName = ""
+			groupNameMock = ""
+			if args.requester:getCoalition() == 1 then
+				mockUpName = mockUpName .. "Red_" .. args.name .. "_Deploy"
+				groupNameMock = args.name .. "_"
+			elseif args.requester:getCoalition() == 2 then
+				mockUpName = mockUpName .. "Blue_" .. args.name .. "_Deploy"
+				groupNameMock = args.name .. "_" 
+			end
+			gp = Group.getByName(mockUpName)
+			gPData = mist.getGroupData(mockUpName,true)
+			new_GPR = mist.utils.deepCopy(gpR)
+			new_gPData = mist.utils.deepCopy(gPData)
+			new_gPData.units[1].x = dropPoint.x
+			new_gPData.units[1].y = dropPoint.z
+			new_gPData.units[1].heading = math.atan2(headingDev.z, headingDev.x)
+			new_GPR[1].x = dropPoint.x
+			new_GPR[1].y = dropPoint.z
+			new_GPR[1].speed = senderGroups[1][1]
+			new_GPR[1].task.params.tasks[1].params.action.params.value = 0
+			local wpNumber = 0
+			for _, elemento in pairs(senderGroups) do
+				wpNumber = wpNumber + 1
+			end
+			for wpN = 1, wpNumber, 1 do
+				new_GPR[wpN+1] = mist.utils.deepCopy(new_GPR[1])
+				if referenceMarks[1] ~= nil and referenceMarks[2] ~= nil then
+					local msg = {}
+					msg.displayTime = 5
+					msg.sound = 'fdsTroops.ogg'
+					msg.text = "Two references not yet implemented, use only 'ref1'."
+					trigger.action.outTextForGroup(args.group:getID(),msg.text,msg.displayTime)
+					trigger.action.outSoundForGroup(args.group:getID(),msg.sound)
+				elseif referenceMarks[1] ~= nil and referenceMarks[2] == nil then
+					new_GPR[wpN+1].x = senderGroups[wpN][2].x - (referenceMarks[1][1].x - orderedUnit:getPosition().p.x)
+					new_GPR[wpN+1].y = senderGroups[wpN][2].z - (referenceMarks[1][1].z - orderedUnit:getPosition().p.z)
+				else
+					new_GPR[wpN+1].x = senderGroups[wpN][2].x
+					new_GPR[wpN+1].y = senderGroups[wpN][2].z					
+				end
+				new_GPR[wpN+1].speed = senderGroups[wpN][1]
+				if wpN == wpNumber then
+					new_GPR[wpN+1].task.params.tasks[1].params.action.params.value = 2
+				else
+					new_GPR[wpN+1].task.params.tasks[1].params.action.params.value = 0
+				end
+			end
+			new_gPData.clone = true
+			new_gPData.route = new_GPR
+			local newTroop = mist.dynAdd(new_gPData)
+			mist.goRoute(Group.getByName(newTroop.name), new_GPR)
+			mist.scheduleFunction(mist.goRoute,{Group.getByName(newTroop.name), new_GPR},timer.getTime()+1)
+			if args.code ~= nil then
+				FDS.createJTACJeep({args.requester, tostring(FDS.cargoList[tostring(args.requester:getName())][1].code), Group.getByName(newTroop.name)}) 
+			end
+			deployerID = FDS.retrieveUcid(args.requester:getUnits()[1]:getPlayerName(),FDS.isName)
+			local groupNameId = 1
+			local deployNameCheck = true
+			while deployNameCheck do
+				deployNameCheck = false
+				for coalition, unitSet in pairs(FDS.deployedUnits) do
+					for name, data in pairs(unitSet) do
+						if data.groupData.showName ~= nil and data.groupData.showName == deployerID .. groupNameMock .. tostring(groupNameId) then
+							groupNameId = groupNameId + 1
+							deployNameCheck = true
+						end
+					end
+				end
+			end					
+			FDS.deployedUnits[FDS.trueCoalitionCode[args.requester:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['ownerName'] = args.requester:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[args.name].type, ['coa'] = args.requester:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
+			table.remove(FDS.cargoList[args.requester:getName()],1)
+			exportCreatedUnits()
+			msg.text = "Troops deployed.\n"
+			msg.displayTime = 5
+			msg.sound = 'fdsTroops.ogg'
+		end	
+		trigger.action.outTextForGroup(args.requester:getID(),msg.text,msg.displayTime)
+		trigger.action.outSoundForGroup(args.requester:getID(),msg.sound)
+	end
+end
+
 function FDS.dropTroops(args)
 	local msg = {}
 	local elementNumber = 1
@@ -789,12 +1048,15 @@ function FDS.dropTroops(args)
 				dropPoint.z = dropPoint.z + headingDev.z*FDS.dropDistance + numberAdjust.z
 				local height = land.getHeight({x = dropPoint.x, y = dropPoint.z})
 				mockUpName = ""
+				groupNameMock = ""
 				if args[1]:getCoalition() == 1 then
 					local namePart = string.gsub(FDS.cargoList[tostring(args[1]:getName())][1].name, " ", "_")
 					mockUpName = mockUpName .. "Red_" .. namePart .. "_Deploy"
+					groupNameMock = namePart .. "_"
 				elseif args[1]:getCoalition() == 2 then
 					local namePart = string.gsub(FDS.cargoList[tostring(args[1]:getName())][1].name, " ", "_")
 					mockUpName = mockUpName .. "Blue_" .. namePart .. "_Deploy"
+					groupNameMock = namePart .. "_" 
 				end
 				local listName = FDS.cargoList[tostring(args[1]:getName())][1].name
 				gp = Group.getByName(mockUpName)
@@ -871,7 +1133,20 @@ function FDS.dropTroops(args)
 					local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
 					trigger.action.setUnitInternalCargo(args[1]:getName(),massaFinal)
 					deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
-					FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[listName].type, ['coa'] = args[1]:getCoalition()}}
+					local groupNameId = 1
+					local deployNameCheck = true
+					while deployNameCheck do
+						deployNameCheck = false
+						for coalition, unitSet in pairs(FDS.deployedUnits) do
+							for name, data in pairs(unitSet) do
+								if data.groupData.showName ~= nil and data.groupData.showName == deployerID .. groupNameMock .. tostring(groupNameId) then
+									groupNameId = groupNameId + 1
+									deployNameCheck = true
+								end
+							end
+						end
+					end					
+					FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['ownerName'] = args[1]:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[listName].type, ['coa'] = args[1]:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
 					table.remove(FDS.cargoList[args[1]:getName()],1)
 					exportCreatedUnits()
 					msg.text = "Troops deployed.\n"
@@ -1024,6 +1299,184 @@ function FDS.transferNow(args)
 	end
 end
 
+function FDS.commandGroup(args)
+    local allMarks = world.getMarkPanels()
+    local senderGroups = {}
+	local referenceMarks = {}
+    local foundWP = false
+    local checkMarkPoints = true
+    for _, markData in pairs(allMarks) do
+        local markNameSpeed = {}
+        if args.group:getUnits()[1]:getPlayerName() == markData.author and string.sub(markData.text, 1, 3) == 'gwp' and args.group:getCoalition() == markData.coalition then
+            if string.find(string.sub(markData.text,4), "-") ~= nil then
+                for markTxt, markSpeed in string.gmatch(string.sub(markData.text, 4), "(%w+)-(%w+)") do
+                    markNameSpeed = {markTxt, {markSpeed, markData.pos}}
+                end
+            else
+                markNameSpeed = {string.sub(markData.text, 4), {100,markData.pos}}
+            end
+            if senderGroups[tonumber(markNameSpeed[1])] == nil then
+            	senderGroups[tonumber(markNameSpeed[1])] = markNameSpeed[2]
+            else
+				local msg = {}
+                msg.displayTime = 10
+                msg.sound = 'fdsTroops.ogg'
+                msg.text = "Two waypoints with the same number. Check your markpoints. \nThey must be created by you and named as 'gwp1', 'gwp2', 'gwp3'..."
+                trigger.action.outTextForGroup(args.group:getID(),msg.text,msg.displayTime)
+                trigger.action.outSoundForGroup(args.group:getID(),msg.sound)
+                checkMarkPoints = false
+            end
+        end
+		local markRef = {}
+		if args.showName == markData.author and string.sub(markData.text, 1, 3) == 'ref' and args.group:getCoalition() == markData.coalition then
+            markRef = {string.sub(markData.text, 4), {markData.pos}}
+            if referenceMarks[tonumber(markRef[1])] == nil then
+            	referenceMarks[tonumber(markRef[1])] = markRef[2]
+            else
+				local msg = {}
+                msg.displayTime = 10
+                msg.sound = 'fdsTroops.ogg'
+                msg.text = "Two reference points with the same number. Check your markpoints. \nThey must be created by you and named as 'ref1', and 'ref2'."
+                trigger.action.outTextForGroup(args.group:getID(),msg.text,msg.displayTime)
+                trigger.action.outSoundForGroup(args.group:getID(),msg.sound)
+                checkMarkPoints = false
+            end
+        end
+    end
+    if senderGroups[1] == nil then
+        if args.group ~= nil then
+            local msg = {}
+            msg.displayTime = 10
+            msg.sound = 'fdsTroops.ogg'
+            msg.text = "No suitable markpoints found. Check your markpoints. \nThey must be created by you and named as 'gwp1', 'gwp2', 'gwp3'..."
+            trigger.action.outTextForGroup(args.group:getID(),msg.text,msg.displayTime)
+            trigger.action.outSoundForGroup(args.group:getID(),msg.sound)
+            checkMarkPoints = false
+         else
+            checkMarkPoints = false
+         end
+    end
+	if checkMarkPoints then
+		local allZones = mist.DBs.zonesByName
+		local allowedZone = {}
+		local forbitenZones = {}
+		for zN = 1, 3, 1 do
+			if allZones['droppableZone' .. tostring(zN)] ~= nil then
+				local zoneData = allZones['droppableZone' .. tostring(zN)]
+				allowedZone[zN] =  {zoneData.radius, zoneData.x, zoneData.y}
+			end
+		end
+		forbitenZones[1] = {}
+		for zN = 1, 4, 1 do
+			if allZones['redTroopsNotAllowed_' .. tostring(zN)] ~= nil then
+				local zoneData = allZones['redTroopsNotAllowed_' .. tostring(zN)]
+				forbitenZones[1][zN] =  {zoneData.radius, zoneData.x, zoneData.y}
+			end
+		end
+		forbitenZones[2] = {}
+		for zN = 1, 4, 1 do
+			if allZones['blueTroopsNotAllowed_' .. tostring(zN)] ~= nil then
+				local zoneData = allZones['blueTroopsNotAllowed_' .. tostring(zN)]
+				forbitenZones[2][zN] =  {zoneData.radius, zoneData.x, zoneData.y}
+			end
+		end
+		for _, elementos in pairs(senderGroups) do
+			local flagDropZone = {true, true, true}
+			if checkMarkPoints then
+				for zN = 1, 3, 1 do
+					local dist = math.sqrt((elementos[2].x - allowedZone[zN][2])^2 + (elementos[2].z - allowedZone[zN][3])^2)
+					if dist < allowedZone[zN][1] then
+						flagDropZone[zN] = false
+					end
+				end
+				if flagDropZone[1] and flagDropZone[2] and flagDropZone[3] then
+					local msg = {}
+					msg.displayTime = 5
+					msg.sound = 'fdsTroops.ogg'
+					msg.text = "All markpoints must be inside the deployable zone and at least 8nm away from the enemy helipad and airfield."
+					trigger.action.outTextForGroup(args.group:getID(),msg.text,msg.displayTime)
+					trigger.action.outSoundForGroup(args.group:getID(),msg.sound) 
+					checkMarkPoints = false
+				end
+			end
+		end
+		for _, elementos in pairs(senderGroups) do
+			local flagDropZone = {false, false, false, false}
+			if checkMarkPoints then
+				for zN = 1, 4, 1 do
+					local dist = math.sqrt((elementos[2].x - forbitenZones[args.group:getCoalition()][zN][2])^2 + (elementos[2].z - forbitenZones[args.group:getCoalition()][zN][3])^2)
+					if dist < forbitenZones[args.group:getCoalition()][zN][1] then
+						flagDropZone[zN] = true
+					end
+				end
+				if flagDropZone[1] or flagDropZone[2] or flagDropZone[3] or flagDropZone[4] then
+					local msg = {}
+					msg.displayTime = 5
+					msg.sound = 'fdsTroops.ogg'
+					msg.text = "All markpoints must be inside the deployable zone and at least 8nm away from the enemy helipad and airfield."
+					trigger.action.outTextForGroup(args.group:getID(),msg.text,msg.displayTime)
+					trigger.action.outSoundForGroup(args.group:getID(),msg.sound) 
+					checkMarkPoints = false
+				end
+			end
+		end		
+	end
+    if checkMarkPoints then
+        if Group.getByName(args.groupName) ~= nil then
+        	local gp = Group.getByName(args.groupName)
+            local orderedUnit = gp:getUnits()[1]
+        	local gpR = mist.getGroupRoute(args.mockName, true)
+        	new_GPR = mist.utils.deepCopy(gpR)
+        	new_GPR[1].x = orderedUnit:getPosition().p.x
+        	new_GPR[1].y = orderedUnit:getPosition().p.z
+        	new_GPR[1].speed = senderGroups[1][1]
+            new_GPR[1].task.params.tasks[1].params.action.params.value = 0
+            local wpNumber = 0
+            for _, elemento in pairs(senderGroups) do
+                wpNumber = wpNumber + 1
+            end
+            for wpN = 1, wpNumber, 1 do
+                new_GPR[wpN+1] = mist.utils.deepCopy(new_GPR[1])
+				if referenceMarks[1] ~= nil and referenceMarks[2] ~= nil then
+					local msg = {}
+					msg.displayTime = 5
+					msg.sound = 'fdsTroops.ogg'
+					msg.text = "Two references not yet implemented, use only 'ref1'."
+					trigger.action.outTextForGroup(args.group:getID(),msg.text,msg.displayTime)
+					trigger.action.outSoundForGroup(args.group:getID(),msg.sound)
+				elseif referenceMarks[1] ~= nil and referenceMarks[2] == nil then
+					new_GPR[wpN+1].x = senderGroups[wpN][2].x - (referenceMarks[1][1].x - orderedUnit:getPosition().p.x)
+					new_GPR[wpN+1].y = senderGroups[wpN][2].z - (referenceMarks[1][1].z - orderedUnit:getPosition().p.z)
+				else
+					new_GPR[wpN+1].x = senderGroups[wpN][2].x
+					new_GPR[wpN+1].y = senderGroups[wpN][2].z					
+				end
+                new_GPR[wpN+1].speed = senderGroups[wpN][1]
+                if wpN == wpNumber then
+                	new_GPR[wpN+1].task.params.tasks[1].params.action.params.value = 2
+                else
+                    new_GPR[wpN+1].task.params.tasks[1].params.action.params.value = 0
+                end
+            end
+            mist.goRoute(gp, new_GPR)
+            local msg = {}
+            msg.displayTime = 5
+            msg.sound = 'Jtac.ogg'
+            msg.text = "Orders received."
+            trigger.action.outTextForGroup(args.group:getID(),msg.text,msg.displayTime)
+            trigger.action.outSoundForGroup(args.group:getID(),msg.sound) 
+        else
+            local msg = {}
+            msg.displayTime = 5
+            msg.sound = 'fdsTroops.ogg'
+            msg.text = "This troop doesn't exist anymore."
+            trigger.action.outTextForGroup(args.group:getID(),msg.text,msg.displayTime)
+            trigger.action.outSoundForGroup(args.group:getID(),msg.sound)            
+        end
+        return new_GPR
+    end
+end
+
 function FDS.refreshRadio(gp)
     pcall(missionCommands.removeItemForGroup,mist.DBs.humansByName[gp:getName()]['groupId'],'Current War Status')
     mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[gp:getName()]['groupId'],'Current War Status',nil, FDS.warStatus, {gp.id_, gp:getCoalition(), gp:getUnits()[1]:getPlayerName()}},timer.getTime()+FDS.wtime)
@@ -1033,6 +1486,7 @@ function FDS.refreshRadio(gp)
 	--mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[gp:getName()]['groupId'],'JTAC Status',nil, FDS.jtacStatus, {gp.id_, gp:getCoalition(), gp:getName()}},timer.getTime()+FDS.wtime)
 	FDS.addCreditsOptions(gp)
 	FDS.addJtacOption(gp)
+	FDS.addTroopManagement(gp)
 end
 
 function FDS.addJtacOption(gp)
@@ -1050,6 +1504,79 @@ function FDS.addJtacOption(gp)
 			contactsNumber = contactsNumber + 1
 		end
     end
+end
+
+function FDS.troopStatus(gp)
+	local gpUcid = FDS.retrieveUcid(gp:getUnits()[1]:getPlayerName(),FDS.isName)
+	local unitsUnderMyCommand = {}
+	local unitNumber = 0
+	local msg = {}
+	for name, data in pairs(FDS.deployedUnits[FDS.trueCoalitionCode[gp:getCoalition()]]) do
+		table.insert(unitsUnderMyCommand, {data.ownerName .. '_' .. data.groupData.showName, data.age})
+		unitNumber = unitNumber + 1
+	end
+	local unitsUnderMyCommandByType = {}
+	for _, gName in pairs(unitsUnderMyCommand) do
+		if unitsUnderMyCommandByType[gName[1]] ~= nil then 
+			table.insert(unitsUnderMyCommandByType[gName[1]],gName)
+		else
+			unitsUnderMyCommandByType[gName[1]] = {gName}
+		end
+	end
+	msg.displayTime = 10
+	msg.sound = 'fdsTroops.ogg'
+	msg.text = "Active troops:\nUnit name ----- Restarts so far / Maximum allowed\n"
+	for name, data in pairs(FDS.deployedUnits[FDS.trueCoalitionCode[gp:getCoalition()]]) do
+		if data.groupData.type ~= 'Air' then 
+			msg.text = msg.text .. data.ownerName .. '_' .. data.groupData.showName .. ' : ' .. data.age .. ' / ' .. FDS.unitLifeSpan .. '\n'
+		end
+	end
+	trigger.action.outTextForGroup(gp:getID(),msg.text,msg.displayTime)
+	trigger.action.outSoundForGroup(gp:getID(),msg.sound) 	
+end
+
+function FDS.ordersToSet(args)
+	for _, gName in pairs(args[2]) do
+		FDS.commandGroup({['group'] = args[1], ['groupName'] = Unit.getByName(gName[2]):getGroup():getName(), ['showName'] = gName[3], ['mockName'] = gName[4]})
+	end
+end
+
+function FDS.addTroopManagement(gp)
+	local gpUcid = FDS.retrieveUcid(gp:getUnits()[1]:getPlayerName(),FDS.isName)
+	local unitsUnderMyCommand = {}
+	local unitNumber = 0
+	for name, data in pairs(FDS.deployedUnits[FDS.trueCoalitionCode[gp:getCoalition()]]) do
+		if data.groupData.type ~= 'Air' then 
+			table.insert(unitsUnderMyCommand, {data.ownerName .. '_' .. data.groupData.showName, name, data.ownerName, data.groupData.mockUpName, data.groupData.type})
+			unitNumber = unitNumber + 1
+		end
+	end
+	local rootTroopMan = missionCommands.addSubMenuForGroup(gp:getID(), "Command my troops")
+	missionCommands.addCommandForGroup(gp:getID(), 'Refresh Troops', rootTroopMan, FDS.refreshRadio, gp)
+	missionCommands.addCommandForGroup(gp:getID(), 'Troop Status', rootTroopMan, FDS.troopStatus, gp)
+	missionCommands.addCommandForGroup(gp:getID(), 'Command to all', rootTroopMan, FDS.ordersToSet, {gp, unitsUnderMyCommand})
+	local unitsUnderMyCommandByType = {}
+	for _, gName in pairs(unitsUnderMyCommand) do
+		if unitsUnderMyCommandByType[gName[5]] ~= nil then 
+			table.insert(unitsUnderMyCommandByType[gName[5]],gName)
+		else
+			unitsUnderMyCommandByType[gName[5]] = {gName}
+		end
+	end
+	for gTypeName, gTypeElements in pairs(unitsUnderMyCommandByType) do
+		local rootTroopType = missionCommands.addSubMenuForGroup(gp:getID(), gTypeName, rootTroopMan)
+		local elementQty = 1
+		missionCommands.addCommandForGroup(gp:getID(), 'Command to all ' .. gTypeName, rootTroopType, FDS.ordersToSet, {gp, gTypeElements})
+		for _, gName in pairs(gTypeElements) do
+			if elementQty%8 == 0 then
+				rootTroopType = missionCommands.addSubMenuForGroup(gp:getID(), "More", rootTroopType)
+				elementQty = elementQty + 1
+			else
+				missionCommands.addCommandForGroup(gp:getID(), gName[1], rootTroopType, FDS.commandGroup, {['group'] = gp, ['groupName'] = Unit.getByName(gName[2]):getGroup():getName(), ['showName'] = gName[3], ['mockName'] = gName[4]})
+				elementQty = elementQty + 1
+			end
+		end
+	end
 end
 
 function FDS.addCreditsOptions(gp)
@@ -1155,6 +1682,37 @@ function FDS.addCreditsOptions(gp)
 			missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), goodsLoadRoot, FDS.validateDropBoard, {['rawData'] = {gp,'', j}, ['dropCase'] = FDS.loadValuableGoods, ['dropCaseString'] = 'loadValuableGoods'})
 		end
 		missionCommands.addCommandForGroup(gp:getID(), "Deliver", variousGoods, FDS.validateDropBoard,{['rawData'] = {gp,-1}, ['dropCase'] = FDS.deliverGoods, ['dropCaseString'] = 'deliverGoods'})
+	end
+	-- Troop Base Spawn
+	local rootTroops = missionCommands.addSubMenuForGroup(gp:getID(), "Base Spawn", rootCredits)
+	local jtacTT = ''
+	for _, aType in pairs(FDS.transportTypes) do
+		local rootType = missionCommands.addSubMenuForGroup(gp:getID(), aType, rootTroops) 
+		for _, i in pairs(FDS.troopAssetsNumbered) do
+			if aType == i.type then
+				if i.name == "JTAC Team" then
+					-- jtacTT = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($" .. tostring(i.cost) .. ")", rootType)
+					-- for label, code in pairs(FDS.laserCodes) do
+					-- 	missionCommands.addCommandForGroup(gp:getID(), "Laser code: " .. code .. " (" .. label .. ")", jtacTT, FDS.baseSpawn, {['requester'] = gp, ['number'] = 1, ['name'] = i.name, ['code'] = code})
+					-- end
+					-- jtacTTCustom = missionCommands.addSubMenuForGroup(gp:getID(), "Custom laser code: 1", jtacTT)
+					-- for _, digit in pairs(FDS.validLaserDigits[1]) do
+					-- 	jtacTTCustomDigit1 = missionCommands.addSubMenuForGroup(gp:getID(), digit, jtacTTCustom)
+					-- 	for _, digit2 in pairs(FDS.validLaserDigits[2]) do
+					-- 		jtacTTCustomDigit2 = missionCommands.addSubMenuForGroup(gp:getID(), digit2, jtacTTCustomDigit1)
+					-- 		for _, digit3 in pairs(FDS.validLaserDigits[3]) do
+					-- 			missionCommands.addCommandForGroup(gp:getID(), digit3, jtacTTCustomDigit2, FDS.baseSpawn, {['requester'] = gp, ['number'] = j, ['name'] = i.name, ['code'] = '1' .. digit .. digit2 .. digit3})
+					-- 		end
+					-- 	end
+					-- end
+				else
+					local troopType = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($".. i.cost ..")", rootType)
+					for j=1,10,1 do  
+						missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), troopType, FDS.baseSpawn, {['requester'] = gp, ['number'] = j, ['name'] = i.name})
+					end
+				end
+			end
+		end
 	end
 end
 
@@ -1283,9 +1841,9 @@ function creatingBases()
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Where to Attack',nil, FDS.whereStrike, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Where to Defend',nil, FDS.whereDefend, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'Drop Zones',nil, FDS.whereDropZones, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
-					--mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'JTAC Status',nil, FDS.jtacStatus, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					FDS.addCreditsOptions(gp)
 					FDS.addJtacOption(gp)
+					FDS.addTroopManagement(gp)
 					mist.scheduleFunction(trigger.action.outTextForGroup,{gpId,msg.text,msg.displayTime},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(trigger.action.outSoundForGroup,{gpId,msg.sound},timer.getTime()+FDS.wtime)
 					if i == 1 then 
@@ -1326,6 +1884,7 @@ function creatingBases()
 					--mist.scheduleFunction(missionCommands.addCommandForGroup,{gpId,'JTAC Status',nil, FDS.jtacStatus, {gpId, gpCoa, gpName}},timer.getTime()+FDS.wtime)
 					FDS.addCreditsOptions(gp)
 					FDS.addJtacOption(gp)
+					FDS.addTroopManagement(gp)
 					mist.scheduleFunction(trigger.action.outTextForGroup,{gpId,msg.text,msg.displayTime},timer.getTime()+FDS.wtime)
 					mist.scheduleFunction(trigger.action.outSoundForGroup,{gpId,msg.sound},timer.getTime()+FDS.wtime)
 					if i == 1 then 
@@ -1629,7 +2188,7 @@ function importPlayerDataNow()
                         	playerDataExport[team][playerName] = FDS.taxFreeValue[1]
                         	playerData = playerData - FDS.taxFreeValue[1]
                         	playerDataExport[team][playerName] = playerDataExport[team][playerName] + playerData*FDS.importTax[1]
-                            ping(tostring(playerDataExport[team][playerName]))
+                            --ping(tostring(playerDataExport[team][playerName]))
                     	else
                         	playerDataExport[team][playerName] = playerData
                     	end
@@ -1710,7 +2269,7 @@ function importPlayerUnits()
 					local newTroop = mist.dynAdd(new_gPData)
 					mist.goRoute(Group.getByName(newTroop.name), new_GPR)
 					mist.scheduleFunction(mist.goRoute,{Group.getByName(newTroop.name), new_GPR},timer.getTime()+1)
-					FDS.deployedUnits[team][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = data.owner, ['age'] = updateAge, ['groupData'] = {['mockUpName'] = data.groupData.mockUpName,['x'] = data.groupData.x, ['z'] = data.groupData.z, ['hz'] = data.groupData.hz, ['hx'] = data.groupData.hx, ['type'] = data.groupData.type, ['coa'] = data.groupData.coa}}
+					FDS.deployedUnits[team][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = data.owner, ['ownerName'] = data.ownerName, ['age'] = updateAge, ['groupData'] = {['mockUpName'] = data.groupData.mockUpName,['x'] = data.groupData.x, ['z'] = data.groupData.z, ['hz'] = data.groupData.hz, ['hx'] = data.groupData.hx, ['type'] = data.groupData.type, ['coa'] = data.groupData.coa, ['showName'] = data.groupData.showName}}
 				end
 			end
 		end
@@ -1994,6 +2553,51 @@ function FDS.createJTACDrone(args)
 	end
 	trigger.action.outTextForGroup(args[1]:getID(), msg.text, msg.displayTime)
 	trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
+end
+
+function updateDeployedTroops()
+    for _, ids in pairs(FDS.deployedTroopsMarks) do
+    trigger.action.removeMark(ids[1])
+    trigger.action.removeMark(ids[2])
+    trigger.action.removeMark(ids[3])
+	end
+    for coalition, unitSet in pairs(FDS.deployedUnits) do
+        for name, data in pairs(unitSet) do
+			if data.groupData.type ~= 'Air' then 
+				local circleColor1 = {}
+				local circleColor2 = {}
+				local textColor1 = {}
+				local textColor2 = {}
+				if data.groupData.coa == 1 then
+					circleColor1 = {1, 0.2, 0.5, 1}
+					textColor1 = {1, 0.2, 0.5, 1}
+					textColor2 = {0, 0, 0, 0}
+				elseif data.groupData.coa == 2 then
+					circleColor1 = {0, 0.9, 1, 1}
+					textColor1 = {0, 0.9, 1, 1}
+					textColor2 = {0, 0, 0, 0}
+				end
+				local uni = Unit.getByName(name)
+				point3 = {['x'] = uni:getPosition().p.x, ['y'] = 0, ['z'] = uni:getPosition().p.z}
+				--point3 = {['x'] = data.groupData.x, ['y'] = 0, ['z'] = data.groupData.z}
+				FDS.markUpNumber = FDS.markUpNumber + 1
+				trigger.action.lineToAll(data.groupData.coa , FDS.markUpNumber, {['x'] = point3.x + FDS.deployedTroopsSymbolSize*0.5, ['y'] = point3.y, ['z'] = point3.z + FDS.deployedTroopsSymbolSize*0.5}, {['x'] = point3.x - FDS.deployedTroopsSymbolSize*0.5, ['y'] = point3.y, ['z'] = point3.z - FDS.deployedTroopsSymbolSize*0.5}, circleColor1 , 1 , true)
+				local lineNumber1 = FDS.markUpNumber
+				FDS.markUpNumber = FDS.markUpNumber + 1
+				trigger.action.lineToAll(data.groupData.coa , FDS.markUpNumber, {['x'] = point3.x - FDS.deployedTroopsSymbolSize*0.5, ['y'] = point3.y, ['z'] = point3.z + FDS.deployedTroopsSymbolSize*0.5}, {['x'] = point3.x + FDS.deployedTroopsSymbolSize*0.5, ['y'] = point3.y, ['z'] = point3.z - FDS.deployedTroopsSymbolSize*0.5}, circleColor1 , 1 , true)
+				local lineNumber2 = FDS.markUpNumber
+				FDS.markUpNumber = FDS.markUpNumber + 1
+				trigger.action.textToAll(data.groupData.coa, FDS.markUpNumber, point3, textColor1 , textColor2 , FDS.deployedTroopsFontSizeText, true , data.ownerName .. '_' .. data.groupData.showName)
+				local textNumber = FDS.markUpNumber
+				table.insert(FDS.deployedTroopsMarks, {lineNumber1, lineNumber2, textNumber})
+			end
+        end
+    end
+	local msgCap = {}
+	msgCap.text = "UPDATING PLAYER'S UNITS POSITION"
+	msgCap.displayTime = 5
+	--trigger.action.outText(msgCap.text, msgCap.displayTime)
+	--trigger.action.outSound('Msg.ogg')
 end
 
 function JTACSearch(args)
@@ -2339,7 +2943,7 @@ function FDS.createASupport(args)
 	if FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] >= FDS.airSupportAssetsKeys[args[2]].cost or FDS.bypassCredits then
 		FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] - FDS.airSupportAssetsKeys[args[2]].cost
 		local newAS = mist.dynAdd(new_gPData)
-		FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newAS.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['age'] = 0}
+		FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newAS.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['age'] = 0, ['ownerName'] = args[1]:getUnits()[1]:getPlayerName(), ['groupData'] = {['mockUpName'] = '',['x'] = '', ['z'] = '', ['hz'] = '', ['hx'] = '', ['type'] = 'Air', ['coa'] = '', ['showName'] = ''}}
 		msg.text = "Air support is on the way.\nRemaining Credits: $" .. tostring(FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID])
 		msg.sound = 'fdsTroops.ogg'	
 	else
@@ -3490,7 +4094,6 @@ function FDS.whereDropZones(g_id)
 		ll1 = mist.tostringLL(LL, LO, varLL.acc)
 		ll1 = mysplit(ll1, '\t')
 		mgrs1 = mist.tostringMGRS(mgrs1,varMGRS.acc)
-		
 		if bra3 > 360.0 then
 			bra3 = bra3 - 360.0
 		end
@@ -4145,6 +4748,7 @@ FDS.eventActions = FDS.switch {
 			mist.scheduleFunction(missionCommands.addCommandForGroup,{mist.DBs.humansByName[_initEnt:getName()]['groupId'],'Drop Zones',nil, FDS.whereDropZones, {_initEnt:getGroup().id_, _initEnt:getCoalition(), _initEnt:getName()}},timer.getTime()+FDS.wtime)
 			FDS.addCreditsOptions(_initEnt:getGroup())
 			FDS.addJtacOption(_initEnt:getGroup())
+			FDS.addTroopManagement(_initEnt:getGroup())
 			mist.scheduleFunction(trigger.action.outTextForGroup,{_initEnt:getGroup().id_,msg.text,msg.displayTime},timer.getTime()+FDS.wtime)
 			mist.scheduleFunction(trigger.action.outSoundForGroup,{_initEnt:getGroup().id_,msg.sound},timer.getTime()+FDS.wtime)
 
@@ -4725,7 +5329,7 @@ FDS.eventActions = FDS.switch {
 			exportCreatedUnits()
 		end
 		if FDS.exportPlayerData then
-			cleanPoints()
+			--cleanPoints()
 			exportPlayerDataNow()
 		end
 		if FDS.exportDataSite then
@@ -5044,6 +5648,7 @@ end
 mist.scheduleFunction(protectCall, {importPlayerDataNow},timer.getTime())
 mist.scheduleFunction(protectCall, {creatingBases},timer.getTime()+1)
 mist.scheduleFunction(protectCall, {importPlayerUnits},timer.getTime()+2)
+mist.scheduleFunction(protectCall, {updateDeployedTroops},timer.getTime()+3, FDS.updateTroopsRefresh)
 -- Updating Players
 --mist.scheduleFunction(checkPlayersOn, {},timer.getTime()+1.5,5)
 --mist.scheduleFunction(protectCall, {checkPlayersOn},timer.getTime()+1.5,5)
