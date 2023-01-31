@@ -228,6 +228,7 @@ FDS.resAWACSTime = {
 -- Tanker Respawn
 FDS.respawnTankerTime = 600.0
 FDS.fuelTankerRestart = 14400.0
+FDS.refuelRefresh = 10 -- seconds
 
 -- DropZones
 -- Minimum dist is 8 nm from enemy field and helipad
@@ -506,11 +507,12 @@ function FDS.retrieveUcid(arg,name)
 end
 
 function checkFuelLevels()
+	local allPlayers = mist.DBs.humansByName
 	for name, data in pairs(allPlayers) do
 		if Unit.getByName(name) ~= nil and Unit.getByName(name):getPlayerName() ~= nil then
 			if FDS.fuelLevels[name] ~= nil then
 				if FDS.fuelLevels[name] < Unit.getByName(name):getFuel() and Unit.getByName(name):getPosition().p.y > 3048 then
-					local _initEnt = Unit.getByName(name):getGroup()
+					local _initEnt = Unit.getByName(name)
 					local initCheck = pcall(FDS.playerCheck,_initEnt)
 					local initCoa = 0
 					local initCoaCheck = pcall(FDS.coalitionCheck,_initEnt)
@@ -826,7 +828,7 @@ function FDS.baseSpawn(args)
     local checkMarkPoints = true
     local senderGroups = {}
 	local markRef = {}
-	local gpUcid = FDS.retrieveUcid(args.requester:getUnits()[1]:getPlayerName(),FDS.isName)
+	local gpUcid = FDS.retrieveUcid(args.requester:getUnits()[1]:getPlayerName(),FDS.isName) or ''
 	if (FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] <= FDS.troopAssets[args.name].cost and not FDS.bypassCredits) then
 		local msg = {}
 		msg.displayTime = 10
@@ -883,6 +885,7 @@ function FDS.baseSpawn(args)
 				refDropGroup = Group.getByName('Blue_Base_Spawn_Mockup')
 			end
 			local dropPoint = refDropGroup:getUnits()[1]:getPosition().p
+			referenceMarks[1] = dropPoint
 			local headingDev = refDropGroup:getUnits()[1]:getPosition().x
 			local adjHeading = 0
 			local compz = 0
@@ -940,11 +943,11 @@ function FDS.baseSpawn(args)
 					msg.displayTime = 5
 					msg.sound = 'fdsTroops.ogg'
 					msg.text = "Two references not yet implemented, use only 'ref1'."
-					trigger.action.outTextForGroup(args.group:getID(),msg.text,msg.displayTime)
-					trigger.action.outSoundForGroup(args.group:getID(),msg.sound)
+					trigger.action.outTextForGroup(args.requester:getID(),msg.text,msg.displayTime)
+					trigger.action.outSoundForGroup(args.requester:getID(),msg.sound)
 				elseif referenceMarks[1] ~= nil and referenceMarks[2] == nil then
-					new_GPR[wpN+1].x = senderGroups[wpN][2].x - (referenceMarks[1][1].x - orderedUnit:getPosition().p.x)
-					new_GPR[wpN+1].y = senderGroups[wpN][2].z - (referenceMarks[1][1].z - orderedUnit:getPosition().p.z)
+					new_GPR[wpN+1].x = senderGroups[wpN][2].x - (referenceMarks[1].x - dropPoint.x)
+					new_GPR[wpN+1].y = senderGroups[wpN][2].z - (referenceMarks[1].z - dropPoint.z)
 				else
 					new_GPR[wpN+1].x = senderGroups[wpN][2].x
 					new_GPR[wpN+1].y = senderGroups[wpN][2].z					
@@ -979,7 +982,6 @@ function FDS.baseSpawn(args)
 				end
 			end					
 			FDS.deployedUnits[FDS.trueCoalitionCode[args.requester:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['ownerName'] = args.requester:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[args.name].type, ['coa'] = args.requester:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
-			table.remove(FDS.cargoList[args.requester:getName()],1)
 			exportCreatedUnits()
 			msg.text = "Troops deployed.\n"
 			msg.displayTime = 5
@@ -5649,6 +5651,7 @@ mist.scheduleFunction(protectCall, {importPlayerDataNow},timer.getTime())
 mist.scheduleFunction(protectCall, {creatingBases},timer.getTime()+1)
 mist.scheduleFunction(protectCall, {importPlayerUnits},timer.getTime()+2)
 mist.scheduleFunction(protectCall, {updateDeployedTroops},timer.getTime()+3, FDS.updateTroopsRefresh)
+mist.scheduleFunction(protectCall, {checkFuelLevels},timer.getTime()+3, FDS.refuelRefresh)
 -- Updating Players
 --mist.scheduleFunction(checkPlayersOn, {},timer.getTime()+1.5,5)
 --mist.scheduleFunction(protectCall, {checkPlayersOn},timer.getTime()+1.5,5)
