@@ -145,6 +145,7 @@ FDS.infAKReward = 10.0
 FDS.infRPGReward = 15.0
 FDS.predatorJtac = 150.0
 FDS.hmmwvJtac = 150.0
+FDS.b1b = 100.0
 
 FDS.rewardDict = {
 	['.Command Center'] = FDS.commandPostReward,
@@ -174,6 +175,7 @@ FDS.rewardDict = {
 	['Soldier M249'] = FDS.infAKReward,
 	['RQ-1A Predator'] = FDS.predatorJtac,
 	['M1043 HMMWV Armament'] = FDS.hmmwvJtac,
+	['B-1B'] = FDS.b1b,
 	['Default'] = FDS.enemyReward
 }
 
