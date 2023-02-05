@@ -513,7 +513,7 @@ function checkFuelLevels()
 	for name, data in pairs(allPlayers) do
 		if Unit.getByName(name) ~= nil and Unit.getByName(name):getPlayerName() ~= nil then
 			if FDS.fuelLevels[name] ~= nil then
-				if FDS.fuelLevels[name] < Unit.getByName(name):getFuel() and Unit.getByName(name):getPosition().p.y > 3048 then
+				if FDS.fuelLevels[name] < Unit.getByName(name):getFuel() and Unit.getByName(name):getPosition().p.y > 0 then --3048 then
 					local _initEnt = Unit.getByName(name)
 					local initCheck = pcall(FDS.playerCheck,_initEnt)
 					local initCoa = 0
