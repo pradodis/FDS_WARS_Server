@@ -513,7 +513,7 @@ function checkFuelLevels()
 	for name, data in pairs(allPlayers) do
 		if Unit.getByName(name) ~= nil and Unit.getByName(name):getPlayerName() ~= nil then
 			if FDS.fuelLevels[name] ~= nil then
-				if FDS.fuelLevels[name] < Unit.getByName(name):getFuel() and Unit.getByName(name):getPosition().p.y > 0 then --3048 then
+				if FDS.fuelLevels[name] <= Unit.getByName(name):getFuel() and Unit.getByName(name):getPosition().p.y > 0 then --3048 then
 					local _initEnt = Unit.getByName(name)
 					local initCheck = pcall(FDS.playerCheck,_initEnt)
 					local initCoa = 0
@@ -976,7 +976,7 @@ function FDS.baseSpawn(args)
 				deployNameCheck = false
 				for coalition, unitSet in pairs(FDS.deployedUnits) do
 					for name, data in pairs(unitSet) do
-						if data.groupData.showName ~= nil and data.groupData.showName == deployerID .. groupNameMock .. tostring(groupNameId) then
+						if data.groupData.showName ~= nil and data.owner .. data.groupData.showName == deployerID .. groupNameMock .. tostring(groupNameId) then
 							groupNameId = groupNameId + 1
 							deployNameCheck = true
 						end
@@ -1143,7 +1143,7 @@ function FDS.dropTroops(args)
 						deployNameCheck = false
 						for coalition, unitSet in pairs(FDS.deployedUnits) do
 							for name, data in pairs(unitSet) do
-								if data.groupData.showName ~= nil and data.groupData.showName == deployerID .. groupNameMock .. tostring(groupNameId) then
+								if data.groupData.showName ~= nil and  data.owner .. data.groupData.showName == deployerID .. groupNameMock .. tostring(groupNameId) then
 									groupNameId = groupNameId + 1
 									deployNameCheck = true
 								end
