@@ -1550,7 +1550,7 @@ function FDS.addTroopManagement(gp)
 	local unitsUnderMyCommand = {}
 	local unitNumber = 0
 	for name, data in pairs(FDS.deployedUnits[FDS.trueCoalitionCode[gp:getCoalition()]]) do
-		if data.groupData.type ~= 'Air' then 
+		if data.groupData.type ~= 'Air' and data.ownerName == gp:getUnits()[1]:getPlayerName() then 
 			table.insert(unitsUnderMyCommand, {data.ownerName .. '_' .. data.groupData.showName, name, data.ownerName, data.groupData.mockUpName, data.groupData.type})
 			unitNumber = unitNumber + 1
 		end
