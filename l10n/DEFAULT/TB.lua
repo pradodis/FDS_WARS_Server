@@ -938,8 +938,8 @@ function FDS.baseSpawn(args)
 			dropPoint.x = dropPoint.x + headingDev.x*FDS.dropDistance + numberAdjust.x
 			dropPoint.z = dropPoint.z + headingDev.z*FDS.dropDistance + numberAdjust.z
 			local height = land.getHeight({x = dropPoint.x, y = dropPoint.z})
-			mockUpName = ""
-			groupNameMock = ""
+			local mockUpName = ""
+			local groupNameMock = ""
 			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 			errFile:write('-- Isso eh um debug para o spawn de base: flag6\n')
 			errFile:close()
@@ -953,10 +953,11 @@ function FDS.baseSpawn(args)
 			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 			errFile:write('-- Isso eh um debug para o spawn de base: flag7\n')
 			errFile:close()
-			gp = Group.getByName(mockUpName)
-			gPData = mist.getGroupData(mockUpName,true)
-			new_GPR = mist.utils.deepCopy(gpR)
-			new_gPData = mist.utils.deepCopy(gPData)
+			local gp = Group.getByName(mockUpName)
+			local gPData = mist.getGroupData(mockUpName,true)
+			local gpR = mist.getGroupRoute(mockUpName,true)
+			local new_GPR = mist.utils.deepCopy(gpR)
+			local new_gPData = mist.utils.deepCopy(gPData)
 			new_gPData.units[1].x = dropPoint.x
 			new_gPData.units[1].y = dropPoint.z
 			new_gPData.units[1].heading = math.atan2(headingDev.z, headingDev.x)
@@ -1097,8 +1098,8 @@ function FDS.dropTroops(args)
 					groupNameMock = namePart .. "_" 
 				end
 				local listName = FDS.cargoList[tostring(args[1]:getName())][1].name
-				gp = Group.getByName(mockUpName)
-				gPData = mist.getGroupData(mockUpName,true)
+				local gp = Group.getByName(mockUpName)
+				local gPData = mist.getGroupData(mockUpName,true)
 				if FDS.troopAssets[listName].type == 'Artillery' then
 					if args[1]:getCoalition() == 1 then
 						gpR = mist.getGroupRoute("Red_Msta_Deploy",true)
@@ -1108,8 +1109,8 @@ function FDS.dropTroops(args)
 				else
 					gpR = mist.getGroupRoute(mockUpName,true)
 				end
-				new_GPR = mist.utils.deepCopy(gpR)
-				new_gPData = mist.utils.deepCopy(gPData)
+				local new_GPR = mist.utils.deepCopy(gpR)
+				local new_gPData = mist.utils.deepCopy(gPData)
 				new_gPData.units[1].x = dropPoint.x
 				new_gPData.units[1].y = dropPoint.z
 				new_gPData.units[1].alt = height
@@ -2030,18 +2031,18 @@ function creatingBases()
 						end
 					end
 					addUnit = {}
-					mockName = ''
+					local mockName = ''
 					if cc == 1 then
 						mockName = 'Blue_' .. qt[2]
 					else
 						mockName = 'Red_' .. qt[2]
 					end
 					-- Strap
-					gp = Group.getByName(mockName)
-					gPData = mist.getGroupData(mockName,true)
-					gpR = mist.getGroupRoute(gp:getName(),true)
-					addUnit_gp = mist.utils.deepCopy(gpR)
-					addUnit = mist.utils.deepCopy(gPData)
+					local gp = Group.getByName(mockName)
+					local gPData = mist.getGroupData(mockName,true)
+					local gpR = mist.getGroupRoute(gp:getName(),true)
+					local addUnit_gp = mist.utils.deepCopy(gpR)
+					local addUnit = mist.utils.deepCopy(gPData)
 					--
 					--addUnit.x = bornPoint.x
 					--addUnit.y = bornPoint.y
@@ -2251,11 +2252,11 @@ function importPlayerUnits()
 			for team, unit in pairs(importedUnits) do
 				for name, data in pairs(unit) do
 					local updateAge = data.age + 1
-					gp = Group.getByName(data.groupData.mockUpName)
-					gPData = mist.getGroupData(data.groupData.mockUpName,true)
-					gpR = mist.getGroupRoute(data.groupData.mockUpName,true)
-					new_GPR = mist.utils.deepCopy(gpR)
-					new_gPData = mist.utils.deepCopy(gPData)
+					local gp = Group.getByName(data.groupData.mockUpName)
+					local gPData = mist.getGroupData(data.groupData.mockUpName,true)
+					local gpR = mist.getGroupRoute(data.groupData.mockUpName,true)
+					local new_GPR = mist.utils.deepCopy(gpR)
+					local new_gPData = mist.utils.deepCopy(gPData)
 					new_gPData.units[1].x = data.groupData.x
 					new_gPData.units[1].y = data.groupData.z
 					new_gPData.units[1].alt = land.getHeight({x = data.groupData.x, y = data.groupData.z})
@@ -2557,11 +2558,11 @@ function FDS.createJTACDrone(args)
 				textColor1 = {0, 0, 1, 1}
 				textColor2 = {0, 0, 0, 0}
 			end
-			gp = Group.getByName(mockUpName)
-			gPData = mist.getGroupData(mockUpName,true)
-			gpR = mist.getGroupRoute(gp:getName(),true)
-			new_GPR = mist.utils.deepCopy(gpR)
-			new_gPData = mist.utils.deepCopy(gPData)
+			local gp = Group.getByName(mockUpName)
+			local gPData = mist.getGroupData(mockUpName,true)
+			local gpR = mist.getGroupRoute(gp:getName(),true)
+			local new_GPR = mist.utils.deepCopy(gpR)
+			local new_gPData = mist.utils.deepCopy(gPData)
 			new_gPData.units[1].x = point3.x
 			new_gPData.units[1].y = point3.z
 			new_gPData.units[1].alt = heightD
@@ -2969,11 +2970,11 @@ function FDS.createASupport(args)
 	else
 		cloneName = 'Blue'..FDS.airSupportAssetsKeys[args[2]].groupName
 	end
-	gp = Group.getByName(cloneName)
-	gPData = mist.getGroupData(cloneName,true)
-	gpR = mist.getGroupRoute(gp:getName(),true)
-	new_GPR = mist.utils.deepCopy(gpR)
-	new_gPData = mist.utils.deepCopy(gPData)
+	local gp = Group.getByName(cloneName)
+	local gPData = mist.getGroupData(cloneName,true)
+	local gpR = mist.getGroupRoute(gp:getName(),true)
+	local new_GPR = mist.utils.deepCopy(gpR)
+	local new_gPData = mist.utils.deepCopy(gPData)
 	new_gPData.clone = true
 	new_gPData.route = new_GPR
 	local deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
@@ -3053,13 +3054,13 @@ function spawnCargoFS(coa,number,typeFS,fORi)
 	if number > 0 then
         fighterIteration = 0
         for i = 1, 1 + math.floor((number-1)/4) do
-            gPData = mist.getGroupData(coaFSKeys[coa] .. '_Cargo_Sweep_' .. tostring(typeFS),true)
-            gpMockStart = mist.getGroupRoute(coaFSKeys[coa] .. '_Cargo_Sweep_1',true)
-            gpMockWP = mist.getGroupRoute(coaFSKeys[coa] .. '_Transport_Goods',true)
-            gpR = mist.getGroupRoute(coaFSKeys[coa] .. '_Cargo_Sweep_1',true)
+            local gPData = mist.getGroupData(coaFSKeys[coa] .. '_Cargo_Sweep_' .. tostring(typeFS),true)
+            local gpMockStart = mist.getGroupRoute(coaFSKeys[coa] .. '_Cargo_Sweep_1',true)
+            local gpMockWP = mist.getGroupRoute(coaFSKeys[coa] .. '_Transport_Goods',true)
+            local gpR = mist.getGroupRoute(coaFSKeys[coa] .. '_Cargo_Sweep_1',true)
 
-            new_GPR = mist.utils.deepCopy(gpR)
-            new_gPData = mist.utils.deepCopy(gPData)
+            local new_GPR = mist.utils.deepCopy(gpR)
+            local new_gPData = mist.utils.deepCopy(gPData)
 
             new_gPData.route = new_GPR 
             new_gPData.groupId = nil
@@ -3209,11 +3210,11 @@ function bombingRun(coa)
 	}
 	
     for bomber = 1, FDS.bomberQuantity do
-        gp = Group.getByName(bombingRunTable[zone][2])
-        gPData = mist.getGroupData(bombingRunTable[zone][2],true)
-        gpR = mist.getGroupRoute(gp:getName(),true)
-        new_GPR = mist.utils.deepCopy(gpR)
-        new_gPData = mist.utils.deepCopy(gPData)
+        local gp = Group.getByName(bombingRunTable[zone][2])
+        local gPData = mist.getGroupData(bombingRunTable[zone][2],true)
+        local gpR = mist.getGroupRoute(gp:getName(),true)
+        local new_GPR = mist.utils.deepCopy(gpR)
+        local new_gPData = mist.utils.deepCopy(gPData)
         randomTgt = math.random(1, #tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]])
         
         new_GPR[2].task.params.tasks[1].params.x = tgtObj[bombingRunTable[zone][3]][bombingRunTable[zone][4]][randomTgt][2].x
