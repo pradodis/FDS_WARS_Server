@@ -395,9 +395,9 @@ FDS.heliSlots = {
 -- inf -> 0 -- armor -> 1 -- anti-air -> 2 -- utilities -> 3
 FDS.transportTypes = {'Infantry', 'Armor', 'Anti-Air', 'Utilities', 'Artillery'}
 FDS.troopAssetsNumbered = {
-	{name = "AK Soldier", cost = 30, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
-	{name = "MG Soldier", cost = 60, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
-	{name = "RPG Soldier", cost = 80, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.rpgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	{name = "AK_Soldier", cost = 30, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	{name = "MG_Soldier", cost = 60, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	{name = "RPG_Soldier", cost = 80, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.rpgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
 	{name = "BMP2", cost = 300, mass = {FDS.BMP2Weight}, slots = 4, variability = {}, type = 'Armor'},
 	{name = "BMP3", cost = 300, mass = {FDS.BMP3Weight}, slots = 4, variability = {}, type = 'Armor'},
 	{name = "M2A2", cost = 300, mass = {FDS.M2A2Weight}, slots = 4, variability = {}, type = 'Armor'},
@@ -1730,7 +1730,7 @@ function FDS.addCreditsOptions(gp)
 		local rootType = missionCommands.addSubMenuForGroup(gp:getID(), aType, rootTroops) 
 		for _, i in pairs(FDS.troopAssetsNumbered) do
 			if aType == i.type then
-				if i.name == "JTAC Team" then
+				if i.name == "JTAC Team" or i.name =='EWR' then
 					-- jtacTT = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($" .. tostring(i.cost) .. ")", rootType)
 					-- for label, code in pairs(FDS.laserCodes) do
 					-- 	missionCommands.addCommandForGroup(gp:getID(), "Laser code: " .. code .. " (" .. label .. ")", jtacTT, FDS.baseSpawn, {['requester'] = gp, ['number'] = 1, ['name'] = i.name, ['code'] = code})
