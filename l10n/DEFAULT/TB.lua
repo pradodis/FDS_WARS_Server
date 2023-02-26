@@ -232,6 +232,7 @@ FDS.respawnTankerTime = 600.0
 FDS.fuelTankerRestart = 14400.0
 FDS.refuelRefresh = 5 -- seconds
 FDS.refuelRepetitions = 2
+FDS.refuelThreshold = 0.1
 
 -- DropZones
 -- Minimum dist is 8 nm from enemy field and helipad
@@ -514,7 +515,7 @@ function checkFuelLevels()
 	for name, data in pairs(allPlayers) do
 		if Unit.getByName(name) ~= nil and Unit.getByName(name):getPlayerName() ~= nil then
 			if FDS.fuelLevels[name] ~= nil then
-				if FDS.fuelLevels[name].fuel < Unit.getByName(name):getFuel() and Unit.getByName(name):getPosition().p.y > 0 then --3048 then
+				if FDS.fuelLevels[name].fuel + FDS.refuelThreshold < Unit.getByName(name):getFuel() and Unit.getByName(name):getPosition().p.y > 0 then --3048 then
 					if FDS.fuelLevels[name].ammount > FDS.refuelRepetitions then
 						local _initEnt = Unit.getByName(name)
 						local initCheck = pcall(FDS.playerCheck,_initEnt)
@@ -1730,7 +1731,7 @@ function FDS.addCreditsOptions(gp)
 		local rootType = missionCommands.addSubMenuForGroup(gp:getID(), aType, rootTroops) 
 		for _, i in pairs(FDS.troopAssetsNumbered) do
 			if aType == i.type then
-				if i.name == "JTAC Team" or i.name =='EWR' then
+				if i.name == "JTAC Team" or i.name == 'EWR' or i.name == "Mortar" then
 					-- jtacTT = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($" .. tostring(i.cost) .. ")", rootType)
 					-- for label, code in pairs(FDS.laserCodes) do
 					-- 	missionCommands.addCommandForGroup(gp:getID(), "Laser code: " .. code .. " (" .. label .. ")", jtacTT, FDS.baseSpawn, {['requester'] = gp, ['number'] = 1, ['name'] = i.name, ['code'] = code})
