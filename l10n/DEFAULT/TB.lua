@@ -827,7 +827,7 @@ function FDS.baseSpawn(args)
 		lfs.mkdir(FDS.exportPath)
 		errFile:write(nil)
 	end
-	errFile:write('\n***************************************\n --- EVENT START ---\nName: ' .. args.requester:getUnits()[1]:getPlayerName() .. '\nCoalition: ' .. args.requester:getCoalition() .. '\nGroup ID: ' .. tostring(args.requester:getID()) .. '\nUnit: ' .. args.name .. '\n')
+	errFile:write('\n***************************************\n --- EVENT START ---\nName: ' .. args.requester:getUnits()[1]:getPlayerName() .. '\nCoalition: ' .. args.requester:getCoalition() .. '\nGroup ID: ' .. tostring(args.requester:getID()) .. '\nUnit: ' .. args.name .. '\nNumber: ' .. tostring(args.number) .. '\n')
 	errFile:close()
 	local msg = {}
 	local elementNumber = 1
@@ -842,8 +842,6 @@ function FDS.baseSpawn(args)
 	local markRef = {}
 	local gpUcid = FDS.retrieveUcid(args.requester:getUnits()[1]:getPlayerName(),FDS.isName) or ''
 	local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-	errFile:write('-- Isso eh um debug para o spawn de base: flag1\n')
-	errFile:close()
 	if (FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] <= FDS.troopAssets[args.name].cost and not FDS.bypassCredits) then
 		local msg = {}
 		msg.displayTime = 10
@@ -854,8 +852,6 @@ function FDS.baseSpawn(args)
 		checkMarkPoints = false
 	end
 	local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-	errFile:write('-- Isso eh um debug para o spawn de base: flag2\n')
-	errFile:close()
 	if checkMarkPoints then
 		for _, markData in pairs(allMarks) do
 			local markNameSpeed = {}
@@ -895,12 +891,8 @@ function FDS.baseSpawn(args)
 		end
 	end
 	local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-	errFile:write('-- Isso eh um debug para o spawn de base: flag3\n')
-	errFile:close()
 	if checkMarkPoints then
 		local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-		errFile:write('-- Isso eh um debug para o spawn de base: flag4\n')
-		errFile:close()
 		for i = 1, args.number, 1 do
 			local refDropGroup = {}
 			if args.requester:getCoalition() == 1 then
@@ -909,8 +901,6 @@ function FDS.baseSpawn(args)
 				refDropGroup = Group.getByName('Blue_Base_Spawn_Mockup')
 			end
 			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-			errFile:write('-- Isso eh um debug para o spawn de base: flag5\n')
-			errFile:close()
 			local dropPoint = refDropGroup:getUnits()[1]:getPosition().p
 			referenceMarks[1] = dropPoint
 			local headingDev = refDropGroup:getUnits()[1]:getPosition().x
@@ -942,8 +932,6 @@ function FDS.baseSpawn(args)
 			local mockUpName = ""
 			local groupNameMock = ""
 			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-			errFile:write('-- Isso eh um debug para o spawn de base: flag6\n')
-			errFile:close()
 			if args.requester:getCoalition() == 1 then
 				mockUpName = mockUpName .. "Red_" .. args.name .. "_Deploy"
 				groupNameMock = args.name .. "_"
@@ -952,8 +940,6 @@ function FDS.baseSpawn(args)
 				groupNameMock = args.name .. "_" 
 			end
 			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-			errFile:write('-- Isso eh um debug para o spawn de base: flag7\n')
-			errFile:close()
 			local gp = Group.getByName(mockUpName)
 			local gPData = mist.getGroupData(mockUpName,true)
 			local gpR = mist.getGroupRoute(mockUpName,true)
@@ -968,8 +954,6 @@ function FDS.baseSpawn(args)
 			new_GPR[1].task.params.tasks[1].params.action.params.value = 0
 			local wpNumber = 0
 			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-			errFile:write('-- Isso eh um debug para o spawn de base: flag8\n')
-			errFile:close()
 			for _, elemento in pairs(senderGroups) do
 				wpNumber = wpNumber + 1
 			end
@@ -999,8 +983,6 @@ function FDS.baseSpawn(args)
 			new_gPData.clone = true
 			new_gPData.route = new_GPR
 			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-			errFile:write('-- Isso eh um debug para o spawn de base: flag9\n')
-			errFile:close()
 			local newTroop = mist.dynAdd(new_gPData)
 			FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] - FDS.troopAssets[args.name].cost
 			mist.goRoute(Group.getByName(newTroop.name), new_GPR)
