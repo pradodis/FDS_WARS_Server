@@ -37,7 +37,7 @@ FDS.activeHovers = {}
 FDS.retrievedZones = {}
 FDS.entityKills = {}
 FDS.killedByEntity = {}
-FDS.playersKillRecord = nil 
+FDS.playersKillRecord = nil
 FDS.dropHeliTypes = {'UH-1H','Mi-8MT','SA342Mistral','Mi-24P'}
 FDS.blueRelieveZones = {'Sochi-Adler', 'Gudauta', 'Sukhumi-Babushara', 'Shpora-11', 'Shpora-21', 'Blue_Carrier_K', 'Blue_Carrier_F', 'Blue_Carrier_S', 'Blue_Carrier_T', 'Blue_Carrier_SuperCarrier'}
 FDS.redRelieveZones = {'Maykop-Khanskaya', 'Krasnodar-Center', 'Krasnodar-Pashkovsky' ,'Moscow-11','Moscow-21', 'Red_Carrier_K', 'Red_Carrier_F', 'Red_Carrier_S', 'Red_Carrier_T', 'Red_Carrier_SuperCarrier'}
@@ -58,6 +58,7 @@ FDS.currentTransport = {
 	['red'] = {1,''}
 }
 FDS.lastHits = {}
+FDS.recentVictim = {}
 FDS.currentEngagements = {}
 FDS.coalitionCode = {
 	[1] = 'blue', 
@@ -231,8 +232,8 @@ FDS.resAWACSTime = {
 FDS.respawnTankerTime = 600.0
 FDS.fuelTankerRestart = 14400.0
 FDS.refuelRefresh = 5 -- seconds
-FDS.refuelRepetitions = 2
-FDS.refuelThreshold = 0.1
+FDS.refuelRepetitions = 1
+FDS.refuelThreshold = 0.05
 
 -- DropZones
 -- Minimum dist is 8 nm from enemy field and helipad
@@ -4617,6 +4618,8 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 									msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
 									trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
 									trigger.action.outSoundForGroup(plID,msgKill.sound)
+									table.insert(FDS.doubleGuard, {_initEnt:getName(), _targetEnt:getName()})
+									mist.scheduleFunction(removePair,{{_initEnt:getName(), _targetEnt:getName()}},timer.getTime()+FDS.doubleGuardTime)
 								else
 									FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.rewardDict[rewardType]
 									msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' points for your kill.'
@@ -4632,6 +4635,8 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 								msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' points for your kill.'
 								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
 								trigger.action.outSoundForGroup(plID,msgKill.sound)
+								table.insert(FDS.doubleGuard, {_initEnt:getName(), _targetEnt:getName()})
+								mist.scheduleFunction(removePair,{{_initEnt:getName(), _targetEnt:getName()}},timer.getTime()+FDS.doubleGuardTime)
 							else
 								FDS.teamPoints[i]['Players'][k] = FDS.teamPoints[i]['Players'][k] + FDS.rewardDict[rewardType]
 								msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' points for your kill.'
