@@ -214,6 +214,7 @@ FDS.bomberQty = {
 	['blue'] = 0,
 	['red'] = 0
 }
+FDS.killTime = 1800
 
 -- AWACS Respawn
 FDS.awacsMode = 'buyable' -- 'towers-only', 'buyable', 'respawnable'
@@ -3140,6 +3141,10 @@ function killCargoFS(gp)
     end
 end
 
+function killBombers(gp)
+	gp:destroy()
+end
+
 function cleanFSTable(coa)
 	for ind,_ in pairs(FDS.cargoFSTable) do
 		for i,j in pairs(FDS.cargoFSTable[ind][coa]) do
@@ -3413,7 +3418,9 @@ function guidedBombingRun(coa)
 		new_gPData.units[1].y = pontinho.y
 		new_gPData.units[1].alt = new_gPData.units[1].alt + (math.random(1,200)-100.0)
 		new_gPData.clone = true
-		mist.dynAdd(new_gPData)
+		local newBomber = {}
+		newBomber = mist.dynAdd(new_gPData)
+		mist.scheduleFunction(killBombers,{Group.getByName(newBomber.name)},timer.getTime()+FDS.killTime)
     end
 
 	local msgBombingAlert = {}  
