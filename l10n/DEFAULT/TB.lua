@@ -234,7 +234,7 @@ FDS.respawnTankerTime = 600.0
 FDS.fuelTankerRestart = 14400.0
 FDS.refuelRefresh = 5 -- seconds
 FDS.refuelRepetitions = 1
-FDS.refuelThreshold = 0.05
+FDS.refuelThreshold = 0.001
 
 -- DropZones
 -- Minimum dist is 8 nm from enemy field and helipad
@@ -578,10 +578,18 @@ function checkFuelLevels()
 								end
 							end
 						end
+						FDS.fuelLevels[name].fuel = Unit.getByName(name):getFuel()
+						local errFile = io.open(FDS.exportPath .. "airRefuelFeed.txt", "a")
+						if errFile == nil then
+							lfs.mkdir(FDS.exportPath)
+							errFile:write(nil)
+						end
+						errFile:write('\n***************************************\n --- EVENT START ---\nName: ' .. _initEnt:getPlayerName() .. '\nCoalition: ' .. tostring(initCoa) .. '\nLast Fuel: ' .. tostring(FDS.fuelLevels[name].fuel) .. '\nCurrent Fuel: ' .. tostring(Unit.getByName(name):getFuel()) .. '\n')
+						errFile:close()	 
 					else
 						FDS.fuelLevels[name].fuel = Unit.getByName(name):getFuel()
 						FDS.fuelLevels[name].ammount = FDS.fuelLevels[name].ammount + 1
-					end		 
+					end
 				else
 					FDS.fuelLevels[name] = {['fuel'] = Unit.getByName(name):getFuel(),['ammount'] = 0}
 				end
@@ -4661,6 +4669,14 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 end
 
 function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
+	--log--
+	local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
+	if errFile == nil then
+		lfs.mkdir(FDS.exportPath)
+		errFile:write(nil)
+	end
+	errFile:write('\n***************************************\n --- EVENT START ---\nLinha: ' .. tostring(4677) .. '\n')
+	errFile:close()	 
 	if _initEnt ~= nil and _initEnt:isExist() and _initEnt:getName() ~= nil and _initEnt:getCoalition() ~= nil and FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()] ~= nil then
 		local plName = FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()].owner
 		local tgtName = nil
@@ -4679,15 +4695,55 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 		end
 		tgtName = FDS.retrieveUcid(tgtName,FDS.isName)
 		local foundIt = false
+		--log--
+		local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
+		if errFile == nil then
+			lfs.mkdir(FDS.exportPath)
+			errFile:write(nil)
+		end
+		errFile:write('Linha: ' .. tostring(4704) .. '\n')
+		errFile:close()	 
 		if not doubleGuardCheck(_initEnt:getName(), _targetEnt:getName()) or not FDS.doubleGuardOn then
 			for k,w in pairs(FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]]) do
+				--log--
+				local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
+				if errFile == nil then
+					lfs.mkdir(FDS.exportPath)
+					errFile:write(nil)
+				end
+				errFile:write('Linha: ' .. tostring(4714) .. '\n')
+				errFile:close()	 
 				if plName == k then
 					foundIt = true
 					local msgKill = {}
 					msgKill.displayTime = 10
 					msgKill.sound = 'indirectKill.ogg'
+					--log--
+					local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
+					if errFile == nil then
+						lfs.mkdir(FDS.exportPath)
+						errFile:write(nil)
+					end
+					errFile:write('Linha: ' .. tostring(4727) .. '\n')
+					errFile:close()	 
 					if FDS.lastHits[_targetEnt:getID()] ~= nil then
+						--log--
+						local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
+						if errFile == nil then
+							lfs.mkdir(FDS.exportPath)
+							errFile:write(nil)
+						end
+						errFile:write('Linha: ' .. tostring(4736) .. '\n')
+						errFile:close()	 
 						if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
+							--log--
+							local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
+							if errFile == nil then
+								lfs.mkdir(FDS.exportPath)
+								errFile:write(nil)
+							end
+							errFile:write('Linha: ' .. tostring(4736) .. '\n')
+							errFile:close()	
 							if tgtName ~= nil and tgtName ~= '' then
 								if tgtName ~= plName then
 									FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.playerReward
