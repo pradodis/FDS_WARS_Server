@@ -217,13 +217,13 @@ FDS.bomberQty = {
 FDS.killTime = 1800
 
 -- AWACS Respawn
-FDS.awacsMode = 'buyable' -- 'towers-only', 'buyable', 'respawnable'
+FDS.awacsMode = 'respawnable' -- 'towers-only', 'buyable', 'respawnable'
 FDS.awacsActive = {
 	['blue'] = false,
 	['red'] = false
 }
 FDS.awacsRefreshCheck = 5 -- seconds
-FDS.respawnAWACSTime = 1200.0
+FDS.respawnAWACSTime = 1800.0
 FDS.fuelAWACSRestart = 14400.0
 FDS.resAWACSTime = {
 	['blue'] = {'Blue_AWACS_1', 0},
