@@ -190,7 +190,15 @@ FDS.deployedTroopsSymbolSize = 200
 FDS.updateTroopsRefresh = 120
 FDS.refreshTime = 2400.
 FDS.squadSize = 4
-FDS.rewardCargo = 100.
+-- Fixed or progressive for cargo planes
+FDS.progressiveReward = true
+FDS.conditionalIncrease = true
+FDS.initialReward = 25
+FDS.rewardIncrease = 5
+FDS.rewardCargo = {
+	['blue'] = FDS.initialReward-FDS.squadSize*FDS.rewardIncrease,
+	['red'] = FDS.initialReward-FDS.squadSize*FDS.rewardIncrease 
+}
 FDS.firstGroupTime = 300.0
 FDS.lastDropTime = {
 	['blue'] = -(FDS.refreshTime - FDS.firstGroupTime),
@@ -3454,9 +3462,9 @@ function checkTransport(coa)
 		local transportGp = Group.getByName(FDS.currentTransport[coa][2])
 		local squadNumber = transportGp:getSize()
 		if squadNumber > 0 then
-			FDS.teamPoints[coa].Base = FDS.teamPoints[coa].Base + squadNumber*FDS.rewardCargo
+			FDS.teamPoints[coa].Base = FDS.teamPoints[coa].Base + squadNumber*FDS.rewardCargo[coa]
 			local msgTransp = {}  
-			msgTransp.text = 'The air transport delivers our team ' .. squadNumber*FDS.rewardCargo .. ' points. More planes are on their way.'
+			msgTransp.text = 'The air transport delivers our team ' .. squadNumber*FDS.rewardCargo[coa] .. ' points. More planes are on their way.'
 			msgTransp.displayTime = 30  
 			msgTransp.sound = 'AirDropDelivered2.ogg'
 			trigger.action.outTextForCoalition(FDS.currentTransport[coa][1], msgTransp.text, msgTransp.displayTime)
@@ -3475,6 +3483,18 @@ function checkTransport(coa)
 		end
 	else
 		respawnTransport(coa)
+	end
+	if FDS.progressiveReward then
+		if FDS.conditionalIncrease then
+			local squadNumber = 0
+			if Group.getByName(FDS.currentTransport[coa][2]) and Group.getByName(FDS.currentTransport[coa][2]):isExist() then
+				local transportGp = Group.getByName(FDS.currentTransport[coa][2])
+				squadNumber = transportGp:getSize()
+			end
+			FDS.rewardCargo[coa] = FDS.rewardCargo[coa] + squadNumber*FDS.rewardIncrease
+		else
+			FDS.rewardCargo[coa] = FDS.rewardCargo[coa] + FDS.rewardIncrease
+		end
 	end
 end
 
@@ -3804,6 +3824,8 @@ function FDS.warStatus(g_id)
 		msg.text = msg.text .. 'Blue AWACS: '.. blueAWACS
 		msg.text = msg.text .. '\nRed AWACS: '.. redAWACS .. '\n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
+		msg.text = msg.text .. 'Current cargo plane reward (per plane): ' .. tostring(FDS.rewardCargo['blue']) .. ' points. \n'
+		msg.text = msg.text .. '\n -------------------- \n \n'
 		msg.text = msg.text .. 'Base points: ' .. tostring(FDS.teamPoints.blue.Base) .. '\nYour plane is carrying ' .. tostring(FDS.teamPoints.blue['Players'][g_id[3]]) .. ' points. \n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
 		msg.text = msg.text .. 'Your Credits: ' .. tostring(FDS.playersCredits.blue[gpUcid])
@@ -3818,6 +3840,8 @@ function FDS.warStatus(g_id)
 			blueAWACS = 'Active'
 		end
 		msg.text = msg.text .. '\nBlue AWACS: '.. blueAWACS .. '\n'
+		msg.text = msg.text .. '\n -------------------- \n \n'
+		msg.text = msg.text .. 'Current cargo plane reward (per plane): ' .. tostring(FDS.rewardCargo['red']) .. ' points. \n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
 		msg.text = msg.text .. 'Base Points: ' .. tostring(FDS.teamPoints.red.Base) .. '\nYour plane has ' .. tostring(FDS.teamPoints.red['Players'][g_id[3]]) .. ' points. \n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
