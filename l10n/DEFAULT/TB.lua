@@ -40,7 +40,7 @@ FDS.killedByEntity = {}
 FDS.playersKillRecord = nil
 FDS.dropHeliTypes = {'UH-1H','Mi-8MT','SA342Mistral','Mi-24P'}
 FDS.blueRelieveZones = {'Sochi-Adler', 'Gudauta', 'Sukhumi-Babushara', 'Shpora-11', 'Shpora-21', 'Blue_Carrier_K', 'Blue_Carrier_F', 'Blue_Carrier_S', 'Blue_Carrier_T', 'Blue_Carrier_SuperCarrier'}
-FDS.redRelieveZones = {'Maykop-Khanskaya', 'Krasnodar-Center', 'Krasnodar-Pashkovsky' ,'Moscow-11','Moscow-21', 'Red_Carrier_K', 'Red_Carrier_F', 'Red_Carrier_S', 'Red_Carrier_T', 'Red_Carrier_SuperCarrier'}
+FDS.redRelieveZones = {'Anapa-Vityazevo','Krymsk', 'Gelendzhik', 'Novorossiysk' ,'Moscow-11','Moscow-21', 'Red_Carrier_K', 'Red_Carrier_F', 'Red_Carrier_S', 'Red_Carrier_T', 'Red_Carrier_SuperCarrier'}
 FDS.alliedList = {
 	['blue'] = {},
 	['red'] = {}
@@ -190,6 +190,7 @@ FDS.deployedTroopsSymbolSize = 200
 FDS.updateTroopsRefresh = 120
 FDS.refreshTime = 2400.
 FDS.squadSize = 4
+
 -- Fixed or progressive for cargo planes
 FDS.progressiveReward = true
 FDS.conditionalIncrease = true
@@ -282,6 +283,18 @@ FDS.unitsInZone = {}
 FDS.blueunitsInZones = {}
 FDS.bluecountUCat = {}
 FDS.blueunitsInZone = {}
+
+-- Credit Factory
+FDS.activeFactories = {
+	['blue'] = {},
+	['red'] = {}
+}
+FDS.factoryPeriod = 10 -- time between respawns
+FDS.maxFactoryQuantity = 3
+FDS.maxFactoryTier = 10
+FDS.initialFactoryIncome = 10
+FDS.factoryTierIncrease = 5
+FDS.factoryCurrierQuantity = 6 
 
 -- FARP Logic
 FDS.farpReliever = true
