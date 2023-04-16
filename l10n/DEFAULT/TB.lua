@@ -2300,7 +2300,7 @@ function importPlayerDataNow()
                     	if playerData > FDS.taxFreeValue[1] then
                         	playerDataExport[team][playerName] = FDS.taxFreeValue[1]
                         	playerData = playerData - FDS.taxFreeValue[1]
-                        	playerDataExport[team][playerName] = playerDataExport[team][playerName] + playerData*FDS.importTax[1]
+                        	playerDataExport[team][playerName] = playerDataExport[team][playerName] + math.floor(playerData*FDS.importTax[1])
                             --ping(tostring(playerDataExport[team][playerName]))
                     	else
                         	playerDataExport[team][playerName] = playerData
@@ -4787,7 +4787,7 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 		if not doubleGuardCheck(_initEnt:getName(), _targetEnt:getName()) or not FDS.doubleGuardOn then
 			for k,w in pairs(FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]]) do
 				if plName == k then
-					errorLog("indirectCreditFeed.txt", 'Achei o nome na lista de jogasdores!!!') 
+					errorLog("indirectCreditFeed.txt", 'Achei o nome na lista de jogadores!!!') 
 					foundIt = true
 					local msgKill = {}
 					msgKill.displayTime = 10
@@ -4811,7 +4811,9 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 							if plCOA == unitCOA then
 								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
 								trigger.action.outSoundForGroup(plID,msgKill.sound)	
-								errorLog("indirectCreditFeed.txt", 'Jogador esta no on e no time, foi notificado.')
+								errorLog("indirectCreditFeed.txt", 'Jogador esta on e no time, foi notificado.')
+							else
+								errorLog("indirectCreditFeed.txt", 'Jogador esta off ou no time oposto, nao sera notificado.')
 							end
 						end
 					elseif forceAward then
@@ -4835,7 +4837,9 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 						if plCOA == unitCOA then
 							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
 							trigger.action.outSoundForGroup(plID,msgKill.sound)	
-							errorLog("indirectCreditFeed.txt", 'Jogador esta no on e no time, foi notificado.') 
+							errorLog("indirectCreditFeed.txt", 'Jogador esta on e no time, foi notificado.') 
+						else
+							errorLog("indirectCreditFeed.txt", 'Jogador esta off ou no time oposto, nao sera notificado.')
 						end
 					end
 				end
