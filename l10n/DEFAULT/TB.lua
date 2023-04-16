@@ -1239,6 +1239,9 @@ function FDS.dropTroops(args)
 					deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
 					local groupNameId = 1
 					local deployNameCheck = true
+					FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['ownerName'] = args[1]:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[listName].type, ['coa'] = args[1]:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
+					table.remove(FDS.cargoList[args[1]:getName()],1)
+					exportCreatedUnits()
 					while deployNameCheck do
 						deployNameCheck = false
 						for coalition, unitSet in pairs(FDS.deployedUnits) do
@@ -1250,9 +1253,6 @@ function FDS.dropTroops(args)
 							end
 						end
 					end					
-					FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['ownerName'] = args[1]:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[listName].type, ['coa'] = args[1]:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
-					table.remove(FDS.cargoList[args[1]:getName()],1)
-					exportCreatedUnits()
 					msg.text = "Troops deployed.\n"
 				else
 					local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
@@ -4765,7 +4765,7 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 end
 
 function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
-	errorLog("indirectCreditFeed.txt", '\n***************************************\n --- EVENT START ---') 
+	errorLog("indirectCreditFeed.txt", '\n***************************************\n --- EVENT START ---\n'.. 'Initiator: ' .. tostring(_initEnt) .. '\nExiste: ' .. tostring(_initEnt:isExist()) .. '\nName: ' .. tostring(_initEnt:getName()).. '\nCoalition: ' .. tostring(_initEnt:getCoalition())) 
 	if _initEnt ~= nil and _initEnt:isExist() and _initEnt:getName() ~= nil and _initEnt:getCoalition() ~= nil and FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()] ~= nil then
 		local plName = FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()].owner
 		local tgtName = nil
@@ -4793,7 +4793,7 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 					msgKill.displayTime = 10
 					msgKill.sound = 'indirectKill.ogg'
 					if FDS.lastHits[_targetEnt:getID()] ~= nil then
-						errorLog("indirectCreditFeed.txt", 'Lasthits nao eh nil...')
+						errorLog("indirectCreditFeed.txt", 'Lasthits nao eh nil...' .. '\n' .. tostring(FDS.lastHits[_targetEnt:getID()]) .. '\n TGTID: ' .. tostring(_targetEnt:getID()) .. '\n segunda coluna: ' .. tostring(FDS.lastHits[_targetEnt:getID()][2]) .. '\n')
 						if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
 							if tgtName ~= nil and tgtName ~= '' then
 								if tgtName ~= plName then
@@ -4872,6 +4872,8 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 					end
 				end
 			end
+		else
+			errorLog("indirectCreditFeed.txt", 'Double guard ativado!!!')
 		end
 		exportPlayerDataNow()
 	end
