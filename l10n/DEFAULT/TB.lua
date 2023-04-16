@@ -112,7 +112,7 @@ FDS.killEventVector = {}
 FDS.sendDataFreq = 1.0
 FDS.exportPlayerUnits = true
 FDS.exportPlayerData = true
-FDS.importTax = {0.5}
+FDS.importTax = {0.7}
 FDS.taxFreeValue = {100}
 FDS.fixedImportValue = 100
 FDS.exportDataSite = true -- use false for non-multiplayer games
@@ -289,12 +289,17 @@ FDS.activeFactories = {
 	['blue'] = {},
 	['red'] = {}
 }
+FDS.typeFactory = {[3] = 'Oil platform', [1] = 'Tech combine'}
+FDS.factorySpawnZones = {
+	['blue'] = {'blueDeepRig_1', 'blueRigZone_1', 'blueRigZone_2', 'blueRigZone_3', 'blueRigZone_4', 'blueRigZone_5', 'blueFactoryZone_1'},
+	['red'] = {'redDeepRig_1', 'redRigZone_1', 'redRigZone_2', 'redRigZone_3', 'redRigZone_4', 'redRigZone_5', 'redFactoryZone_1'}
+}
 FDS.factoryPeriod = 10 -- time between respawns
 FDS.maxFactoryQuantity = 3
 FDS.maxFactoryTier = 10
 FDS.initialFactoryIncome = 10
 FDS.factoryTierIncrease = 5
-FDS.factoryCurrierQuantity = 6 
+FDS.factoryCurrierQuantity = 3
 
 -- FARP Logic
 FDS.farpReliever = true
@@ -339,6 +344,7 @@ FDS.coalitionAceptZones = {
 		['goods'] = {'Mid_Helipad_Load'},
 		['deliver'] = {'Red_PickZone_1', 'Red_PickZone_2'}}
 	}
+
 -- Credits Logic
 FDS.bypassPlace = false
 FDS.bypassSpeed = false
@@ -419,31 +425,40 @@ FDS.heliSlots = {
 -- inf -> 0 -- armor -> 1 -- anti-air -> 2 -- utilities -> 3
 FDS.transportTypes = {'Infantry', 'Armor', 'Anti-Air', 'Utilities', 'Artillery'}
 FDS.troopAssetsNumbered = {
-	{name = "AK_Soldier", cost = 30, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
-	{name = "MG_Soldier", cost = 60, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	{name = "AK_Soldier", cost = 25, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	{name = "MG_Soldier", cost = 50, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
 	{name = "RPG_Soldier", cost = 80, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.rpgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
-	{name = "BMP2", cost = 300, mass = {FDS.BMP2Weight}, slots = 4, variability = {}, type = 'Armor'},
-	{name = "BMP3", cost = 300, mass = {FDS.BMP3Weight}, slots = 4, variability = {}, type = 'Armor'},
-	{name = "M2A2", cost = 300, mass = {FDS.M2A2Weight}, slots = 4, variability = {}, type = 'Armor'},
-	{name = "T72", cost = 500, mass = {FDS.T72Weight}, slots = 6, variability = {}, type = 'Armor'},
-	{name = "T90", cost = 600, mass = {FDS.T90Weight}, slots = 6, variability = {}, type = 'Armor'},
+	{name = "BMP2", cost = 250, mass = {FDS.BMP2Weight}, slots = 4, variability = {}, type = 'Armor'},
+	{name = "BMP3", cost = 250, mass = {FDS.BMP3Weight}, slots = 4, variability = {}, type = 'Armor'},
+	{name = "M2A2", cost = 250, mass = {FDS.M2A2Weight}, slots = 4, variability = {}, type = 'Armor'},
+	{name = "T72", cost = 400, mass = {FDS.T72Weight}, slots = 6, variability = {}, type = 'Armor'},
+	{name = "T90", cost = 500, mass = {FDS.T90Weight}, slots = 6, variability = {}, type = 'Armor'},
 	{name = "Igla", cost = 200, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.manpadWeight}, slots = 1, variability = {{90,120}}, type = 'Anti-Air'},
 	{name = "JTAC Team", cost = 300, mass = {FDS.JTACWeight, FDS.soldierWeight, FDS.soldierWeight}, slots = 2, variability = {nil,{90,120},{90,120}}, deafultCode = '1688', su25TCode = '1113', type = 'Utilities'},
-	{name = "Shilka", cost = 300, mass = {FDS.ShilkaWeight}, slots = 5, variability = {}, type = 'Anti-Air'},
-	{name = "Strela", cost = 350, mass = {FDS.StrelaWeight}, slots = 5, variability = {}, type = 'Anti-Air'},
+	{name = "Shilka", cost = 250, mass = {FDS.ShilkaWeight}, slots = 5, variability = {}, type = 'Anti-Air'},
+	{name = "Strela", cost = 500, mass = {FDS.StrelaWeight}, slots = 5, variability = {}, type = 'Anti-Air'},
 	{name = "Tunguska", cost = 800, mass = {FDS.TunguskaWeight}, slots = 10, variability = {}, type = 'Anti-Air'},
 	{name = "TOR", cost = 800, mass = {FDS.TORWeight}, slots = 10, variability = {}, type = 'Anti-Air'},
 	{name = "Ammo", cost = 100, mass = {FDS.ammoWeight}, slots = 2, variability = {}, type = 'Utilities'},
-	{name = "EWR", cost = 250, mass = {FDS.ewrWeight}, slots = 4, variability = {}, type = 'Utilities'},
+	{name = "EWR", cost = 200, mass = {FDS.ewrWeight}, slots = 4, variability = {}, type = 'Utilities'},
 	{name = "Mortar", cost = 250, mass = {FDS.ewrWeight}, slots = 1, variability = {}, type = 'Artillery'},
 	{name = "Gvozdika", cost = 600, mass = {FDS.GovWeight}, slots = 6, variability = {}, type = 'Artillery'},
 	{name = "Akatsia", cost = 1200, mass = {FDS.AkaWeight}, slots = 8, variability = {}, type = 'Artillery'},
-	{name = "Msta", cost = 1800, mass = {FDS.MstWeight}, slots = 12, variability = {}, type = 'Artillery'},
+	{name = "Msta", cost = 1600, mass = {FDS.MstWeight}, slots = 12, variability = {}, type = 'Artillery'},
 	{name = "MLRSGrad", cost = 1200, mass = {FDS.GradWeight}, slots = 8, variability = {}, type = 'Artillery'}
+}
+FDS.navalAssetsNumbered = {
+	{name = "Molniya", cost = 600, type = 'Naval'},
+	{name = "Grisha", cost = 900, type = 'Naval'},
+	{name = "Tilde", cost = 500, type = 'Naval'}
 }
 FDS.troopAssets = {}
 for _, i in pairs(FDS.troopAssetsNumbered) do
 	FDS.troopAssets[i.name] = i
+end
+FDS.navalAssets = {}
+for _, i in pairs(FDS.navalAssetsNumbered) do
+	FDS.navalAssets[i.name] = i
 end
 FDS.airSupportAssetsKeys = {}
 for _, i in pairs(FDS.airSupportAssets) do
@@ -533,6 +548,16 @@ function FDS.retrieveUcid(arg,name)
 	end
 end
 
+function errorLog(filename, message)
+	local errFile = io.open(FDS.exportPath .. filename, "a")
+	if errFile == nil then
+		lfs.mkdir(FDS.exportPath)
+		errFile:write(nil)
+	end
+	errFile:write(message .. '\n')
+	errFile:close()
+end
+
 function checkFuelLevels()
 	local allPlayers = mist.DBs.humansByName
 	for name, data in pairs(allPlayers) do
@@ -618,6 +643,28 @@ function checkFuelLevels()
 				FDS.fuelLevels[name] = {['fuel'] = Unit.getByName(name):getFuel(),['ammount'] = 0}
 			end
 		end
+	end
+end
+
+function FDS.checkFactories(coa)
+	local aFactories = 0
+	for _, i in pairs(FDS.activeFactories[coa]) do
+		aFactories = aFactories + 1
+	end
+	if aFactories < FDS.maxFactoryQuantity then
+		local coaCountry = {['blue'] = 80, ['red'] = 81}
+		local bornPoint = mist.getRandomPointInZone(FDS.factorySpawnZones[coa][math.random(1,#FDS.factorySpawnZones[coa])])
+		local factoryType = FDS.typeFactory[land.getSurfaceType(bornPoint)]
+		local height = land.getHeight({x = bornPoint["x"],y = bornPoint["z"]})
+		local addO = {}
+		addO.country = coaCountry[coa]
+		addO.category = 3
+		addO.x = bornPoint["x"]
+		addO.y = bornPoint["y"]
+		addO.type = factoryType
+		addO.heading = math.random(0,360)
+		addCP = mist.dynAddStatic(addO)
+		table.insert(FDS.activeFactories[coa],{['name'] = addCP.name, ['tier'] = 1})
 	end
 end
 
@@ -856,6 +903,7 @@ function FDS.baseSpawn(args)
 	local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 	if errFile == nil then
 		lfs.mkdir(FDS.exportPath)
+		errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "w")
 		errFile:write(nil)
 	end
 	errFile:write('\n***************************************\n --- EVENT START ---\nName: ' .. args.requester:getUnits()[1]:getPlayerName() .. '\nCoalition: ' .. args.requester:getCoalition() .. '\nGroup ID: ' .. tostring(args.requester:getID()) .. '\nUnit: ' .. args.name .. '\nNumber: ' .. tostring(args.number) .. '\n')
@@ -873,7 +921,8 @@ function FDS.baseSpawn(args)
 	local markRef = {}
 	local gpUcid = FDS.retrieveUcid(args.requester:getUnits()[1]:getPlayerName(),FDS.isName) or ''
 	local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-	if (FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] <= FDS.troopAssets[args.name].cost and not FDS.bypassCredits) then
+	local navalGroundAssets = {['false'] = FDS.troopAssets, ['true'] = FDS.navalAssets}
+	if (FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] <= navalGroundAssets[args.isNaval][args.name].cost and not FDS.bypassCredits) then
 		local msg = {}
 		msg.displayTime = 10
 		msg.sound = 'fdsTroops.ogg'		
@@ -923,14 +972,15 @@ function FDS.baseSpawn(args)
 	end
 	local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 	if checkMarkPoints then
+		local mockupNameCoaType = {
+			[1] = {['false'] = 'Red_Base_Spawn_Mockup', ['true'] = 'Red_Naval_Spawn_Mockup'},
+			[2] = {['false'] = 'Blue_Base_Spawn_Mockup', ['true'] = 'Blue_Naval_Spawn_Mockup'}
+		}
 		local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 		for i = 1, args.number, 1 do
 			local refDropGroup = {}
-			if args.requester:getCoalition() == 1 then
-				refDropGroup = Group.getByName('Red_Base_Spawn_Mockup')
-			elseif args.requester:getCoalition() == 2 then
-				refDropGroup = Group.getByName('Blue_Base_Spawn_Mockup')
-			end
+			local mockUpName = mockupNameCoaType[args.requester:getCoalition()][args.isNaval]
+			refDropGroup = Group.getByName(mockUpName)
 			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 			local dropPoint = refDropGroup:getUnits()[1]:getPosition().p
 			referenceMarks[1] = dropPoint
@@ -1015,7 +1065,8 @@ function FDS.baseSpawn(args)
 			new_gPData.route = new_GPR
 			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 			local newTroop = mist.dynAdd(new_gPData)
-			FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] - FDS.troopAssets[args.name].cost
+			local navalGroundAssets = {['false'] = FDS.troopAssets, ['true'] = FDS.navalAssets}
+			FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] - navalGroundAssets[args.isNaval][args.name].cost
 			mist.goRoute(Group.getByName(newTroop.name), new_GPR)
 			mist.scheduleFunction(mist.goRoute,{Group.getByName(newTroop.name), new_GPR},timer.getTime()+1)
 			local groupNameId = 1
@@ -1031,7 +1082,7 @@ function FDS.baseSpawn(args)
 					end
 				end
 			end					
-			FDS.deployedUnits[FDS.trueCoalitionCode[args.requester:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = gpUcid, ['ownerName'] = args.requester:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[args.name].type, ['coa'] = args.requester:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
+			FDS.deployedUnits[FDS.trueCoalitionCode[args.requester:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = gpUcid, ['ownerName'] = args.requester:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] =  navalGroundAssets[args.isNaval][args.name].type, ['coa'] = args.requester:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
 			exportCreatedUnits()
 			msg.text = "Troops deployed.\n"
 			msg.displayTime = 5
@@ -1762,10 +1813,18 @@ function FDS.addCreditsOptions(gp)
 				else
 					local troopType = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($".. i.cost ..")", rootType)
 					for j=1,10,1 do  
-						missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), troopType, FDS.baseSpawn, {['requester'] = gp, ['number'] = j, ['name'] = i.name})
+						missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), troopType, FDS.baseSpawn, {['requester'] = gp, ['number'] = j, ['name'] = i.name, ['isNaval'] = 'false'})
 					end
 				end
 			end
+		end
+	end
+	-- Naval Spawn
+	local rootNaval = missionCommands.addSubMenuForGroup(gp:getID(), "Naval Spawn", rootCredits)
+	for _, i in pairs(FDS.navalAssetsNumbered) do
+		local troopType = missionCommands.addSubMenuForGroup(gp:getID(), i.name .. " - ($".. i.cost ..")", rootNaval)
+		for j=1,10,1 do  
+			missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), troopType, FDS.baseSpawn, {['requester'] = gp, ['number'] = j, ['name'] = i.name, ['isNaval'] = 'true'})
 		end
 	end
 end
@@ -4706,14 +4765,7 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 end
 
 function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
-	--log--
-	local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
-	if errFile == nil then
-		lfs.mkdir(FDS.exportPath)
-		errFile:write(nil)
-	end
-	errFile:write('\n***************************************\n --- EVENT START ---\nLinha: ' .. tostring(4677) .. '\n')
-	errFile:close()	 
+	errorLog("indirectCreditFeed.txt", '\n***************************************\n --- EVENT START ---') 
 	if _initEnt ~= nil and _initEnt:isExist() and _initEnt:getName() ~= nil and _initEnt:getCoalition() ~= nil and FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()] ~= nil then
 		local plName = FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()].owner
 		local tgtName = nil
@@ -4732,109 +4784,88 @@ function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _
 		end
 		tgtName = FDS.retrieveUcid(tgtName,FDS.isName)
 		local foundIt = false
-		--log--
-		local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
-		if errFile == nil then
-			lfs.mkdir(FDS.exportPath)
-			errFile:write(nil)
-		end
-		errFile:write('Linha: ' .. tostring(4704) .. '\n')
-		errFile:close()	 
 		if not doubleGuardCheck(_initEnt:getName(), _targetEnt:getName()) or not FDS.doubleGuardOn then
 			for k,w in pairs(FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]]) do
-				--log--
-				local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
-				if errFile == nil then
-					lfs.mkdir(FDS.exportPath)
-					errFile:write(nil)
-				end
-				errFile:write('Linha: ' .. tostring(4714) .. '\n')
-				errFile:close()	 
 				if plName == k then
+					errorLog("indirectCreditFeed.txt", 'Achei o nome na lista de jogasdores!!!') 
 					foundIt = true
 					local msgKill = {}
 					msgKill.displayTime = 10
 					msgKill.sound = 'indirectKill.ogg'
-					--log--
-					local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
-					if errFile == nil then
-						lfs.mkdir(FDS.exportPath)
-						errFile:write(nil)
-					end
-					errFile:write('Linha: ' .. tostring(4727) .. '\n')
-					errFile:close()	 
 					if FDS.lastHits[_targetEnt:getID()] ~= nil then
-						--log--
-						local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
-						if errFile == nil then
-							lfs.mkdir(FDS.exportPath)
-							errFile:write(nil)
-						end
-						errFile:write('Linha: ' .. tostring(4736) .. '\n')
-						errFile:close()	 
+						errorLog("indirectCreditFeed.txt", 'Lasthits nao eh nil...')
 						if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
-							--log--
-							local errFile = io.open(FDS.exportPath .. "indirectCreditFeed.txt", "a")
-							if errFile == nil then
-								lfs.mkdir(FDS.exportPath)
-								errFile:write(nil)
-							end
-							errFile:write('Linha: ' .. tostring(4736) .. '\n')
-							errFile:close()	
 							if tgtName ~= nil and tgtName ~= '' then
 								if tgtName ~= plName then
 									FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.playerReward
 									msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' credits because your troops killed an enemy.'
+									errorLog("indirectCreditFeed.txt", 'Ganhou pontos por matar jogador!') 
 								end
 							else
 								FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.rewardDict[rewardType]
 								msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' credits because your troops killed an enemy.'
 								table.insert(FDS.doubleGuard, {_initEnt:getName(), _targetEnt:getName()})
-								mist.scheduleFunction(removePair,{{_initEnt:getName(), _targetEnt:getName()}},timer.getTime()+FDS.doubleGuardTime)							
+								mist.scheduleFunction(removePair,{{_initEnt:getName(), _targetEnt:getName()}},timer.getTime()+FDS.doubleGuardTime)
+								errorLog("indirectCreditFeed.txt", 'Ganhou pontos por matar inimigos!') 						
 							end
 							if plCOA == unitCOA then
 								trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
 								trigger.action.outSoundForGroup(plID,msgKill.sound)	
+								errorLog("indirectCreditFeed.txt", 'Jogador esta no on e no time, foi notificado.')
 							end
 						end
 					elseif forceAward then
+						errorLog("indirectCreditFeed.txt", 'Nada no lasthits...') 
 						if tgtName ~= nil and tgtName ~= '' then
+							errorLog("indirectCreditFeed.txt", 'Matou jogador.') 
 							if tgtName ~= plName then
 								FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.playerReward
-								msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' credits because your troops killed an enemy.'
+								table.insert(FDS.doubleGuard, {_initEnt:getName(), _targetEnt:getName()})
+								mist.scheduleFunction(removePair,{{_initEnt:getName(), _targetEnt:getName()}},timer.getTime()+FDS.doubleGuardTime)
+								msgKill.text = 'You receive: ' .. tostring(FDS.playerReward) .. ' credits because your troops killed an enemy player: ' .. _targetEnt:getPlayerName() .. '\n' or 'You receive: ' .. tostring(FDS.playerReward) .. ' credits because your troops killed an enemy player. \n'
+								errorLog("indirectCreditFeed.txt", 'Ganhou pontos por matar jogador!') 
 							end
 						else
 							FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] = FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][k] + FDS.rewardDict[rewardType]
 							msgKill.text = 'You receive: ' .. tostring(FDS.rewardDict[rewardType]) .. ' credits because your troops killed an enemy.'
 							table.insert(FDS.doubleGuard, {_initEnt:getName(), _targetEnt:getName()})
 							mist.scheduleFunction(removePair,{{_initEnt:getName(), _targetEnt:getName()}},timer.getTime()+FDS.doubleGuardTime)
+							errorLog("indirectCreditFeed.txt", 'Ganhou pontos por matar inimigos!') 
 						end
 						if plCOA == unitCOA then
 							trigger.action.outTextForGroup(plID, msgKill.text, msgKill.displayTime)
 							trigger.action.outSoundForGroup(plID,msgKill.sound)	
+							errorLog("indirectCreditFeed.txt", 'Jogador esta no on e no time, foi notificado.') 
 						end
 					end
 				end
 			end
-		end
-		if foundIt == false then
-			if FDS.lastHits[_targetEnt:getID()] ~= nil then
-				if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
+			if foundIt == false then
+				errorLog("indirectCreditFeed.txt", 'Nao achei o nome na lista de creditos.') 
+				if FDS.lastHits[_targetEnt:getID()] ~= nil then
+					errorLog("indirectCreditFeed.txt", 'Lasthits está com coisa!') 
+					if FDS.lastHits[_targetEnt:getID()] ~= 'DEAD' and not FDS.lastHits[_targetEnt:getID()][2] then
+						if tgtName ~= nil and tgtName ~= '' then
+							if tgtName ~= plName then
+								FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][plName] = FDS.playerReward
+								errorLog("indirectCreditFeed.txt", 'Criei nome na lista de creditos por matar player.')
+							end
+						else
+							FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][plName] = FDS.rewardDict[rewardType]
+							errorLog("indirectCreditFeed.txt", 'Criei nome na lista de creditos por matar inimigos.')
+						end
+					end
+				elseif forceAward then
+					errorLog("indirectCreditFeed.txt", 'Nada no lasthits!') 
 					if tgtName ~= nil and tgtName ~= '' then
 						if tgtName ~= plName then
 							FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][plName] = FDS.playerReward
+							errorLog("indirectCreditFeed.txt", 'Criei nome na lista de creditos por matar player.')
 						end
 					else
 						FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][plName] = FDS.rewardDict[rewardType]
+						errorLog("indirectCreditFeed.txt", 'Criei nome na lista de creditos por matar inimigos.')
 					end
-				end
-			elseif forceAward then
-				if tgtName ~= nil and tgtName ~= '' then
-					if tgtName ~= plName then
-						FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][plName] = FDS.playerReward
-					end
-				else
-					FDS.playersCredits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][plName] = FDS.rewardDict[rewardType]
 				end
 			end
 		end
