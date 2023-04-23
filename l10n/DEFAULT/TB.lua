@@ -111,6 +111,7 @@ FDS.killEventNumber = 0
 FDS.killEventVector = {}
 FDS.sendDataFreq = 1.0
 FDS.exportPlayerUnits = true
+FDS.exportRegionsData = true
 FDS.exportPlayerData = true
 FDS.importTax = {0.7}
 FDS.taxFreeValue = {100}
@@ -244,6 +245,18 @@ FDS.fuelTankerRestart = 14400.0
 FDS.refuelRefresh = 5 -- seconds
 FDS.refuelRepetitions = 1
 FDS.refuelThreshold = 0.001
+
+-- Regions to conquer
+FDS.ressuplyZones = {['blue'] = {'blueRessuplyTroops', 'blueRessuplyNavy'}, ['red'] = {'redRessuplyTroops', 'redRessuplyNavy'}}
+FDS.contestedRegions = {'Shoreline', 'Tuapse', 'Goyth', 'Apsheronsk'}
+FDS.minRegionIncome = 10 -- per 10 minutes
+FDS.regionStatus = {}
+FDS.flagQty = 6
+FDS.regionCaptureIncrease = 1
+FDS.checkRegionPeriod = 18
+FDS.regionPayPeriod = 600
+FDS.regionInfoDisplayTime = 3
+FDS.regionEventDisplayTime = 10
 
 -- DropZones
 -- Minimum dist is 8 nm from enemy field and helipad
@@ -448,8 +461,10 @@ FDS.troopAssetsNumbered = {
 	{name = "MLRSGrad", cost = 1200, mass = {FDS.GradWeight}, slots = 8, variability = {}, type = 'Artillery'}
 }
 FDS.navalAssetsNumbered = {
-	{name = "Molniya", cost = 600, type = 'Naval'},
-	{name = "Grisha", cost = 900, type = 'Naval'},
+	{name = "Molniya", cost = 400, type = 'Naval'},
+	{name = "Grisha", cost = 400, type = 'Naval'},
+	{name = "Rezky", cost = 900, type = 'Naval'},
+	{name = "Neustrashimy", cost = 900, type = 'Naval'},
 	{name = "Tilde", cost = 500, type = 'Naval'}
 }
 FDS.troopAssets = {}
@@ -517,6 +532,14 @@ function discordCall()
 	trigger.action.outSound(msg.sound)
 end
 
+function cleanDeployedUnits(coa)
+    for i,_ in pairs(FDS.deployedUnits[coa]) do
+        if Unit.getByName(i) == nil then
+            FDS.deployedUnits[coa][i] = nil
+        end
+    end   
+end
+
 function protectCall(f,arg)
 	local isOk, message = pcall(f,arg)
 	if not isOk then
@@ -556,6 +579,242 @@ function errorLog(filename, message)
 	end
 	errFile:write(message .. '\n')
 	errFile:close()
+end
+
+function initializeRegions()
+	for _, i in pairs(FDS.contestedRegions) do
+		FDS.regionStatus[i] = {}
+        FDS.regionStatus[i].owner = 'neutral'
+        FDS.regionStatus[i].income = FDS.minRegionIncome
+        FDS.regionStatus[i].capture = 0
+		importRegionsDataNow()
+        args = {}
+        args.regionName = i
+        args.regionValue = FDS.regionStatus[i].income
+        args.ownerTeam = FDS.regionStatus[i].owner
+        drawRegionInfo(args)
+        -- Flag Placing
+        --local centreFlag = trigger.misc.getZone('regionCap'..i)
+        --for flagNumber = 1, FDS.flagQty do
+        --    addO = {}
+        --    addO.country = 64
+        --    addO.category = 4
+        --    addO.x = centreFlag.point["x"]+math.sin(flagNumber*3.1415*2/FDS.flagQty)*centreFlag.radius
+        --    addO.y = centreFlag.point["z"]+math.cos(flagNumber*3.1415*2/FDS.flagQty)*centreFlag.radius
+        --    addO.type = 'Black_Tyre_RF'
+        --    addO.heading = 0
+        --    addCP = mist.dynAddStatic(addO)
+        --end
+        local ref = trigger.misc.getZone('regionCap'..i)
+        FDS.markUpNumber = FDS.markUpNumber + 1
+ 		trigger.action.circleToAll(-1 , FDS.markUpNumber, ref.point , ref.radius , {0, 0, 0, 1} , {0, 0, 0, 0} , 1 , true)
+	end
+end
+
+function checkRegions()
+	local deployedBlue = {}
+	local deployedRed = {}
+	local deployed = {['blue'] = deployedBlue, ['red'] = deployedRed}
+	for i, j in pairs(mist.DBs.humansByName) do
+		if Unit.getByName(i) and Unit.getByName(i):getCoalition() == 1 then
+			table.insert(deployed['red'], i)
+		elseif Unit.getByName(i) and Unit.getByName(i):getCoalition() == 2 then
+			table.insert(deployed['blue'], i)
+		end
+	end
+	for i, j in pairs(FDS.deployedUnits) do
+		for k, w in pairs(j) do
+			table.insert(deployed[i], k)
+		end
+	end
+	local blueInside = 0
+	local redInside = 0
+	for _, zoneName in pairs(FDS.contestedRegions) do
+		blueInside = mist.getUnitsInZones(deployed['blue'], {'regionCap'..zoneName})
+		redInside = mist.getUnitsInZones(deployed['red'], {'regionCap'..zoneName})
+		local redBlueCoalition = {
+			[2]={
+				['frdN'] = blueInside,
+				['eneN'] = redInside,
+				['limitCapture'] = 100,
+				['increase'] = FDS.regionCaptureIncrease,
+				['owner'] = 'blue',
+				['opositeOwner'] = 'red',
+				['ownerTeam'] = 'Blue',
+				['opositeTeam'] = 'Red',
+				['coaCode'] = 2,
+				['enemyCode'] = 1,
+				['soundLib'] = {[2] = "fdsBaseCaptured.ogg", [1] = "fdsBaseLost.ogg"}
+			}, 
+			[1] = {
+				['frdN'] = redInside,
+				['eneN'] = blueInside,
+				['limitCapture'] = -100,
+				['increase'] = -FDS.regionCaptureIncrease,
+				['owner'] = 'red',
+				['opositeOwner'] = 'blue',
+				['ownerTeam'] = 'Red',
+				['opositeTeam'] = 'Blue',
+				['coaCode'] = 1,
+				['enemyCode'] = 2,
+				['soundLib'] = {[1] = "fdsBaseCaptured.ogg", [2] = "fdsBaseLost.ogg"}
+			}}
+		for coa = 1, 2 do
+			if #redBlueCoalition[coa]['frdN'] > 0 and #redBlueCoalition[coa]['eneN'] == 0 then
+				if (coa == 2 and FDS.regionStatus[zoneName].capture < redBlueCoalition[coa]['limitCapture']) or (coa == 1 and FDS.regionStatus[zoneName].capture > redBlueCoalition[coa]['limitCapture']) then
+					if (coa == 2 and FDS.regionStatus[zoneName].capture + redBlueCoalition[coa]['increase'] < redBlueCoalition[coa]['limitCapture']) or (coa == 1 and FDS.regionStatus[zoneName].capture + redBlueCoalition[coa]['increase'] > redBlueCoalition[coa]['limitCapture']) then
+						FDS.regionStatus[zoneName].capture = FDS.regionStatus[zoneName].capture + redBlueCoalition[coa]['increase'] 
+					else
+						FDS.regionStatus[zoneName].capture = redBlueCoalition[coa]['limitCapture']
+					end
+					local msg = {}
+					msg.displayTime = 3    
+					if (coa ==2 and FDS.regionStatus[zoneName].capture >= 0 and FDS.regionStatus[zoneName].owner == redBlueCoalition[coa]['opositeOwner']) or (coa ==1 and FDS.regionStatus[zoneName].capture <= 0 and FDS.regionStatus[zoneName].owner == redBlueCoalition[coa]['opositeOwner'])  then
+						FDS.regionStatus[zoneName].owner = 'neutral'
+						args = {}
+						args.regionName = zoneName
+						args.regionValue = FDS.regionStatus[zoneName].income
+						args.ownerTeam = FDS.regionStatus[zoneName].owner
+						drawRegionInfo(args)
+						msg.text = redBlueCoalition[coa]['opositeTeam'] ..' team does not have the control of ' .. zoneName .. ' region anymore.'
+						trigger.action.outText(msg.text, msg.displayTime) 
+						trigger.action.outSoundForCoalition(redBlueCoalition[coa]['enemyCode'],"fdsBaseLost.ogg")
+						trigger.action.outSoundForCoalition(redBlueCoalition[coa]['coaCode'],"msg.ogg")
+						exportRegionsData()
+					elseif FDS.regionStatus[zoneName].capture == redBlueCoalition[coa]['limitCapture'] and FDS.regionStatus[zoneName].owner == 'neutral' then
+						FDS.regionStatus[zoneName].owner = redBlueCoalition[coa]['owner']
+						args = {}
+						args.regionName = zoneName
+						args.regionValue = FDS.regionStatus[zoneName].income
+						args.ownerTeam = FDS.regionStatus[zoneName].owner
+						drawRegionInfo(args)
+						msg.text = redBlueCoalition[coa]['ownerTeam'] ..' team now holds the ' .. zoneName .. ' region.'
+						trigger.action.outText(msg.text, msg.displayTime) 
+						trigger.action.outSoundForCoalition(coa,redBlueCoalition[coa]['soundLib'][redBlueCoalition[coa]['enemyCode']])
+						trigger.action.outSoundForCoalition(coa,redBlueCoalition[coa]['soundLib'][redBlueCoalition[coa]['coaCode']])
+						exportRegionsData()
+					else
+						if (coa == 2 and FDS.regionStatus[zoneName].capture < 0) or (coa == 1 and FDS.regionStatus[zoneName].capture > 0) then
+							msg.text = redBlueCoalition[coa]['ownerTeam']..' team is decapturing the ' .. zoneName .. ' region: ' .. tostring(math.abs(FDS.regionStatus[zoneName].capture)) .. ' %'
+						else
+							msg.text = redBlueCoalition[coa]['ownerTeam']..' team is capturing the ' .. zoneName .. ' region: ' .. tostring(math.abs(FDS.regionStatus[zoneName].capture)) .. ' %'
+						end
+						trigger.action.outText(msg.text, msg.displayTime) 
+					end        
+				end
+			end
+		end
+		-- Deixou de capturar
+		local currentTarget = {['red'] = -100, ['blue'] = 100, ['neutral'] = 0}
+		if #redInside == 0 and #blueInside == 0 then
+			-- Defense regions
+			if FDS.regionStatus[zoneName].owner == 'red' or FDS.regionStatus[zoneName].owner == 'blue' then 
+				local allZ = mist.DBs.zonesByName
+				local coalitionDict = {['red'] = {'Red', 1, 2}, ['blue'] = {'Blue', 2, 1}}
+				local defenseZones = {}
+				for i,j in pairs(allZ) do
+					if string.match(i, 'regionDefense'.. zoneName) then
+						table.insert(defenseZones, i)
+					end
+				end	
+				local defenseTroops = mist.getUnitsInZones(deployed[FDS.regionStatus[zoneName].owner], defenseZones)
+				if #defenseTroops == 0  then
+					local msgStart = coalitionDict[FDS.regionStatus[zoneName].owner][1]
+					local sound2PlayLost = coalitionDict[FDS.regionStatus[zoneName].owner][2]
+					local sound2PlayMsg = coalitionDict[FDS.regionStatus[zoneName].owner][3]
+					FDS.regionStatus[zoneName].owner = 'neutral'
+					local args = {}
+					args.regionName = zoneName
+					args.regionValue = FDS.regionStatus[zoneName].income
+					args.ownerTeam = FDS.regionStatus[zoneName].owner
+					drawRegionInfo(args)
+                    local msg = {}
+					msg.displayTime = 3
+					msg.text = msgStart..' team does not have the control of ' .. zoneName .. ' region anymore.'
+					trigger.action.outText(msg.text, msg.displayTime) 
+					trigger.action.outSoundForCoalition(sound2PlayLost,"fdsBaseLost.ogg")
+					trigger.action.outSoundForCoalition(sound2PlayMsg,"fdsBaseLost.ogg")
+					exportRegionsData()
+				end
+			end
+			-- Not captured
+			if FDS.regionStatus[zoneName].capture ~= currentTarget[FDS.regionStatus[zoneName].owner] then
+				if math.abs(FDS.regionStatus[zoneName].capture + (math.abs(currentTarget[FDS.regionStatus[zoneName].owner])/(currentTarget[FDS.regionStatus[zoneName].owner]))*FDS.regionCaptureIncrease) < math.abs(currentTarget[FDS.regionStatus[zoneName].owner]) then
+					FDS.regionStatus[zoneName].capture = FDS.regionStatus[zoneName].capture + (math.abs(currentTarget[FDS.regionStatus[zoneName].owner])/(currentTarget[FDS.regionStatus[zoneName].owner]))*FDS.regionCaptureIncrease
+				elseif FDS.regionStatus[zoneName].owner == 'neutral' and math.abs(FDS.regionStatus[zoneName].capture) - (FDS.regionCaptureIncrease) > currentTarget[FDS.regionStatus[zoneName].owner] then 
+					FDS.regionStatus[zoneName].capture = FDS.regionStatus[zoneName].capture - (math.abs(FDS.regionStatus[zoneName].capture)/FDS.regionStatus[zoneName].capture)*FDS.regionCaptureIncrease        
+				else
+					FDS.regionStatus[zoneName].capture = currentTarget[FDS.regionStatus[zoneName].owner]
+				end
+			end
+		end
+	end
+end
+
+function regionsPaycheck()
+	local paycheck = {['blue'] = 0, ['red'] = 0}
+	local allPlayers = mist.DBs.humansByName
+	for _, zoneName in pairs(FDS.contestedRegions) do
+		if FDS.regionStatus[zoneName].owner ~= 'neutral' then
+			paycheck[FDS.regionStatus[zoneName].owner] = paycheck[FDS.regionStatus[zoneName].owner] + FDS.regionStatus[zoneName].income
+		end
+	end
+	for name, data in pairs(allPlayers) do
+		if Unit.getByName(name) ~= nil and Unit.getByName(name):getPlayerName() ~= nil and paycheck[FDS.trueCoalitionCode[Unit.getByName(name):getCoalition()]] > 0 then
+			local gpUcid = FDS.retrieveUcid(Unit.getByName(name):getPlayerName(),FDS.isName)
+			FDS.playersCredits[FDS.trueCoalitionCode[Unit.getByName(name):getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[Unit.getByName(name):getCoalition()]][gpUcid] + paycheck[FDS.trueCoalitionCode[Unit.getByName(name):getCoalition()]]
+			local msg = {}
+			msg.text = 'You receive $' .. tostring(paycheck[FDS.trueCoalitionCode[Unit.getByName(name):getCoalition()]]) .. ' credits from the regions under you team control.' 
+			msg.displayTime = 5
+			trigger.action.outTextForGroup(Unit.getByName(name):getGroup():getID(), msg.text, msg.displayTime)
+		end
+	end
+end
+
+function drawRegionInfo(args)
+	-- Precisa criar FDS.regionStatus = {['Tuapse'] = {}}
+    -- args.regionName ... args.regionValue ... args.ownerTeam
+    local allZ = mist.DBs.zonesByName
+    local regionName = args.regionName
+    local zoneDraw = {}
+    local orderedZoneDraw = {}
+    local textDraw = {}
+    local colorDict = {['blue'] = {0, 0, 1, .1}, ['red'] = {1, 0, 0, .1}, ['neutral'] = {1, 1, 1, .1}}
+    local textColorDict = {['blue'] = {0, 0, 1, 1}, ['red'] = {1, 0, 0, 1}, ['neutral'] = {0, 0, 0, 1}}
+    for i,j in pairs(allZ) do
+        if string.match(i, 'draw'.. regionName) then
+            if string.match(i, 'Text') then
+                table.insert(textDraw, i)
+            else
+                table.insert(zoneDraw, i)
+            end
+        end
+    end
+    for i = 1, #zoneDraw do
+        table.insert(orderedZoneDraw, 'draw'.. regionName..i)
+    end
+    FDS.markUpNumber = FDS.markUpNumber + 1
+	parameters = {}
+	for _,i in pairs(orderedZoneDraw) do
+		table.insert(parameters, trigger.misc.getZone(i).point)
+	end
+	argsTest = {7, -1, FDS.markUpNumber}
+	for _,i in pairs(parameters) do
+		table.insert(argsTest, i)
+	end
+	table.insert(argsTest, {0, 0, 0, 1})
+	table.insert(argsTest, colorDict[args.ownerTeam])
+	table.insert(argsTest, 4)
+    if FDS.regionStatus[args.regionName]['shapeIds'] ~= nil then
+        trigger.action.removeMark(FDS.regionStatus[args.regionName]['shapeIds'][1])
+        trigger.action.removeMark(FDS.regionStatus[args.regionName]['shapeIds'][2])
+    end
+	trigger.action.markupToAll(unpack(argsTest))
+    local regionShapeNumber = FDS.markUpNumber
+    FDS.markUpNumber = FDS.markUpNumber + 1
+    trigger.action.textToAll(-1, FDS.markUpNumber, trigger.misc.getZone(textDraw[1]).point, textColorDict[args.ownerTeam] , {0, 0, 0, 0} , 20, true , args.regionName..'\n+$'..tostring(args.regionValue))
+    local regionTextNumber = FDS.markUpNumber
+    FDS.regionStatus[args.regionName]['shapeIds'] = {regionShapeNumber, regionTextNumber} 
 end
 
 function checkFuelLevels()
@@ -718,8 +977,30 @@ function calculateWeight(unit)
 	return {usedSlots, totalInternalMass}
 end
 
+function FDS.resuplyTroops(args)
+    local troopsAround = mist.getUnitsInZones(args[2], {'redRessuplyTroops'}, 'cylinder') 
+    local qty = 0
+	local loadSuccesss = false
+    for i,j in pairs(troopsAround) do
+        qty = qty + 1
+    end
+    local msg = {}
+    msg.displayTime = 5
+    if qty > 0 then
+    	msg.text = "Troops are ressuplied."
+	else
+        msg.text = "No troops around the helipad."
+    end
+    msg.sound = 'fdsTroops.ogg'
+    trigger.action.outTextForGroup(args[1]:getID(),msg.text,msg.displayTime)
+    trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
+end
+
 function FDS.loadCargo(gp)
+	-- gp[1] = grupo, gp[2] = listname, gp[3] = quantity, gp[4] = code, gp[5] = age, gp[6] -> is recover
 	local cycle = true
+	local isComplete = false
+	local isRecover = gp[6] or false
 	for repetition = 1,gp[3],1 do
 		local myUni = gp[1]:getUnits()[1]
 		local totalMass = 0
@@ -745,15 +1026,19 @@ function FDS.loadCargo(gp)
 		local gpUcid = FDS.retrieveUcid(gp[1]:getUnits()[1]:getPlayerName(),FDS.isName)
 		local msg = {}
 		msg.displayTime = 5
-		if (usedSlots + FDS.troopAssets[gp[2]].slots) <= FDS.heliSlots[myUni:getDesc().typeName] and (FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] >= FDS.troopAssets[gp[2]].cost or FDS.bypassCredits) then
+		local insertAge = gp[5] or nil
+		if (usedSlots + FDS.troopAssets[gp[2]].slots) <= FDS.heliSlots[myUni:getDesc().typeName] and (FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] >= FDS.troopAssets[gp[2]].cost or FDS.bypassCredits or gp[6]) then
 			if gp[2] == "JTAC Team" then
-				table.insert(FDS.cargoList[tostring(gp[1]:getName())], {name = FDS.troopAssets[gp[2]].name, mass = totalMass, slot = FDS.troopAssets[gp[2]].slots, code = gp[4]})
+				table.insert(FDS.cargoList[tostring(gp[1]:getName())], {name = FDS.troopAssets[gp[2]].name, mass = totalMass, slot = FDS.troopAssets[gp[2]].slots, code = gp[4], age = insertAge, listName = gp[2]})
 			else
-				table.insert(FDS.cargoList[tostring(gp[1]:getName())], {name = FDS.troopAssets[gp[2]].name, mass = totalMass, slot = FDS.troopAssets[gp[2]].slots})
+				table.insert(FDS.cargoList[tostring(gp[1]:getName())], {name = FDS.troopAssets[gp[2]].name, mass = totalMass, slot = FDS.troopAssets[gp[2]].slots, age = insertAge, listName = gp[2]})
 			end
 			trigger.action.setUnitInternalCargo(myUni:getName(),totalInternalMass)
-			FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] - FDS.troopAssets[gp[2]].cost
+			if not gp[6] then
+				FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] - FDS.troopAssets[gp[2]].cost
+			end
 			msg.text = FDS.troopAssets[gp[2]].name .. " loaded in the helicopter. It weighs " .. tostring(totalMass) .. " kg.\nTotal internal mass: " .. tostring(totalInternalMass) .. " kg. Slots Available: " .. tostring(FDS.heliSlots[myUni:getDesc().typeName] - usedSlots - 1) .. ". \nRemaining Credits: $" .. tostring(FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid])
+			isComplete = true
 		else
 			if (FDS.playersCredits[FDS.trueCoalitionCode[gp[1]:getCoalition()]][gpUcid] <= FDS.troopAssets[gp[2]].cost and not FDS.bypassCredits) then
 				msg.text = "Insuficient credits."
@@ -769,6 +1054,67 @@ function FDS.loadCargo(gp)
 			break
 		end
 	end
+	return isComplete
+end
+
+function FDS.resuplyTroops(args)
+    local nameList = {}
+    for _,i in pairs(args[2]) do
+        table.insert(nameList, i[2])
+    end
+    local troopsAround = mist.getUnitsInZones(nameList, FDS.ressuplyZones[FDS.trueCoalitionCode[args[1]:getUnits()[1]:getCoalition()]], 'cylinder') 
+    local qty = 0
+	local loadSuccesss = false
+    for i,j in pairs(troopsAround) do
+        FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getUnits()[1]:getCoalition()]][j:getName()].age = 0
+        qty = qty + 1
+    end
+    local msg = {}
+    msg.displayTime = 5
+    if qty > 0 then
+    	msg.text = "Troops are ressuplied."
+	else
+        msg.text = "No troops around the helipad."
+    end
+    msg.sound = 'fdsTroops.ogg'
+    trigger.action.outTextForGroup(args[1]:getID(),msg.text,msg.displayTime)
+    trigger.action.outSoundForGroup(args[1]:getID(),msg.sound)
+    return troopsAround
+end
+
+function FDS.recoverTroops(actor)
+    local coaDeployed = FDS.deployedUnits[FDS.trueCoalitionCode[actor:getUnits()[1]:getCoalition()]]
+    local uniList = {}
+    local uniListData = {}
+    local actorID = FDS.retrieveUcid(actor:getUnits()[1]:getPlayerName(),FDS.isName)
+    for i, j in pairs(coaDeployed) do
+        if actorID == j.owner then
+            table.insert(uniList, i)
+            uniListData[i] = {['age'] = j.age, ['listName'] = j.groupData.listName}
+        end
+    end
+    local troopsAround = mist.getUnitsInMovingZones(uniList, {actor:getUnits()[1]:getName()},200, 'cylinder') 
+    local qty = 0
+	local loadSuccesss = false
+    for i,j in pairs(troopsAround) do
+        loadSuccesss = FDS.loadCargo({actor, uniListData[j:getName()].listName, 1, nil, uniListData[j:getName()].age,true})
+        if loadSuccesss then
+			Unit.getByName(j:getName()):getGroup():destroy()
+		end
+        qty = qty + 1
+    end
+    local msg = {}
+    msg.displayTime = 5
+    if qty > 0 then
+    	msg.text = "Troops are aboard."
+	else
+        msg.text = "No troops to recover."
+    end
+    msg.sound = 'fdsTroops.ogg'
+    trigger.action.outTextForGroup(actor:getID(),msg.text,msg.displayTime)
+    trigger.action.outSoundForGroup(actor:getID(),msg.sound)
+	-- Clean Deploy
+	mist.scheduleFunction(cleanDeployedUnits,{FDS.trueCoalitionCode[actor:getUnits()[1]:getCoalition()]},timer.getTime()+0.5)
 end
 
 function FDS.loadValuableGoods(gp)
@@ -1127,6 +1473,7 @@ function FDS.dropTroops(args)
 				local compz = 0
 				local compx = 0
 				local degreeHeading = math.atan2(headingDev.z, headingDev.x)*57.2958
+				local listName = FDS.cargoList[tostring(args[1]:getName())][1].name
 				if degreeHeading < 0 then
 					degreeHeading = 360 + degreeHeading
 				end
@@ -1162,7 +1509,6 @@ function FDS.dropTroops(args)
 					mockUpName = mockUpName .. "Blue_" .. namePart .. "_Deploy"
 					groupNameMock = namePart .. "_" 
 				end
-				local listName = FDS.cargoList[tostring(args[1]:getName())][1].name
 				local gp = Group.getByName(mockUpName)
 				local gPData = mist.getGroupData(mockUpName,true)
 				if FDS.troopAssets[listName].type == 'Artillery' then
@@ -1239,7 +1585,14 @@ function FDS.dropTroops(args)
 					deployerID = FDS.retrieveUcid(args[1]:getUnits()[1]:getPlayerName(),FDS.isName)
 					local groupNameId = 1
 					local deployNameCheck = true
-					FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['ownerName'] = args[1]:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] = FDS.troopAssets[listName].type, ['coa'] = args[1]:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
+					local uniAge = nil
+					if FDS.cargoList[tostring(args[1]:getName())][1].age == nil then
+						uniAge = 0
+					else
+						uniAge = FDS.cargoList[tostring(args[1]:getName())][1].age
+					end
+					local laserCode = FDS.cargoList[tostring(args[1]:getName())][1].code or nil
+					FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['ownerName'] = args[1]:getUnits()[1]:getPlayerName(), ['age'] = uniAge, ['laserCode'] = laserCode, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['listName']= listName, ['type'] = FDS.troopAssets[listName].type, ['coa'] = args[1]:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
 					table.remove(FDS.cargoList[args[1]:getName()],1)
 					exportCreatedUnits()
 					while deployNameCheck do
@@ -1659,7 +2012,8 @@ function FDS.addTroopManagement(gp)
 	local rootTroopMan = missionCommands.addSubMenuForGroup(gp:getID(), "Command my troops")
 	missionCommands.addCommandForGroup(gp:getID(), 'Refresh Troops', rootTroopMan, FDS.refreshRadio, gp)
 	missionCommands.addCommandForGroup(gp:getID(), 'Troop Status', rootTroopMan, FDS.troopStatus, gp)
-	missionCommands.addCommandForGroup(gp:getID(), 'Command to all', rootTroopMan, FDS.ordersToSet, {gp, unitsUnderMyCommand})
+	missionCommands.addCommandForGroup(gp:getID(), 'Resuply Troops', rootTroopMan, FDS.resuplyTroops, {gp, unitsUnderMyCommand})
+	--missionCommands.addCommandForGroup(gp:getID(), 'Command to all', rootTroopMan, FDS.ordersToSet, {gp, unitsUnderMyCommand})
 	local unitsUnderMyCommandByType = {}
 	for _, gName in pairs(unitsUnderMyCommand) do
 		if unitsUnderMyCommandByType[gName[5]] ~= nil then 
@@ -1787,6 +2141,7 @@ function FDS.addCreditsOptions(gp)
 			missionCommands.addCommandForGroup(gp:getID(), "Quantity: " .. tostring(j), goodsLoadRoot, FDS.validateDropBoard, {['rawData'] = {gp,'', j}, ['dropCase'] = FDS.loadValuableGoods, ['dropCaseString'] = 'loadValuableGoods'})
 		end
 		missionCommands.addCommandForGroup(gp:getID(), "Deliver", variousGoods, FDS.validateDropBoard,{['rawData'] = {gp,-1}, ['dropCase'] = FDS.deliverGoods, ['dropCaseString'] = 'deliverGoods'})
+		missionCommands.addCommandForGroup(gp:getID(), "Recover troops", cargoRoot, FDS.recoverTroops, gp)
 	end
 	-- Troop Base Spawn
 	local rootTroops = missionCommands.addSubMenuForGroup(gp:getID(), "Base Spawn", rootCredits)
@@ -1920,7 +2275,7 @@ function creatingBases()
 	end
 
 	FDS.markUpNumber = FDS.markUpNumber + 1
-	trigger.action.textToAll(-1, FDS.markUpNumber, trigger.misc.getZone('cZone_1').point, {1, 1, 1, 1} , {1, 1, 1, 0.3} , 20, true , 'Capturable FARP: Neutral' )
+	trigger.action.textToAll(-1, FDS.markUpNumber, trigger.misc.getZone('cZone_1').point, {1, 1, 1, 1} , {1, 1, 1, 0.0} , 20, true , 'Capturable FARP: Neutral' )
 	FDS.farpTextID = FDS.markUpNumber
 
 	for i = 1,2,1 do
@@ -2266,6 +2621,21 @@ function exportCreatedUnits()
 	end
 end
 
+-- Export region status
+function exportRegionsData()
+	if FDS.exportRegionsData then
+		local file = io.open(FDS.exportPath .. "regionsData.json", "w")
+		if file == nil then
+			lfs.mkdir(FDS.exportPath)
+			file:write(nil)
+		end
+		local regionDataExport = FDS.regionStatus
+		jsonExport = net.lua2json(regionDataExport)
+		file:write(jsonExport)
+		file:close()
+	end
+end
+
 function exportPlayerDataNow()
 	if FDS.exportPlayerData then
 		local file = io.open(FDS.exportPath .. "playerData.json", "w")
@@ -2311,6 +2681,22 @@ function importPlayerDataNow()
 				end
 			end
             FDS.playersCredits = playerDataExport
+		end
+	end
+end
+
+function importRegionsDataNow()
+	if FDS.exportPlayerData then
+		local file = io.open(FDS.exportPath .. "regionsData.json", "r")
+		if file ~= nil then
+			importedData = file:read "*a"
+			importedData = net.json2lua(importedData)
+			file:close()
+			for _, zoneName in pairs(FDS.contestedRegions) do
+				if importedData[zoneName] ~= nil then
+            		FDS.regionStatus[zoneName] = importedData[zoneName]
+				end
+			end
 		end
 	end
 end
@@ -2382,7 +2768,7 @@ function importPlayerUnits()
 					local newTroop = mist.dynAdd(new_gPData)
 					mist.goRoute(Group.getByName(newTroop.name), new_GPR)
 					mist.scheduleFunction(mist.goRoute,{Group.getByName(newTroop.name), new_GPR},timer.getTime()+1)
-					FDS.deployedUnits[team][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = data.owner, ['ownerName'] = data.ownerName, ['age'] = updateAge, ['groupData'] = {['mockUpName'] = data.groupData.mockUpName,['x'] = data.groupData.x, ['z'] = data.groupData.z, ['hz'] = data.groupData.hz, ['hx'] = data.groupData.hx, ['type'] = data.groupData.type, ['coa'] = data.groupData.coa, ['showName'] = data.groupData.showName}}
+					FDS.deployedUnits[team][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = data.owner, ['ownerName'] = data.ownerName, ['age'] = updateAge, ['groupData'] = {['mockUpName'] = data.groupData.mockUpName,['x'] = data.groupData.x, ['z'] = data.groupData.z, ['hz'] = data.groupData.hz, ['hx'] = data.groupData.hx, ['type'] = data.groupData.type, ['coa'] = data.groupData.coa, ['showName'] = data.groupData.showName, ['listName'] = data.groupData.listName}}
 				end
 			end
 		end
@@ -3896,7 +4282,9 @@ function FDS.warStatus(g_id)
 		msg.text = msg.text .. 'Blue AWACS: '.. blueAWACS
 		msg.text = msg.text .. '\nRed AWACS: '.. redAWACS .. '\n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
-		msg.text = msg.text .. 'Current cargo plane reward (per plane): ' .. tostring(FDS.rewardCargo['blue']) .. ' points. \n'
+		msg.text = msg.text .. 'Cargo plane reward (per plane): \n'
+		msg.text = msg.text .. 'Blue: ' .. tostring(FDS.rewardCargo['blue']) .. ' points. \n'
+		msg.text = msg.text .. 'Red: ' .. tostring(FDS.rewardCargo['red']) .. ' points. \n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
 		msg.text = msg.text .. 'Base points: ' .. tostring(FDS.teamPoints.blue.Base) .. '\nYour plane is carrying ' .. tostring(FDS.teamPoints.blue['Players'][g_id[3]]) .. ' points. \n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
@@ -3913,7 +4301,9 @@ function FDS.warStatus(g_id)
 		end
 		msg.text = msg.text .. '\nBlue AWACS: '.. blueAWACS .. '\n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
-		msg.text = msg.text .. 'Current cargo plane reward (per plane): ' .. tostring(FDS.rewardCargo['red']) .. ' points. \n'
+		msg.text = msg.text .. 'Cargo plane reward (per plane): \n'
+		msg.text = msg.text .. 'Red: ' .. tostring(FDS.rewardCargo['red']) .. ' points. \n'
+		msg.text = msg.text .. 'Blue: ' .. tostring(FDS.rewardCargo['blue']) .. ' points. \n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
 		msg.text = msg.text .. 'Base Points: ' .. tostring(FDS.teamPoints.red.Base) .. '\nYour plane has ' .. tostring(FDS.teamPoints.red['Players'][g_id[3]]) .. ' points. \n'
 		msg.text = msg.text .. '\n -------------------- \n \n'
@@ -4765,8 +5155,8 @@ function awardPoints(initCheck, initCoaCheck, targetCoaCheck, initCoa, targetCoa
 end
 
 function awardIndirectCredit(initCoaCheck, targetCoaCheck, initCoa, targetCoa, _initEnt, _targetEnt, rewardType, forceAward)
-	errorLog("indirectCreditFeed.txt", '\n***************************************\n --- EVENT START ---\n'.. 'Initiator: ' .. tostring(_initEnt) .. '\nExiste: ' .. tostring(_initEnt:isExist()) .. '\nName: ' .. tostring(_initEnt:getName()).. '\nCoalition: ' .. tostring(_initEnt:getCoalition())) 
 	if _initEnt ~= nil and _initEnt:isExist() and _initEnt:getName() ~= nil and _initEnt:getCoalition() ~= nil and FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()] ~= nil then
+		errorLog("indirectCreditFeed.txt", '\n***************************************\n --- EVENT START ---\n'.. 'Initiator: ' .. tostring(_initEnt) .. '\nExiste: ' .. tostring(_initEnt:isExist()) .. '\nName: ' .. tostring(_initEnt:getName()).. '\nCoalition: ' .. tostring(_initEnt:getCoalition())) 
 		local plName = FDS.deployedUnits[FDS.trueCoalitionCode[_initEnt:getCoalition()]][_initEnt:getName()].owner
 		local tgtName = nil
 		if _targetEnt:getCategory() == 3 then
@@ -5497,6 +5887,10 @@ FDS.eventActions = FDS.switch {
 			--cleanPoints()
 			exportPlayerDataNow()
 		end
+		if FDS.exportRegionsData then
+			--cleanPoints()
+			exportRegionsData()
+		end
 		if FDS.exportDataSite then
 			local infile = io.open(FDS.exportPath .. "killRecord.json", "r")
 			local instr = infile:read("*a")
@@ -5572,6 +5966,9 @@ FDS.eventActions = FDS.switch {
 			trigger.action.outSoundForCoalition(1,soundDict[FDS.trueCoalitionCode[_event.place:getCoalition()]][1])
 			trigger.action.outSoundForCoalition(2,soundDict[FDS.trueCoalitionCode[_event.place:getCoalition()]][2])
 		end
+	end,
+	[world.event.S_EVENT_LANDING_AFTER_EJECTION] = function(x, param)
+		Unit.destroy(param.event.initiator)
 	end,
 	[world.event.S_EVENT_DEAD] = function(x, param)
 		local _event = param.event
@@ -5827,20 +6224,26 @@ mist.scheduleFunction(protectCall, {checkDropZones},timer.getTime()+2,300)
 mist.scheduleFunction(protectCall, {detectHover},timer.getTime()+2.5,FDS.refreshScan)
 -- FARP check
 mist.scheduleFunction(protectCall, {FDS.checkFarpDefences},timer.getTime()+2.5,FDS.refreshFARPScan)
+-- Initialize Regions
+mist.scheduleFunction(protectCall, {initializeRegions},timer.getTime()+2.5)
+-- Regions check
+mist.scheduleFunction(protectCall, {checkRegions},timer.getTime()+2.5,FDS.checkRegionPeriod)
+-- Regions paycheck
+mist.scheduleFunction(protectCall, {regionsPaycheck},timer.getTime()+5,FDS.regionPayPeriod)
 -- Random drop manager
---mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+3, FDS.randomDropTime)
+-- mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+3, FDS.randomDropTime)
 mist.scheduleFunction(protectCall, {createRandomDrop}, timer.getTime()+3, FDS.randomDropTime)
 -- Transport caller
---mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+-- mist.scheduleFunction(checkTransport, {'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 mist.scheduleFunction(protectCall, {checkTransport,'blue'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
---mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
+-- mist.scheduleFunction(checkTransport, {'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 mist.scheduleFunction(protectCall, {checkTransport,'red'}, timer.getTime()+FDS.firstGroupTime, FDS.refreshTime)
 -- Check Connected Players
---mist.scheduleFunction(targetInServer, {}, timer.getTime()+3.5, FDS.sendDataFreq)
+-- mist.scheduleFunction(targetInServer, {}, timer.getTime()+3.5, FDS.sendDataFreq)
 mist.scheduleFunction(protectCall, {targetInServer}, timer.getTime()+3.5, FDS.sendDataFreq)
 -- Export mission data
 if FDS.exportDataSite then
-	--mist.scheduleFunction(exportMisData, {}, timer.getTime()+3.5, FDS.sendDataFreq)
+	-- mist.scheduleFunction(exportMisData, {}, timer.getTime()+3.5, FDS.sendDataFreq)
 	mist.scheduleFunction(protectCall, {exportMisData}, timer.getTime()+3.5, FDS.sendDataFreq)
 end
 -- AWACS logic
@@ -5860,12 +6263,9 @@ mist.scheduleFunction(protectCall, {jtacRefresh}, timer.getTime()+4.0, FDS.jtacR
 -- Cargo Fighter Sweep
 mist.scheduleFunction(tryCargoFS,{1},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance, FDS.cargoFSInterval+FDS.timeMaxVariance)
 mist.scheduleFunction(tryCargoFS,{2},timer.getTime()+FDS.cargoFSInterval+FDS.timeMaxVariance, FDS.cargoFSInterval+FDS.timeMaxVariance)
-
 -- Exporting units
 mist.scheduleFunction(exportCreatedUnits,{},timer.getTime()+FDS.exportUnitsT,FDS.exportUnitsT)
-
 -- Discord Advert
 mist.scheduleFunction(discordCall,{},timer.getTime()+FDS.discordAdvertisingTime,FDS.discordAdvertisingTime)
-
---Events
+-- Events
 world.addEventHandler(FDS.eventHandler)
