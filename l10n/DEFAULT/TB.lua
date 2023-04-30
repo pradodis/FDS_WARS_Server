@@ -423,11 +423,11 @@ FDS.validLaserDigits={
 	{'1','2','3','4','5','6','7','8'}
 }
 FDS.airSupportAssets = {
-	{name = "Mig-19", cost = 500, groupName = "_AS_LVL1"},
-	{name = "Mig-23", cost = 750, groupName = "_AS_LVL2"},
-	{name = "Mig-29", cost = 1000, groupName = "_AS_LVL3"},
-	{name = "JTAC UAV", cost = 500, groupName = "_Spy_Drone", deafultCode = '1688', su25TCode = '1113'},
-	{name = "E-2D AWACS", cost = 2000}
+	{name = "Mig-19", cost = 500, groupName = "_AS_LVL1", type = 'Air'},
+	{name = "Mig-23", cost = 750, groupName = "_AS_LVL2", type = 'Air'},
+	{name = "Mig-29", cost = 1000, groupName = "_AS_LVL3", type = 'Air'},
+	{name = "JTAC UAV", cost = 500, groupName = "_Spy_Drone", deafultCode = '1688', su25TCode = '1113', type = 'Air'},
+	{name = "E-2D AWACS", cost = 2000, type = 'Air'}
 }
 FDS.heliSlots = {
 	['UH-1H'] = 12,
@@ -1984,8 +1984,9 @@ function FDS.troopStatus(gp)
 	msg.displayTime = 10
 	msg.sound = 'fdsTroops.ogg'
 	msg.text = "Active troops:\nUnit name ----- Restarts so far / Maximum allowed\n"
+    local gpUcid = FDS.retrieveUcid(gp:getUnits()[1]:getPlayerName(),FDS.isName)
 	for name, data in pairs(FDS.deployedUnits[FDS.trueCoalitionCode[gp:getCoalition()]]) do
-		if data.groupData.type ~= 'Air' then 
+		if data.groupData.type ~= 'Air' and gpUcid == data.owner then 
 			msg.text = msg.text .. data.ownerName .. '_' .. data.groupData.showName .. ' : ' .. data.age .. ' / ' .. FDS.unitLifeSpan .. '\n'
 		end
 	end
@@ -2004,7 +2005,7 @@ function FDS.addTroopManagement(gp)
 	local unitsUnderMyCommand = {}
 	local unitNumber = 0
 	for name, data in pairs(FDS.deployedUnits[FDS.trueCoalitionCode[gp:getCoalition()]]) do
-		if data.groupData.type ~= 'Air' and data.ownerName == gp:getUnits()[1]:getPlayerName() then 
+		if data.groupData.type ~= 'Air' and data.owner == gpUcid then 
 			table.insert(unitsUnderMyCommand, {data.ownerName .. '_' .. data.groupData.showName, name, data.ownerName, data.groupData.mockUpName, data.groupData.type})
 			unitNumber = unitNumber + 1
 		end
@@ -3442,7 +3443,7 @@ function FDS.createASupport(args)
 	if FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] >= FDS.airSupportAssetsKeys[args[2]].cost or FDS.bypassCredits then
 		FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] = FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID] - FDS.airSupportAssetsKeys[args[2]].cost
 		local newAS = mist.dynAdd(new_gPData)
-		FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newAS.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['age'] = 0, ['ownerName'] = args[1]:getUnits()[1]:getPlayerName(), ['groupData'] = {['mockUpName'] = '',['x'] = '', ['z'] = '', ['hz'] = '', ['hx'] = '', ['type'] = 'Air', ['coa'] = '', ['showName'] = ''}}
+		FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newAS.name):getUnits()[1]:getName()] = {['owner'] = deployerID, ['age'] = 0, ['ownerName'] = args[1]:getUnits()[1]:getPlayerName(), ['groupData'] = {['mockUpName'] = '',['x'] = '', ['z'] = '', ['hz'] = '', ['hx'] = '', ['type'] = 'Air', ['coa'] = '', ['showName'] = ''}}	
 		msg.text = "Air support is on the way.\nRemaining Credits: $" .. tostring(FDS.playersCredits[FDS.trueCoalitionCode[args[1]:getCoalition()]][deployerID])
 		msg.sound = 'fdsTroops.ogg'	
 	else
