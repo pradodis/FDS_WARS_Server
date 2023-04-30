@@ -364,7 +364,7 @@ FDS.bypassSpeed = false
 FDS.bypassAlt = false
 FDS.bypassCredits = false
 FDS.bypassAllowedZone = false
-FDS.allowedZones = {'droppableZone1', 'droppableZone2', 'droppableZone3'}
+FDS.allowedZones = {'droppableZone1', 'droppableZone2', 'droppableZone3', 'droppableZone4', 'droppableZone5'}
 -- JTAC Parameters
 FDS.jtacRefresh = 5.0
 FDS.jtacID = 0
