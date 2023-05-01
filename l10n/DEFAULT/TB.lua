@@ -87,6 +87,7 @@ for i,j in pairs{'blue','red'} do
 end
 
 FDS.discordAdvertisingTime = 1800
+FDS.cleanTime = 1800
 FDS.discordAdvertisingTrue = true
 
 FDS.redTgt = {'Red_Inf_AK','Red_Inf_RPG','Red_Arm_BMP1','Red_Arm_BMP2','Red_Arm_T55','Red_Arm_T72','Red_Arm_T80','Red_AAA','Red_AA_Igla','Red_AA_Strela1','Red_AA_Strela2','Red_AA_Tung','Red_SAM','Red_STrucks'}
@@ -521,6 +522,18 @@ function FDS.switch(t,p)
     end
   end
   return t
+end
+
+function cleanServer()
+	local volS = {id = world.VolumeType.SPHERE,params = {point = {x = -82595.047937808,y = 0,z = 401311.75782212},radius = 200000.0}}
+	local cObj = world.removeJunk(volS)
+	local cleanFile = io.open(FDS.exportPath .. 'clearFeed.txt', "a")
+	if cleanFile == nil then
+		lfs.mkdir(FDS.exportPath)
+		cleanFile:write(nil)
+	end
+	cleanFile:write('Objects cleared: ' .. tostring(cObj) .. '\n')
+	cleanFile:close()	
 end
 
 function discordCall()
@@ -6268,5 +6281,7 @@ mist.scheduleFunction(tryCargoFS,{2},timer.getTime()+FDS.cargoFSInterval+FDS.tim
 mist.scheduleFunction(exportCreatedUnits,{},timer.getTime()+FDS.exportUnitsT,FDS.exportUnitsT)
 -- Discord Advert
 mist.scheduleFunction(discordCall,{},timer.getTime()+FDS.discordAdvertisingTime,FDS.discordAdvertisingTime)
+-- Clean server
+mist.scheduleFunction(protectCall, {cleanServer},timer.getTime()+FDS.cleanTime,FDS.cleanTime)
 -- Events
 world.addEventHandler(FDS.eventHandler)
