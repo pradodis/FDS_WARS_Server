@@ -1818,7 +1818,7 @@ function FDS.commandGroup(args)
 		local allZones = mist.DBs.zonesByName
 		local allowedZone = {}
 		local forbitenZones = {}
-		for zN = 1, 3, 1 do
+		for zN = 1, #FDS.allowedZones, 1 do
 			if allZones['droppableZone' .. tostring(zN)] ~= nil then
 				local zoneData = allZones['droppableZone' .. tostring(zN)]
 				allowedZone[zN] =  {zoneData.radius, zoneData.x, zoneData.y}
@@ -1841,13 +1841,13 @@ function FDS.commandGroup(args)
 		for _, elementos in pairs(senderGroups) do
 			local flagDropZone = {true, true, true}
 			if checkMarkPoints then
-				for zN = 1, 3, 1 do
+				for zN = 1, #FDS.allowedZones, 1 do
 					local dist = math.sqrt((elementos[2].x - allowedZone[zN][2])^2 + (elementos[2].z - allowedZone[zN][3])^2)
 					if dist < allowedZone[zN][1] then
 						flagDropZone[zN] = false
 					end
 				end
-				if flagDropZone[1] and flagDropZone[2] and flagDropZone[3] then
+				if flagDropZone[1] and flagDropZone[2] and flagDropZone[3] and flagDropZone[4] and flagDropZone[5] then
 					local msg = {}
 					msg.displayTime = 5
 					msg.sound = 'fdsTroops.ogg'
