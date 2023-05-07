@@ -1096,6 +1096,7 @@ function FDS.resuplyTroops(args)
 end
 
 function FDS.recoverTroops(actor)
+	errorLog("recoverFeed.txt", '\n***************************************\n --- EVENT START ---\n') 
     local coaDeployed = FDS.deployedUnits[FDS.trueCoalitionCode[actor:getUnits()[1]:getCoalition()]]
     local uniList = {}
     local uniListData = {}
@@ -1106,6 +1107,7 @@ function FDS.recoverTroops(actor)
             uniListData[i] = {['age'] = j.age, ['listName'] = j.groupData.listName}
         end
     end
+	errorLog("recoverFeed.txt", 'Lista montada\n')
     local troopsAround = mist.getUnitsInMovingZones(uniList, {actor:getUnits()[1]:getName()},200, 'cylinder') 
     local qty = 0
 	local loadSuccesss = false
@@ -1116,6 +1118,7 @@ function FDS.recoverTroops(actor)
 		end
         qty = qty + 1
     end
+	errorLog("recoverFeed.txt", 'Montando mensagem\n')
     local msg = {}
     msg.displayTime = 5
     if qty > 0 then
@@ -1259,14 +1262,6 @@ function FDS.validateSpeed(args)
 end
 
 function FDS.baseSpawn(args)
-	local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
-	if errFile == nil then
-		lfs.mkdir(FDS.exportPath)
-		errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "w")
-		errFile:write(nil)
-	end
-	errFile:write('\n***************************************\n --- EVENT START ---\nName: ' .. args.requester:getUnits()[1]:getPlayerName() .. '\nCoalition: ' .. args.requester:getCoalition() .. '\nGroup ID: ' .. tostring(args.requester:getID()) .. '\nUnit: ' .. args.name .. '\nNumber: ' .. tostring(args.number) .. '\n')
-	errFile:close()
 	local msg = {}
 	local elementNumber = 1
 	local numberAdjust = 0
@@ -1279,7 +1274,6 @@ function FDS.baseSpawn(args)
     local senderGroups = {}
 	local markRef = {}
 	local gpUcid = FDS.retrieveUcid(args.requester:getUnits()[1]:getPlayerName(),FDS.isName) or ''
-	local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 	local navalGroundAssets = {['false'] = FDS.troopAssets, ['true'] = FDS.navalAssets}
 	if (FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] <= navalGroundAssets[args.isNaval][args.name].cost and not FDS.bypassCredits) then
 		local msg = {}
@@ -1290,7 +1284,6 @@ function FDS.baseSpawn(args)
 		trigger.action.outSoundForGroup(args.requester:getID(),msg.sound)
 		checkMarkPoints = false
 	end
-	local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 	if checkMarkPoints then
 		for _, markData in pairs(allMarks) do
 			local markNameSpeed = {}
@@ -1329,18 +1322,15 @@ function FDS.baseSpawn(args)
 			end
 		end
 	end
-	local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 	if checkMarkPoints then
 		local mockupNameCoaType = {
 			[1] = {['false'] = 'Red_Base_Spawn_Mockup', ['true'] = 'Red_Naval_Spawn_Mockup'},
 			[2] = {['false'] = 'Blue_Base_Spawn_Mockup', ['true'] = 'Blue_Naval_Spawn_Mockup'}
 		}
-		local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 		for i = 1, args.number, 1 do
 			local refDropGroup = {}
 			local mockUpName = mockupNameCoaType[args.requester:getCoalition()][args.isNaval]
 			refDropGroup = Group.getByName(mockUpName)
-			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 			local dropPoint = refDropGroup:getUnits()[1]:getPosition().p
 			referenceMarks[1] = dropPoint
 			local headingDev = refDropGroup:getUnits()[1]:getPosition().x
@@ -1371,7 +1361,6 @@ function FDS.baseSpawn(args)
 			local height = land.getHeight({x = dropPoint.x, y = dropPoint.z})
 			local mockUpName = ""
 			local groupNameMock = ""
-			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 			if args.requester:getCoalition() == 1 then
 				mockUpName = mockUpName .. "Red_" .. args.name .. "_Deploy"
 				groupNameMock = args.name .. "_"
@@ -1379,7 +1368,6 @@ function FDS.baseSpawn(args)
 				mockUpName = mockUpName .. "Blue_" .. args.name .. "_Deploy"
 				groupNameMock = args.name .. "_" 
 			end
-			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 			local gp = Group.getByName(mockUpName)
 			local gPData = mist.getGroupData(mockUpName,true)
 			local gpR = mist.getGroupRoute(mockUpName,true)
@@ -1393,7 +1381,6 @@ function FDS.baseSpawn(args)
 			new_GPR[1].speed = senderGroups[1][1]
 			new_GPR[1].task.params.tasks[1].params.action.params.value = 0
 			local wpNumber = 0
-			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 			for _, elemento in pairs(senderGroups) do
 				wpNumber = wpNumber + 1
 			end
@@ -1422,7 +1409,6 @@ function FDS.baseSpawn(args)
 			end
 			new_gPData.clone = true
 			new_gPData.route = new_GPR
-			local errFile = io.open(FDS.exportPath .. "baseSpawnFeed.txt", "a")
 			local newTroop = mist.dynAdd(new_gPData)
 			local navalGroundAssets = {['false'] = FDS.troopAssets, ['true'] = FDS.navalAssets}
 			FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] = FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] - navalGroundAssets[args.isNaval][args.name].cost
@@ -6241,7 +6227,7 @@ mist.scheduleFunction(protectCall, {FDS.checkFarpDefences},timer.getTime()+2.5,F
 -- Initialize Regions
 mist.scheduleFunction(protectCall, {initializeRegions},timer.getTime()+2.5)
 -- Regions check
-mist.scheduleFunction(protectCall, {checkRegions},timer.getTime()+2.5,FDS.checkRegionPeriod)
+--mist.scheduleFunction(protectCall, {checkRegions},timer.getTime()+2.5,FDS.checkRegionPeriod)
 -- Regions paycheck
 mist.scheduleFunction(protectCall, {regionsPaycheck},timer.getTime()+5,FDS.regionPayPeriod)
 -- Random drop manager
