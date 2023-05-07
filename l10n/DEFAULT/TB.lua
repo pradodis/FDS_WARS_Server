@@ -1275,6 +1275,7 @@ function FDS.baseSpawn(args)
 	local markRef = {}
 	local gpUcid = FDS.retrieveUcid(args.requester:getUnits()[1]:getPlayerName(),FDS.isName) or ''
 	local navalGroundAssets = {['false'] = FDS.troopAssets, ['true'] = FDS.navalAssets}
+	local listName = args.name
 	if (FDS.playersCredits[FDS.trueCoalitionCode[args.requester:getCoalition()]][gpUcid] <= navalGroundAssets[args.isNaval][args.name].cost and not FDS.bypassCredits) then
 		local msg = {}
 		msg.displayTime = 10
@@ -1427,7 +1428,7 @@ function FDS.baseSpawn(args)
 					end
 				end
 			end					
-			FDS.deployedUnits[FDS.trueCoalitionCode[args.requester:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = gpUcid, ['ownerName'] = args.requester:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] =  navalGroundAssets[args.isNaval][args.name].type, ['coa'] = args.requester:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
+			FDS.deployedUnits[FDS.trueCoalitionCode[args.requester:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = gpUcid, ['ownerName'] = args.requester:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['listName'] = listName, ['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] =  navalGroundAssets[args.isNaval][args.name].type, ['coa'] = args.requester:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
 			exportCreatedUnits()
 			msg.text = "Troops deployed.\n"
 			msg.displayTime = 5
@@ -6229,7 +6230,7 @@ mist.scheduleFunction(protectCall, {initializeRegions},timer.getTime()+2.5)
 -- Regions check
 --mist.scheduleFunction(protectCall, {checkRegions},timer.getTime()+2.5,FDS.checkRegionPeriod)
 -- Regions paycheck
-mist.scheduleFunction(protectCall, {regionsPaycheck},timer.getTime()+5,FDS.regionPayPeriod)
+--mist.scheduleFunction(protectCall, {regionsPaycheck},timer.getTime()+5,FDS.regionPayPeriod)
 -- Random drop manager
 -- mist.scheduleFunction(createRandomDrop, {}, timer.getTime()+3, FDS.randomDropTime)
 mist.scheduleFunction(protectCall, {createRandomDrop}, timer.getTime()+3, FDS.randomDropTime)
