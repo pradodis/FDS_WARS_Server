@@ -11,9 +11,11 @@ if (FDS ~= nil) then
 	env.warning('FDS already created. Exiting...')
 	return 0 
 end
+
 FDS = {}
 env.info('FDS started')
 
+FDS.redisStartTime = 5
 FDS.exportVector = {}
 FDS.recordDeliveredPoints = nil
 FDS.teamPoints = {}
@@ -461,6 +463,8 @@ FDS.troopAssetsNumbered = {
 	{name = "Msta", cost = 1600, mass = {FDS.MstWeight}, slots = 12, variability = {}, type = 'Artillery'},
 	{name = "MLRSGrad", cost = 1200, mass = {FDS.GradWeight}, slots = 8, variability = {}, type = 'Artillery'}
 }
+
+FDS.costEpsilon = 1
 FDS.navalAssetsNumbered = {
 	{name = "Molniya", cost = 400, type = 'Naval'},
 	{name = "Grisha", cost = 400, type = 'Naval'},
@@ -522,6 +526,12 @@ function FDS.switch(t,p)
     end
   end
   return t
+end
+
+function startRedisMission()
+	if DFDS ~= nil then
+		DFDS.client:hset({'game', 'started', 'true'})
+	end
 end
 
 function cleanServer()
@@ -1328,6 +1338,7 @@ function FDS.baseSpawn(args)
 			[1] = {['false'] = 'Red_Base_Spawn_Mockup', ['true'] = 'Red_Naval_Spawn_Mockup'},
 			[2] = {['false'] = 'Blue_Base_Spawn_Mockup', ['true'] = 'Blue_Naval_Spawn_Mockup'}
 		}
+		redisString = {}
 		for i = 1, args.number, 1 do
 			local refDropGroup = {}
 			local mockUpName = mockupNameCoaType[args.requester:getCoalition()][args.isNaval]
@@ -1430,10 +1441,36 @@ function FDS.baseSpawn(args)
 			end					
 			FDS.deployedUnits[FDS.trueCoalitionCode[args.requester:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = gpUcid, ['ownerName'] = args.requester:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['listName'] = listName, ['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] =  navalGroundAssets[args.isNaval][args.name].type, ['coa'] = args.requester:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
 			exportCreatedUnits()
+			local gpId = Group.getByName(newTroop.name)
+			gpId = gpId:getUnits()[1].id_
+			redisStringAdd = tostring(FDS.trueCoalitionCode[args.requester:getCoalition()])
+			redisStringAdd = redisStringAdd:gsub("%s", "")
+			redisStringAdd = {'createdUnitID:' .. redisStringAdd .. ':' .. deployerID .. ':' .. tostring(gpId)}
+			table.insert(redisStringAdd, 'unitID')
+			table.insert(redisStringAdd, tostring(gpId))
+			for key, keyData in pairs(FDS.deployedUnits[FDS.trueCoalitionCode[args.requester:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()]) do
+				if type(keyData) ~= 'table' then
+					table.insert(redisStringAdd, key)
+					table.insert(redisStringAdd, tostring(keyData))				
+				else
+					for key2, keyData2 in pairs(keyData) do
+						table.insert(redisStringAdd, key2)
+						table.insert(redisStringAdd, tostring(keyData2))							
+					end
+				end
+			end
+			table.insert(redisString, redisStringAdd)	
 			msg.text = "Troops deployed.\n"
 			msg.displayTime = 5
 			msg.sound = 'fdsTroops.ogg'
-		end	
+		end
+		if DFDS ~= nil then
+			local replies = DFDS.client:pipeline(function(p)
+				for _, values in pairs(redisString) do
+					p:hset(values)
+			end
+			end)
+		end
 		trigger.action.outTextForGroup(args.requester:getID(),msg.text,msg.displayTime)
 		trigger.action.outSoundForGroup(args.requester:getID(),msg.sound)
 		FDS.refreshRadio(args.requester)
@@ -1465,6 +1502,7 @@ function FDS.dropTroops(args)
 	end
 	if checkZone then
 		if #FDS.cargoList[tostring(args[1]:getName())] > 0 then
+			redisString = {}
 			for i = 1, iterationNumber, 1 do
 				usedSlots, totalInternalMass = unpack(calculateWeight(args[1]:getUnits()[1]))
 				local dropPoint = args[1]:getUnits()[1]:getPosition().p
@@ -1605,7 +1643,26 @@ function FDS.dropTroops(args)
 								end
 							end
 						end
-					end					
+					end	
+					local gpId = Group.getByName(newTroop.name)
+					gpId = gpId:getUnits()[1].id_
+					redisStringAdd = tostring(FDS.trueCoalitionCode[args[1]:getCoalition()])
+					redisStringAdd = redisStringAdd:gsub("%s", "")
+					redisStringAdd = {'createdUnitID:' .. redisStringAdd .. ':' .. deployerID .. ':' .. tostring(gpId)}
+					table.insert(redisStringAdd, 'unitID')
+					table.insert(redisStringAdd, tostring(gpId))
+					for key, keyData in pairs(FDS.deployedUnits[FDS.trueCoalitionCode[args[1]:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()]) do
+						if type(keyData) ~= 'table' then
+							table.insert(redisStringAdd, key)
+							table.insert(redisStringAdd, tostring(keyData))				
+						else
+							for key2, keyData2 in pairs(keyData) do
+								table.insert(redisStringAdd, key2)
+								table.insert(redisStringAdd, tostring(keyData2))							
+							end
+						end
+					end 
+					table.insert(redisString, redisStringAdd)				
 					msg.text = "Troops deployed.\n"
 				else
 					local massaFinal = totalInternalMass-FDS.cargoList[tostring(args[1]:getName())][1].mass
@@ -1616,6 +1673,13 @@ function FDS.dropTroops(args)
 					table.remove(FDS.cargoList[args[1]:getName()],1)
 					msg.text = "Troops went back to base.\n"
 				end
+			end
+			if DFDS ~= nil then
+				local replies = DFDS.client:pipeline(function(p)
+					for _, values in pairs(redisString) do
+						p:hset(values)
+					end
+				end)
 			end
 			msg.displayTime = 10
 			msg.sound = 'fdsTroops.ogg'
@@ -2522,6 +2586,35 @@ function creatingBases()
 			end
 		end
 	end
+	-- Data to sent to redis
+	local redisString = {}
+	for coalition, zone in pairs(FDS.initTgtObj) do
+		for zoneName, unitName in pairs(zone) do
+			local iter = 1
+			redisStringAdd = tostring(zoneName)
+			redisStringAdd = {redisStringAdd:gsub("%s", "")}
+			redisStringAdd = {'idTablesZones:'..redisStringAdd[1]}
+			for _, set in pairs(unitName) do
+				local gpId = StaticObject.getByName(set[1]) or Group.getByName(set[1])
+				if gpId:getCategory() ~= 3 then
+					gpId = gpId:getUnits()[1].id_
+				else
+					gpId = gpId.id_
+				end
+				table.insert(redisStringAdd, tostring(iter))
+				table.insert(redisStringAdd, tostring(gpId))
+				iter = iter + 1
+			end
+			table.insert(redisString, redisStringAdd)
+		end
+	end
+	if DFDS ~= nil then
+		local replies = DFDS.client:pipeline(function(p)
+			for _, values in pairs(redisString) do
+				p:hset(values)
+			end
+		end)
+	end
 end
 
 function killDCSProcess()
@@ -2709,6 +2802,7 @@ function importPlayerUnits()
 			importedUnits = file:read "*a"
 			importedUnits = net.json2lua(importedUnits)
 			file:close()
+			local redisString = {}
 			for team, unit in pairs(importedUnits) do
 				for name, data in pairs(unit) do
 					local updateAge = data.age + 1
@@ -2770,7 +2864,33 @@ function importPlayerUnits()
 					mist.goRoute(Group.getByName(newTroop.name), new_GPR)
 					mist.scheduleFunction(mist.goRoute,{Group.getByName(newTroop.name), new_GPR},timer.getTime()+1)
 					FDS.deployedUnits[team][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = data.owner, ['ownerName'] = data.ownerName, ['age'] = updateAge, ['groupData'] = {['mockUpName'] = data.groupData.mockUpName,['x'] = data.groupData.x, ['z'] = data.groupData.z, ['hz'] = data.groupData.hz, ['hx'] = data.groupData.hx, ['type'] = data.groupData.type, ['coa'] = data.groupData.coa, ['showName'] = data.groupData.showName, ['listName'] = data.groupData.listName}}
+					local gpId = Group.getByName(newTroop.name)
+					gpId = gpId:getUnits()[1].id_
+					redisStringAdd = tostring(team)
+					redisStringAdd = redisStringAdd:gsub("%s", "")
+					redisStringAdd = {'createdUnitID:' .. redisStringAdd .. ':' .. data.owner .. ':' .. tostring(gpId)}
+					table.insert(redisStringAdd, 'unitID')
+					table.insert(redisStringAdd, tostring(gpId))
+					for key, keyData in pairs(FDS.deployedUnits[team][Group.getByName(newTroop.name):getUnits()[1]:getName()]) do
+						if type(keyData) ~= 'table' then
+							table.insert(redisStringAdd, key)
+							table.insert(redisStringAdd, tostring(keyData))				
+						else
+							for key2, keyData2 in pairs(keyData) do
+								table.insert(redisStringAdd, key2)
+								table.insert(redisStringAdd, tostring(keyData2))							
+							end
+						end
+					end 
+					table.insert(redisString, redisStringAdd)	
 				end
+			end
+			if DFDS ~= nil then
+				local replies = DFDS.client:pipeline(function(p)
+					for _, values in pairs(redisString) do
+						p:hset(values)
+					end
+				end)
 			end
 		end
 	end
@@ -6272,3 +6392,5 @@ mist.scheduleFunction(discordCall,{},timer.getTime()+FDS.discordAdvertisingTime,
 mist.scheduleFunction(protectCall, {cleanServer},timer.getTime()+FDS.cleanTime,FDS.cleanTime)
 -- Events
 world.addEventHandler(FDS.eventHandler)
+-- Redis Start
+mist.scheduleFunction(startRedisMission, {}, timer.getTime()+FDS.redisStartTime)
