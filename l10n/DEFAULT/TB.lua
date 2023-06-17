@@ -6388,9 +6388,9 @@ mist.scheduleFunction(tryCargoFS,{2},timer.getTime()+FDS.cargoFSInterval+FDS.tim
 mist.scheduleFunction(exportCreatedUnits,{},timer.getTime()+FDS.exportUnitsT,FDS.exportUnitsT)
 -- Discord Advert
 mist.scheduleFunction(discordCall,{},timer.getTime()+FDS.discordAdvertisingTime,FDS.discordAdvertisingTime)
--- Clean server
-mist.scheduleFunction(protectCall, {cleanServer},timer.getTime()+FDS.cleanTime,FDS.cleanTime)
 -- Events
 world.addEventHandler(FDS.eventHandler)
 -- Redis Start
 mist.scheduleFunction(startRedisMission, {}, timer.getTime()+FDS.redisStartTime)
+-- Clean server
+--mist.scheduleFunction(protectCall, {cleanServer},timer.getTime()+FDS.cleanTime,FDS.cleanTime)
