@@ -2701,7 +2701,7 @@ function exportCreatedUnits()
 		local playerUnitsExport = {['blue'] = {}, ['red'] = {}}
 		for team,units in pairs(FDS.deployedUnits) do
 			for index, unitData in pairs(units) do
-				if Unit.getByName(index) ~= nil and Unit.getByName(index):isExist() and unitData.groupData ~= nil and unitData.age < FDS.unitLifeSpan then
+				if Unit.getByName(index) ~= nil and Unit.getByName(index):isExist() and unitData.groupData ~= nil and unitData.age < FDS.unitLifeSpan and unitData.groupData.type ~= 'Air' then
 					local placedUnit = Unit.getByName(index)
 					unitData.groupData.x = placedUnit:getPosition().p.x
 					unitData.groupData.z = placedUnit:getPosition().p.z
