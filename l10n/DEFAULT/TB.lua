@@ -4887,7 +4887,7 @@ function detectHover()
 		[3] = "The points have been recovered."
 	}
 	for _,i in pairs(mist.DBs.aliveUnits) do
-		if i.unit ~= nil and i.category == 'helicopter' and (i.type == 'UH-1H' or i.type == 'Mi-8MT' or i.type == 'SA342Mistral' or i.type =='Mi-24P') then
+		if i.unit ~= nil and i.category == 'helicopter' and (i.type == 'UH-1H' or i.type == 'Mi-8MT' or i.type == 'SA342L' or i.type == 'SA342M' or i.type == 'SA342Minigun' or i.type =='Mi-24P') then
 			table.insert(activeHelicopters, i)
             table.insert(activeHelicopterPositions, i.pos)
 			if FDS.positionHist[i.unit:getPlayerName()] == nil then 
