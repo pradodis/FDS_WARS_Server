@@ -435,7 +435,9 @@ FDS.airSupportAssets = {
 FDS.heliSlots = {
 	['UH-1H'] = 12,
 	['Mi-8MT'] = 22,
-	['SA342Mistral'] = 2,
+	['SA342L'] = 2,
+	['SA342M'] = 2,
+	['SA342Minigun'] = 2,
 	['Mi-24P'] = 8
 }
 -- inf -> 0 -- armor -> 1 -- anti-air -> 2 -- utilities -> 3
