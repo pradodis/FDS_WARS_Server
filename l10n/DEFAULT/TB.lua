@@ -6348,7 +6348,7 @@ mist.scheduleFunction(protectCall, {detectHover},timer.getTime()+2.5,FDS.refresh
 -- FARP check
 mist.scheduleFunction(protectCall, {FDS.checkFarpDefences},timer.getTime()+2.5,FDS.refreshFARPScan)
 -- Initialize Regions
-mist.scheduleFunction(protectCall, {initializeRegions},timer.getTime()+2.5)
+--mist.scheduleFunction(protectCall, {initializeRegions},timer.getTime()+2.5)
 -- Regions check
 --mist.scheduleFunction(protectCall, {checkRegions},timer.getTime()+2.5,FDS.checkRegionPeriod)
 -- Regions paycheck
