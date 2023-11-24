@@ -1040,6 +1040,9 @@ function FDS.loadCargo(gp)
 		if FDS.cargoList[tostring(gp[1]:getName())] == nil then
 			FDS.cargoList[tostring(gp[1]:getName())] = {} 
 		end
+		if FDS.valuableList[tostring(gp[1]:getName())] == nil then
+			FDS.valuableList[tostring(gp[1]:getName())] = {} 
+		end
 		--local usedSlots = 0
 		--totalInternalMass = totalMass
 		--for _, i in pairs(FDS.cargoList[tostring(gp[1]:getName())]) do
@@ -4042,40 +4045,36 @@ function checkTransport(coa)
 	if Group.getByName(FDS.currentTransport[coa][2]) and Group.getByName(FDS.currentTransport[coa][2]):isExist() then
 		local transportGp = Group.getByName(FDS.currentTransport[coa][2])
 		local squadNumber = transportGp:getSize()
-		if squadNumber > 0 then
-			FDS.teamPoints[coa].Base = FDS.teamPoints[coa].Base + squadNumber*FDS.rewardCargo[coa]
-			local msgTransp = {}  
-			msgTransp.text = 'The air transport delivers our team ' .. squadNumber*FDS.rewardCargo[coa] .. ' points. More planes are on their way.'
-			msgTransp.displayTime = 30  
-			msgTransp.sound = 'AirDropDelivered2.ogg'
-			trigger.action.outTextForCoalition(FDS.currentTransport[coa][1], msgTransp.text, msgTransp.displayTime)
-			trigger.action.outSoundForCoalition(FDS.currentTransport[coa][1],msgTransp.sound)
-			if FDS.teamPoints[coa].Base >= FDS.callCost then 
-				local bombTimes = math.floor(FDS.teamPoints[coa].Base/FDS.callCost)
-				for callIt = 1, bombTimes do
-					--mist.scheduleFunction(bombingRun, {'blue'},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
-					mist.scheduleFunction(guidedBombingRun, {coa},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
-					FDS.teamPoints[coa].Base = FDS.teamPoints[coa].Base - FDS.callCost
-				end
+		FDS.teamPoints[coa].Base = FDS.teamPoints[coa].Base + squadNumber*FDS.rewardCargo[coa]
+		local msgTransp = {}  
+		msgTransp.text = 'The air transport delivers our team ' .. squadNumber*FDS.rewardCargo[coa] .. ' points. More planes are on their way.'
+		msgTransp.displayTime = 30  
+		msgTransp.sound = 'AirDropDelivered2.ogg'
+		trigger.action.outTextForCoalition(FDS.currentTransport[coa][1], msgTransp.text, msgTransp.displayTime)
+		trigger.action.outSoundForCoalition(FDS.currentTransport[coa][1],msgTransp.sound)
+		if FDS.teamPoints[coa].Base >= FDS.callCost then 
+			local bombTimes = math.floor(FDS.teamPoints[coa].Base/FDS.callCost)
+			for callIt = 1, bombTimes do
+				--mist.scheduleFunction(bombingRun, {'blue'},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
+				mist.scheduleFunction(guidedBombingRun, {coa},timer.getTime()+FDS.bomberMinInterval*(callIt-1))
+				FDS.teamPoints[coa].Base = FDS.teamPoints[coa].Base - FDS.callCost
 			end
-			respawnTransport(coa)
-		else
-			respawnTransport(coa)
 		end
+		if FDS.progressiveReward then
+			if FDS.conditionalIncrease then
+				local squadNumber = 0
+				if Group.getByName(FDS.currentTransport[coa][2]) and Group.getByName(FDS.currentTransport[coa][2]):isExist() then
+					local transportGp = Group.getByName(FDS.currentTransport[coa][2])
+					squadNumber = transportGp:getSize()
+				end
+				FDS.rewardCargo[coa] = FDS.rewardCargo[coa] + squadNumber*FDS.rewardIncrease
+			else
+				FDS.rewardCargo[coa] = FDS.rewardCargo[coa] + FDS.rewardIncrease
+			end
+		end
+		respawnTransport(coa)
 	else
 		respawnTransport(coa)
-	end
-	if FDS.progressiveReward then
-		if FDS.conditionalIncrease then
-			local squadNumber = 0
-			if Group.getByName(FDS.currentTransport[coa][2]) and Group.getByName(FDS.currentTransport[coa][2]):isExist() then
-				local transportGp = Group.getByName(FDS.currentTransport[coa][2])
-				squadNumber = transportGp:getSize()
-			end
-			FDS.rewardCargo[coa] = FDS.rewardCargo[coa] + squadNumber*FDS.rewardIncrease
-		else
-			FDS.rewardCargo[coa] = FDS.rewardCargo[coa] + FDS.rewardIncrease
-		end
 	end
 end
 
@@ -4776,10 +4775,10 @@ end
 function isUnitorStructure(_initiator, _target)
 	local initCheck = false
 	local tgtCheck = false
-	if _initiator:getCategory() == 1 or _initiator:getCategory() == 3 then
+	if _initiator:getCategory() == 0 or _initiator:getCategory() == 1 or _initiator:getCategory() == 2  or _initiator:getCategory() == 3 then
 		initCheck = true
 	end
-	if _target:getCategory() == 1 or _target:getCategory() == 3 then
+	if _target:getCategory() == 0 or _target:getCategory() == 1 or _target:getCategory() == 2  or _target:getCategory() == 3 then
 		tgtCheck = true
 	end
 	if initCheck and tgtCheck then
