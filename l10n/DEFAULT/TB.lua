@@ -14,7 +14,7 @@ end
 
 FDS = {}
 env.info('FDS started')
-
+FDS.victoriousTeam = 'Missão terminada sem vencedor.'
 FDS.redisStartTime = 5
 FDS.exportVector = {}
 FDS.recordDeliveredPoints = nil
@@ -4854,7 +4854,7 @@ function recordLandPoints(_initEnt, coa)
 				end
 			end
             if newID then 
-                table.insert(FDS.recordDeliveredPoints, {['ucid'] = i.ucid, ['deliveries'] = {{['name']= i.name,['value']= FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()], ['aircraft'] = _initEnt:getDesc().typeName}}})
+                table.insert(FDS.recordDeliveredPoints, {['ucid'] = i.ucid, ['deliveries'] = {{['name']= i.name,['value']= FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()], ['aircraft'] = _initEnt:getDesc().typeName, ['coalition'] = coa}}})
             end            
 		end
 	end
@@ -6038,6 +6038,22 @@ FDS.eventActions = FDS.switch {
 			outfile:write(instr)
 			outfile:close()
 
+			-- Exporting results
+			local outfile = io.open(FDS.exportPath .. "mission_result.json", "w")
+			local results_exp = {
+				['killRecord'] = FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json",
+				['currentStats'] = FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json",
+				['year'] = os.date("%y"),
+				['month'] = os.date("%m"),
+				['day'] = os.date("%d"),
+				['hour'] = os.date("%H"),
+				['minute'] = os.date("%M"),
+				['winner'] = FDS.victoriousTeam
+			}
+			results_json = net.lua2json(results_exp)
+			outfile:write(results_json)
+			outfile:close()
+
 			--pcall(killDCSProcess,{})
 		end
 	end,
@@ -6160,6 +6176,7 @@ FDS.eventActions = FDS.switch {
 									trigger.action.outSoundForCoalition(1,msgfinal.sound)
 									trigger.action.outSoundForCoalition(2,'zone_killed.ogg')
 									playWarning = false
+									FDS.victoriousTeam = 'Vermelho'
 									cleanPoints()
 									endMission()
 								end	
@@ -6224,6 +6241,7 @@ FDS.eventActions = FDS.switch {
 									trigger.action.outSoundForCoalition(2,msgfinal.sound)
 									trigger.action.outSoundForCoalition(1,'zone_killed.ogg')
 									playWarning = false
+									FDS.victoriousTeam = 'Azul'
 									cleanPoints()
 									endMission()
 								end
