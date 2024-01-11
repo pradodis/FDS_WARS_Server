@@ -14,7 +14,7 @@ end
 
 FDS = {}
 env.info('FDS started')
-FDS.victoriousTeam = 'Missão terminada sem vencedor.'
+FDS.victoriousTeam = 'Missao terminada sem vencedor'
 FDS.redisStartTime = 5
 FDS.exportVector = {}
 FDS.recordDeliveredPoints = nil
