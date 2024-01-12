@@ -443,9 +443,9 @@ FDS.heliSlots = {
 -- inf -> 0 -- armor -> 1 -- anti-air -> 2 -- utilities -> 3
 FDS.transportTypes = {'Infantry', 'Armor', 'Anti-Air', 'Utilities', 'Artillery'}
 FDS.troopAssetsNumbered = {
-	{name = "AK_Soldier", cost = 25, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
-	{name = "MG_Soldier", cost = 50, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
-	{name = "RPG_Soldier", cost = 80, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.rpgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	--{name = "AK_Soldier", cost = 25, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.riffleWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	--{name = "MG_Soldier", cost = 50, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.mgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
+	--{name = "RPG_Soldier", cost = 80, mass = {FDS.soldierWeight, FDS.kitWeight, FDS.rpgWeight}, slots = 1, variability = {{90,120}}, type = 'Infantry'},
 	{name = "BMP2", cost = 250, mass = {FDS.BMP2Weight}, slots = 4, variability = {}, type = 'Armor'},
 	{name = "BMP3", cost = 250, mass = {FDS.BMP3Weight}, slots = 4, variability = {}, type = 'Armor'},
 	{name = "M2A2", cost = 250, mass = {FDS.M2A2Weight}, slots = 4, variability = {}, type = 'Armor'},
@@ -3903,6 +3903,7 @@ function validateAliveUnits()
 						if allClearFlag then
 							local msgfinal = {}
 							--trigger.action.setUserFlag(901, true)
+							FDS.victoriousTeam = 'Azul'
 							msgfinal.text = teamCode[numero1] .. ' is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 							msgfinal.displayTime = 60  
 							msgfinal.sound = 'victory_Lane.ogg'
@@ -4847,7 +4848,7 @@ function recordLandPoints(_initEnt, coa)
 				if i.ucid == data.ucid then
 					newID = false
 					if FDS.recordDeliveredPoints[index]['deliveries'] ~= nil then
-						table.insert(FDS.recordDeliveredPoints[index]['deliveries'], {['name']= i.name,['value']= FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()], ['aircraft'] = _initEnt:getDesc().typeName})
+						table.insert(FDS.recordDeliveredPoints[index]['deliveries'], {['name']= i.name,['value']= FDS.teamPoints[coa]['Players'][_initEnt:getPlayerName()], ['aircraft'] = _initEnt:getDesc().typeName, ['coalition'] = coa})
 					else
 						FDS.recordDeliveredPoints[index]['deliveries'] = {}
 					end
@@ -6169,6 +6170,7 @@ FDS.eventActions = FDS.switch {
 								if allClearFlag then
 									local msgfinal = {}
 									--trigger.action.setUserFlag(901, true)
+									FDS.victoriousTeam = 'Vermelho'
 									msgfinal.text = 'Red Team is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 									msgfinal.displayTime = 60  
 									msgfinal.sound = 'victory_Lane.ogg'
@@ -6176,7 +6178,6 @@ FDS.eventActions = FDS.switch {
 									trigger.action.outSoundForCoalition(1,msgfinal.sound)
 									trigger.action.outSoundForCoalition(2,'zone_killed.ogg')
 									playWarning = false
-									FDS.victoriousTeam = 'Vermelho'
 									cleanPoints()
 									endMission()
 								end	
@@ -6234,6 +6235,7 @@ FDS.eventActions = FDS.switch {
 								if allClearFlag then
 									local msgfinal = {}
 									--trigger.action.setUserFlag(900, true)
+									FDS.victoriousTeam = 'Azul'
 									msgfinal.text = 'Blue Team is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 									msgfinal.displayTime = 60
 									msgfinal.sound = 'victory_Lane.ogg'
@@ -6241,7 +6243,6 @@ FDS.eventActions = FDS.switch {
 									trigger.action.outSoundForCoalition(2,msgfinal.sound)
 									trigger.action.outSoundForCoalition(1,'zone_killed.ogg')
 									playWarning = false
-									FDS.victoriousTeam = 'Azul'
 									cleanPoints()
 									endMission()
 								end
