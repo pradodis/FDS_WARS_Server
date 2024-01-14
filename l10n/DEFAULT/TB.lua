@@ -6022,7 +6022,7 @@ FDS.eventActions = FDS.switch {
 			local outfile = io.open(FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
 			outfile:write(instr)
 			outfile:close()
-
+			
 			local infile = io.open(FDS.exportPath .. "currentStats.json", "r")
 			local instr = infile:read("*a")
 			infile:close()
@@ -6030,7 +6030,7 @@ FDS.eventActions = FDS.switch {
 			local outfile = io.open(FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
 			outfile:write(instr)
 			outfile:close()
-
+			
 			local infile = io.open(FDS.exportPath .. "missionError.log", "r")
 			local instr = infile:read("*a")
 			infile:close()
@@ -6038,9 +6038,9 @@ FDS.eventActions = FDS.switch {
 			local outfile = io.open(FDS.exportPath .. "missionError_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".log", "w")
 			outfile:write(instr)
 			outfile:close()
-
+			
 			-- Exporting results
-			local outfile = io.open(FDS.exportPath .. "mission_result.json", "w")
+			local outfile = io.open(FDS.exportPath .. "mission_result.json", "w+")
 			local results_exp = {
 				['killRecord'] = FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json",
 				['currentStats'] = FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json",
@@ -6054,7 +6054,7 @@ FDS.eventActions = FDS.switch {
 			results_json = net.lua2json(results_exp)
 			outfile:write(results_json)
 			outfile:close()
-
+			
 			--pcall(killDCSProcess,{})
 		end
 	end,
