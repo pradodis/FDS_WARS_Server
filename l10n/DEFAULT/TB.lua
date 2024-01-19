@@ -222,7 +222,7 @@ FDS.transportFSSpeed = 200.0
 -- Bombers
 FDS.bomberQuantity = 10
 FDS.bomberMinInterval = 10.0
-FDS.bomberTargetsNumber = 16
+FDS.bomberTargetsNumber = 32
 FDS.bomberQty = {
 	['blue'] = 0,
 	['red'] = 0
@@ -4991,6 +4991,21 @@ end
 
 function endMission()
 	if FDS.exportDataSite then
+		-- Exporting results
+		local outfile = io.open(FDS.exportPath .. "mission_result.json", "w+")
+		local results_exp = {
+			['killRecord'] = FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json",
+			['currentStats'] = FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json",
+			['year'] = os.date("%y"),
+			['month'] = os.date("%m"),
+			['day'] = os.date("%d"),
+			['hour'] = os.date("%H"),
+			['minute'] = os.date("%M"),
+			['winner'] = FDS.victoriousTeam
+		}
+		results_json = net.lua2json(results_exp)
+		outfile:write(results_json)
+		outfile:close()
 		pcall(killDCSProcess,{})
 	end
 end
