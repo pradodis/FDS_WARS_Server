@@ -222,7 +222,7 @@ FDS.transportFSSpeed = 200.0
 -- Bombers
 FDS.bomberQuantity = 10
 FDS.bomberMinInterval = 10.0
-FDS.bomberTargetsNumber = 32
+FDS.bomberTargetsNumber = 16
 FDS.bomberQty = {
 	['blue'] = 0,
 	['red'] = 0
