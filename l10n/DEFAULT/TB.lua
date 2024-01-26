@@ -5436,7 +5436,7 @@ FDS.eventActions = FDS.switch {
 		if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil then
 			FDS.lastHits[_initEnt:getID()] = nil
 		end
-		if _initEnt ~= nil and type(_initEnt) ~= "table" and _initEnt:getPlayerName() ~= nil then 
+		if _initEnt ~= nil and type(_initEnt) == "table" and _initEnt:getPlayerName() ~= nil then 
 			gpUcid = FDS.retrieveUcid(_initEnt:getPlayerName(),FDS.isName)
 			local msg = {}
 			msg.text = _initEnt:getPlayerName() .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n - Join our Discord community at FDS Server (Link available in the briefing). \nAn explanation about this server is available on our youtube channel: "FDS Server - DCS".'
