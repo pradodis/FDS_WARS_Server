@@ -15,6 +15,7 @@ end
 FDS = {}
 env.info('FDS started')
 FDS.victoriousTeam = 'Missao terminada sem vencedor'
+FDS.endTime = {}
 FDS.redisStartTime = 5
 FDS.exportVector = {}
 FDS.recordDeliveredPoints = nil
@@ -3867,6 +3868,10 @@ function validateAliveUnits()
 		['blue'] = 'Red Team',
 		['red'] = 'Blue Team'
 	}
+	local teamCode_forVictory = {
+		['blue'] = 'Vermelho',
+		['red'] = 'Azul'
+	}
 	for numero1,coa in pairs(tgtObj) do
 		for numero2, zona in pairs(coa) do
 			for numero3, unidade in pairs(zona) do
@@ -3903,7 +3908,7 @@ function validateAliveUnits()
 						if allClearFlag then
 							local msgfinal = {}
 							--trigger.action.setUserFlag(901, true)
-							FDS.victoriousTeam = 'Azul'
+							FDS.victoriousTeam = teamCode_forVictory[numero1]
 							msgfinal.text = teamCode[numero1] .. ' is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 							msgfinal.displayTime = 60  
 							msgfinal.sound = 'victory_Lane.ogg'
@@ -4993,14 +4998,19 @@ function endMission()
 	if FDS.exportDataSite then
 		-- Exporting results
 		local outfile = io.open(FDS.exportPath .. "mission_result.json", "w+")
+		FDS.endTime['year'] = os.date("%y")
+		FDS.endTime['month'] = os.date("%m")
+		FDS.endTime['day'] = os.date("%d")
+		FDS.endTime['hour'] = os.date("%H")
+		FDS.endTime['minute'] = os.date("%M")
 		local results_exp = {
-			['killRecord'] = FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json",
-			['currentStats'] = FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json",
-			['year'] = os.date("%y"),
-			['month'] = os.date("%m"),
-			['day'] = os.date("%d"),
-			['hour'] = os.date("%H"),
-			['minute'] = os.date("%M"),
+			['killRecord'] = FDS.exportPath .. "killRecord_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json",
+			['currentStats'] = FDS.exportPath .. "currentStats_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json",
+			['year'] = FDS.endTime['year'],
+			['month'] = FDS.endTime['month'],
+			['day'] = FDS.endTime['day'],
+			['hour'] = FDS.endTime['hour'],
+			['minute'] = FDS.endTime['minute'],
 			['winner'] = FDS.victoriousTeam
 		}
 		results_json = net.lua2json(results_exp)
@@ -5097,9 +5107,8 @@ function assembleKillObject(initCheck, targetCheck, _event, _eventComplementar, 
 		eventExport['weaponDisplayName'] = nil 
 		eventExport['isPvP'] = nil
 	end
-
 	if not bypassEvent then
-		if initCheck and _event['initiator'] ~= nil and _event['initiator']:getPlayerName() and _event['initiator']:getPlayerName() ~= nil then 
+		if initCheck and _event['initiator'] ~= nil and _event['initiator']:getPlayerName() and _event['initiator']:getPlayerName() ~= nil then
 			local activePlayerList = net.get_player_list()
 			local activePlayerListTable = {}
 			for _, i in pairs(activePlayerList) do
@@ -5160,10 +5169,10 @@ function assembleKillObject(initCheck, targetCheck, _event, _eventComplementar, 
 		end
 	end
 	if editFDS and eventExport['targetPlayerName'] == nil then
-		if _event['target'] and _event['target'] ~= nil and _event['target']:getCategory() ~= nil and _event['target']:getGroup() ~= nil and _event['target']:getGroup():getName() ~= nil and eventExport['targetName'] ~= nil then
-			if _event['target']:getGroup() and _event['target']:getCategory() == 3 then
+		if _event['target'] and _event['target'] ~= nil and _event['target']:getCategory() ~= nil and eventExport['targetName'] ~= nil then
+			if _event['target']:getCategory() == 3 then
 				FDS.killedByEntity[eventExport['targetName']] = eventExport
-			else
+			elseif _event['target']:getGroup() ~= nil and _event['target']:getGroup():getName() ~= nil and _event['target']:getCategory() ~= 3 then
 				FDS.killedByEntity[_event['target']:getGroup():getName()] = eventExport
 			end
 		end
@@ -5458,7 +5467,7 @@ FDS.eventActions = FDS.switch {
 	[world.event.S_EVENT_PILOT_DEAD] = function(x, param)
 		local _event = param.event
 		local _initEnt = _event.initiator
-		if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil then
+		if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil and FDS.lastHits[_initEnt:getID()][4] ~= nil then
 			local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
 			local _targetEntLocal = _initEnt
 			local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
@@ -5657,7 +5666,7 @@ FDS.eventActions = FDS.switch {
 			trigger.action.outSoundForCoalition(sideTanker[coalit][2],msgTankerDown.sound) 
 			mist.scheduleFunction(respawnTanker, {coalit},timer.getTime()+FDS.respawnTankerTime)
 		end
-		if FDS.lastHits[_initEnt:getID()] ~= nil then
+		if FDS.lastHits[_initEnt:getID()] ~= nil and FDS.lastHits[_initEnt:getID()][4] ~= nil then
 			local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
 			local _targetEntLocal = _initEnt
 			local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
@@ -5735,7 +5744,7 @@ FDS.eventActions = FDS.switch {
 					FDS.teamPoints[actorDetails[1]]['Players'][actorDetails[2]] = nil
 				end
 			end
-			if FDS.lastHits[_initEnt:getID()] ~= nil then
+			if FDS.lastHits[_initEnt:getID()] ~= nil and FDS.lastHits[_initEnt:getID()][4] ~= nil then
 				local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
 				local _targetEntLocal = _initEnt
 				local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
@@ -6029,12 +6038,20 @@ FDS.eventActions = FDS.switch {
 			--cleanPoints()
 			exportRegionsData()
 		end
+		if FDS.endTime['year'] == nil then
+			FDS.endTime['year'] = os.date("%y")
+			FDS.endTime['month'] = os.date("%m")
+			FDS.endTime['day'] = os.date("%d")
+			FDS.endTime['hour'] = os.date("%H")
+			FDS.endTime['minute'] = os.date("%M")
+		end
+
 		if FDS.exportDataSite then
 			local infile = io.open(FDS.exportPath .. "killRecord.json", "r")
 			local instr = infile:read("*a")
 			infile:close()
 			
-			local outfile = io.open(FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
+			local outfile = io.open(FDS.exportPath .. "killRecord_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json", "w")
 			outfile:write(instr)
 			outfile:close()
 			
@@ -6042,7 +6059,7 @@ FDS.eventActions = FDS.switch {
 			local instr = infile:read("*a")
 			infile:close()
 			
-			local outfile = io.open(FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json", "w")
+			local outfile = io.open(FDS.exportPath .. "currentStats_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json", "w")
 			outfile:write(instr)
 			outfile:close()
 			
@@ -6050,20 +6067,20 @@ FDS.eventActions = FDS.switch {
 			local instr = infile:read("*a")
 			infile:close()
 			
-			local outfile = io.open(FDS.exportPath .. "missionError_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".log", "w")
+			local outfile = io.open(FDS.exportPath .. "missionError_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".log", "w")
 			outfile:write(instr)
 			outfile:close()
 			
 			-- Exporting results
 			local outfile = io.open(FDS.exportPath .. "mission_result.json", "w+")
 			local results_exp = {
-				['killRecord'] = FDS.exportPath .. "killRecord_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json",
-				['currentStats'] = FDS.exportPath .. "currentStats_" .. os.date("%y") .. os.date("%m") .. os.date("%d") .. os.date("%H") .. os.date("%M") .. ".json",
-				['year'] = os.date("%y"),
-				['month'] = os.date("%m"),
-				['day'] = os.date("%d"),
-				['hour'] = os.date("%H"),
-				['minute'] = os.date("%M"),
+				['killRecord'] = FDS.exportPath .. "killRecord_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json",
+				['currentStats'] = FDS.exportPath .. "currentStats_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json",
+				['year'] = FDS.endTime['year'],
+				['month'] = FDS.endTime['month'],
+				['day'] = FDS.endTime['day'],
+				['hour'] = FDS.endTime['hour'],
+				['minute'] = FDS.endTime['minute'],
 				['winner'] = FDS.victoriousTeam
 			}
 			results_json = net.lua2json(results_exp)
@@ -6295,7 +6312,7 @@ FDS.eventActions = FDS.switch {
 		end
 		-- LASTHITS
 		local idCheck = pcall(FDS.checkID,_initEnt)
-		if idCheck and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil then
+		if idCheck and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil and FDS.lastHits[_initEnt:getID()][4] ~= nil then
 			local _initEntLocal = FDS.lastHits[_initEnt:getID()][3]
 			local _targetEntLocal = _initEnt
 			local _eventLocal = FDS.lastHits[_initEnt:getID()][4]
