@@ -14,7 +14,7 @@ end
 
 FDS = {}
 env.info('FDS started')
-FDS.victoriousTeam = 'Missao terminada sem vencedor'
+victoriousTeam = 'Missao terminada sem vencedor'
 FDS.endTime = {}
 FDS.redisStartTime = 5
 FDS.exportVector = {}
@@ -3908,7 +3908,7 @@ function validateAliveUnits()
 						if allClearFlag then
 							local msgfinal = {}
 							--trigger.action.setUserFlag(901, true)
-							FDS.victoriousTeam = teamCode_forVictory[numero1]
+							victoriousTeam = teamCode_forVictory[numero1]
 							msgfinal.text = teamCode[numero1] .. ' is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 							msgfinal.displayTime = 60  
 							msgfinal.sound = 'victory_Lane.ogg'
@@ -4996,26 +4996,6 @@ end
 
 function endMission()
 	if FDS.exportDataSite then
-		-- Exporting results
-		local outfile = io.open(FDS.exportPath .. "mission_result.json", "w+")
-		FDS.endTime['year'] = os.date("%y")
-		FDS.endTime['month'] = os.date("%m")
-		FDS.endTime['day'] = os.date("%d")
-		FDS.endTime['hour'] = os.date("%H")
-		FDS.endTime['minute'] = os.date("%M")
-		local results_exp = {
-			['killRecord'] = FDS.exportPath .. "killRecord_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json",
-			['currentStats'] = FDS.exportPath .. "currentStats_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json",
-			['year'] = FDS.endTime['year'],
-			['month'] = FDS.endTime['month'],
-			['day'] = FDS.endTime['day'],
-			['hour'] = FDS.endTime['hour'],
-			['minute'] = FDS.endTime['minute'],
-			['winner'] = FDS.victoriousTeam
-		}
-		results_json = net.lua2json(results_exp)
-		outfile:write(results_json)
-		outfile:close()
 		pcall(killDCSProcess,{})
 	end
 end
@@ -5436,7 +5416,7 @@ FDS.eventActions = FDS.switch {
 		if _initEnt ~= nil and _initEnt:getID() ~= nil and FDS.lastHits[_initEnt:getID()] ~= nil then
 			FDS.lastHits[_initEnt:getID()] = nil
 		end
-		if _initEnt ~= nil and _initEnt:getPlayerName() ~= nil then 
+		if _initEnt ~= nil and _initEnt:getCategory() ~= 3 and _initEnt:getPlayerName() ~= nil then 
 			gpUcid = FDS.retrieveUcid(_initEnt:getPlayerName(),FDS.isName)
 			local msg = {}
 			msg.text = _initEnt:getPlayerName() .. ', you can help your team by:\n\n - Attacking ground targets in enemy zones (AG mission)(See map or [radio]>[F10]>[Where to attack]).\n - Attacking the enemy air transports in enemy supply route (AA mission) (See map).\n - Rescuing point around the map with helicopters (Helo rescue mission).\n - Killing enemy players in the process is always a good idea!\n\n - Visit our website: "https://dcs.comicorama.com/" for server and players stats.\n - Join our Discord community at FDS Server (Link available in the briefing). \nAn explanation about this server is available on our youtube channel: "FDS Server - DCS".'
@@ -6038,13 +6018,11 @@ FDS.eventActions = FDS.switch {
 			--cleanPoints()
 			exportRegionsData()
 		end
-		if FDS.endTime['year'] == nil then
-			FDS.endTime['year'] = os.date("%y")
-			FDS.endTime['month'] = os.date("%m")
-			FDS.endTime['day'] = os.date("%d")
-			FDS.endTime['hour'] = os.date("%H")
-			FDS.endTime['minute'] = os.date("%M")
-		end
+		FDS.endTime['year'] = os.date("%y")
+		FDS.endTime['month'] = os.date("%m")
+		FDS.endTime['day'] = os.date("%d")
+		FDS.endTime['hour'] = os.date("%H")
+		FDS.endTime['minute'] = os.date("%M")
 
 		if FDS.exportDataSite then
 			local infile = io.open(FDS.exportPath .. "killRecord.json", "r")
@@ -6081,7 +6059,7 @@ FDS.eventActions = FDS.switch {
 				['day'] = FDS.endTime['day'],
 				['hour'] = FDS.endTime['hour'],
 				['minute'] = FDS.endTime['minute'],
-				['winner'] = FDS.victoriousTeam
+				['winner'] = victoriousTeam
 			}
 			results_json = net.lua2json(results_exp)
 			outfile:write(results_json)
