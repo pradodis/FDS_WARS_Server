@@ -115,7 +115,7 @@ FDS.killEventNumber = 0
 FDS.killEventVector = {}
 FDS.sendDataFreq = 1.0
 FDS.exportPlayerUnits = true
-FDS.exportRegionsData = true
+FDS.exportRegionsData = false
 FDS.exportPlayerData = true
 FDS.importTax = {0.7}
 FDS.taxFreeValue = {100}
@@ -6042,6 +6042,22 @@ FDS.eventActions = FDS.switch {
 		FDS.endTime['minute'] = os.date("%M")
 
 		if FDS.exportDataSite then
+			-- Exporting results
+			local outfile = io.open(FDS.exportPath .. "mission_result.json", "w+")
+			local results_exp = {
+				['killRecord'] = FDS.exportPath .. "killRecord_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json",
+				['currentStats'] = FDS.exportPath .. "currentStats_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json",
+				['year'] = FDS.endTime['year'],
+				['month'] = FDS.endTime['month'],
+				['day'] = FDS.endTime['day'],
+				['hour'] = FDS.endTime['hour'],
+				['minute'] = FDS.endTime['minute'],
+				['winner'] = victoriousTeam
+			}
+			results_json = net.lua2json(results_exp)
+			outfile:write(results_json)
+			outfile:close()
+			
 			local infile = io.open(FDS.exportPath .. "killRecord.json", "r")
 			local instr = infile:read("*a")
 			infile:close()
@@ -6064,22 +6080,6 @@ FDS.eventActions = FDS.switch {
 			
 			local outfile = io.open(FDS.exportPath .. "missionError_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".log", "w")
 			outfile:write(instr)
-			outfile:close()
-			
-			-- Exporting results
-			local outfile = io.open(FDS.exportPath .. "mission_result.json", "w+")
-			local results_exp = {
-				['killRecord'] = FDS.exportPath .. "killRecord_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json",
-				['currentStats'] = FDS.exportPath .. "currentStats_" .. FDS.endTime['year'] .. FDS.endTime['month'] .. FDS.endTime['day'] .. FDS.endTime['hour'] .. FDS.endTime['minute'] .. ".json",
-				['year'] = FDS.endTime['year'],
-				['month'] = FDS.endTime['month'],
-				['day'] = FDS.endTime['day'],
-				['hour'] = FDS.endTime['hour'],
-				['minute'] = FDS.endTime['minute'],
-				['winner'] = victoriousTeam
-			}
-			results_json = net.lua2json(results_exp)
-			outfile:write(results_json)
 			outfile:close()
 			
 			--pcall(killDCSProcess,{})
