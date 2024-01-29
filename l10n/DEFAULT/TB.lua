@@ -537,6 +537,11 @@ function startRedisMission()
 	end
 end
 
+function is_point_in_circ(p1, p2, distancia)
+    local dist = math.sqrt((p2[1] - p1[1])^2 + (p2[2] - p1[2])^2)
+    return dist < distancia
+end
+
 function cleanServer()
 	local volS = {id = world.VolumeType.SPHERE,params = {point = {x = -82595.047937808,y = 0,z = 401311.75782212},radius = 200000.0}}
 	local cObj = world.removeJunk(volS)
@@ -2287,7 +2292,7 @@ end
 function creatingBases()
 	-- Init Static
 	deviation0 = 150.0
-	angle0 = 6.6
+	angle0 = math.random(1,360) -- 6.6
 
 	deviationHangarr = 120.0
 	angleHangarr = -3.1415/180*40
@@ -2301,7 +2306,7 @@ function creatingBases()
 	deviationFuelc = 70.0
 	angleFuelc = 3.1415/180*160
     
-    haeding4All = 45.0
+    haeding4All = math.random(1,360) -- 45.0
 
 	-------
 
@@ -2317,20 +2322,20 @@ function creatingBases()
 	FDS.initTgtObj = {}
 
     FDS.tgtQty = {
-        ['Paratrooper AKS-74'] = {FDS.InfAK,'Inf_AK'}, 
-        ['Paratrooper RPG-16'] = {FDS.InfRPG,'Inf_RPG'},
-        ['Ural-4320T'] = {FDS.ArmTrucks,'STrucks'}, 
-        ['BMP-1'] = {FDS.ArmBMP1,'Arm_BMP1'}, 
-        ['BMP-2'] = {FDS.ArmBMP2,'Arm_BMP2'}, 
-        ['T-55'] = {FDS.ArmT55,'Arm_T55'} , 
-        ['T-72B'] = {FDS.ArmT72,'Arm_T72'}, 
-        ['T-80UD'] = {FDS.ArmT80,'Arm_T80'} , 
-        ['ZSU-23-4 Shilka'] = {FDS.AAA,'AAA'}, 
-        ['2S6 Tunguska'] = {FDS.AATung,'AA_Tung'}, 
-        ['Strela-1 9P31'] = {FDS.AAStrela1,'AA_Strela1'}, 
-        ['Strela-10M3'] = {FDS.AAStrela2,'AA_Strela2'}, 
-        ['SA-18 Igla-S manpad'] = {FDS.AAIgla,'AA_Igla'},
-    	['Tor 9A331'] = {FDS.AATor,'AA_Tor'}}
+        ['Paratrooper AKS-74'] = {FDS.InfAK,'Inf_AK',20}, 
+        ['Paratrooper RPG-16'] = {FDS.InfRPG,'Inf_RPG',20},
+        ['Ural-4320T'] = {FDS.ArmTrucks,'STrucks',40}, 
+        ['BMP-1'] = {FDS.ArmBMP1,'Arm_BMP1',40}, 
+        ['BMP-2'] = {FDS.ArmBMP2,'Arm_BMP2',40}, 
+        ['T-55'] = {FDS.ArmT55,'Arm_T55',40} , 
+        ['T-72B'] = {FDS.ArmT72,'Arm_T72',40}, 
+        ['T-80UD'] = {FDS.ArmT80,'Arm_T80',40} , 
+        ['ZSU-23-4 Shilka'] = {FDS.AAA,'AAA',40}, 
+        ['2S6 Tunguska'] = {FDS.AATung,'AA_Tung',40}, 
+        ['Strela-1 9P31'] = {FDS.AAStrela1,'AA_Strela1',40}, 
+        ['Strela-10M3'] = {FDS.AAStrela2,'AA_Strela2',40}, 
+        ['SA-18 Igla-S manpad'] = {FDS.AAIgla,'AA_Igla',40},
+    	['Tor 9A331'] = {FDS.AATor,'AA_Tor',40}}
     
 	FDS.joinedZones = {}
 	zones = mist.DBs.zonesByName
@@ -2446,6 +2451,7 @@ function creatingBases()
 	staticTypes.cat = {['.Command Center']= {4}, ['Shelter']={4}, ['Fuel tank'] = {4}}
 	staticTypes.dist = {['.Command Center']= {deviation0, angle0}, ['Shelter']={{deviationHangarr, angleHangarr},{deviationHangarc, angleHangarc}}, ['Fuel tank'] = {{deviationFuelr, angleFuelr},{deviationFuelc, angleFuelc}}}
 	staticTypes.collum = {['.Command Center']= {nCP}, ['Shelter']={nHangarr, nHangarc}, ['Fuel tank'] = {nFuelr, nFuelc}}
+	staticTypes.boundingBox = {['.Command Center']= 70, ['Shelter']=70, ['Fuel tank'] = 50}
 
 	for tz,cc in pairs(FDS.joinedZones) do
 		zonePoint = zones[tz]["point"]
@@ -2471,9 +2477,9 @@ function creatingBases()
 					table.insert(boxPos,{x=addCP.x+40.0*math.cos(mist.utils.toRadian(addCP.heading+45.0+90.0*vert)), y=addCP.y+40.0*math.sin(addCP.heading+45.0+90.0*vert)})
 				end
                 if cc == 1 then
-                    table.insert(tgtObj.blue[tz],{addCP.name,{x = addCP.x, y = addCP.y},boxPos,StaticObject.getByName(addCP.name):getCategory()})
+                    table.insert(tgtObj.blue[tz],{addCP.name,{x = addCP.x, y = addCP.y, bbox = staticTypes.boundingBox[i]},boxPos,StaticObject.getByName(addCP.name):getCategory()})
                 else
-                    table.insert(tgtObj.red[tz],{addCP.name,{x = addCP.x, y = addCP.y},boxPos,StaticObject.getByName(addCP.name):getCategory()})
+                    table.insert(tgtObj.red[tz],{addCP.name,{x = addCP.x, y = addCP.y, bbox = staticTypes.boundingBox[i]},boxPos,StaticObject.getByName(addCP.name):getCategory()})
                 end
 
 			else
@@ -2499,9 +2505,9 @@ function creatingBases()
                             table.insert(boxPos,{x=addCP.x+80.0*math.cos(mist.utils.toRadian(addCP.heading+45.0+90.0*vert)), y=addCP.y+80.0*math.sin(addCP.heading+45.0+90.0*vert)})
                         end
                         if cc == 1 then
-							table.insert(tgtObj.blue[tz],{addCP.name,{x = addCP.x, y = addCP.y},boxPos,StaticObject.getByName(addCP.name):getCategory()})
+							table.insert(tgtObj.blue[tz],{addCP.name,{x = addCP.x, y = addCP.y, bbox = staticTypes.boundingBox[i]},boxPos,StaticObject.getByName(addCP.name):getCategory()})
                         else
-                            table.insert(tgtObj.red[tz],{addCP.name,{x = addCP.x, y = addCP.y},boxPos,StaticObject.getByName(addCP.name):getCategory()})
+                            table.insert(tgtObj.red[tz],{addCP.name,{x = addCP.x, y = addCP.y, bbox = staticTypes.boundingBox[i]},boxPos,StaticObject.getByName(addCP.name):getCategory()})
                         end
 					end
 				end
@@ -2516,17 +2522,27 @@ function creatingBases()
 					while checkP==true do
 						bornPoint = mist.getRandomPointInZone(tz)
 						if cc == 1 then
+							checkP = false
 							for nObj, cObj in ipairs(tgtObj.blue[tz]) do
-								checkP = mist.pointInPolygon(bornPoint,cObj[3])
+								--checkP = mist.pointInPolygon(bornPoint,cObj[3])
+								if is_point_in_circ({bornPoint.x,bornPoint.y},{cObj[2]['x'], cObj[2]['y']},cObj[2]['bbox']) then
+									checkP = true
+								end
 							end
 						else
+							checkP = false
 							for nObj, cObj in ipairs(tgtObj.red[tz]) do
-								checkP = mist.pointInPolygon(bornPoint,cObj[3])
+								--checkP = mist.pointInPolygon(bornPoint,cObj[3])
+								if is_point_in_circ({bornPoint.x,bornPoint.y},{cObj[2]['x'], cObj[2]['y']},cObj[2]['bbox']) then
+									checkP = true
+								end
 							end
 						end
 						it = it + 1
-						if it > 10 then
+						if it > 100 then
 							checkP = false
+						end
+						if checkP == false then
 						end
 					end
 					addUnit = {}
@@ -2566,14 +2582,15 @@ function creatingBases()
 
 					boxPos = {}
 					for vert = 0,3,1 do 
+						--table.insert(boxPos,{x=addUni.units[1].x+40.0*math.cos(mist.utils.toRadian(addUni.units[1].heading+45.0+90.0*vert)), y=addUni.units[1].y+40.0*math.sin(addUni.units[1].heading+45.0+90.0*vert)})
 						table.insert(boxPos,{x=addUni.units[1].x+40.0*math.cos(mist.utils.toRadian(addUni.units[1].heading+45.0+90.0*vert)), y=addUni.units[1].y+40.0*math.sin(addUni.units[1].heading+45.0+90.0*vert)})
 					end
 					FDS.entityKills[addUni.name] = nil
 					FDS.killedByEntity[addUni.name] = nil
 					if cc == 1 then
-						table.insert(tgtObj.blue[tz],{addUni.name,{x = addUni.units[1].x, y = addUni.units[1].y},boxPos,Group.getByName(addUni.name):getCategory()})
+						table.insert(tgtObj.blue[tz],{addUni.name,{x = addUni.units[1].x, y = addUni.units[1].y, bbox = qt[3]},boxPos,Group.getByName(addUni.name):getCategory()})
 					else
-						table.insert(tgtObj.red[tz],{addUni.name,{x = addUni.units[1].x, y = addUni.units[1].y},boxPos,Group.getByName(addUni.name):getCategory()})
+						table.insert(tgtObj.red[tz],{addUni.name,{x = addUni.units[1].x, y = addUni.units[1].y, bbox = qt[3]},boxPos,Group.getByName(addUni.name):getCategory()})
 					end
 				end
             end
