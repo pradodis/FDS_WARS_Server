@@ -6197,7 +6197,7 @@ FDS.eventActions = FDS.switch {
 								if allClearFlag then
 									local msgfinal = {}
 									--trigger.action.setUserFlag(901, true)
-									FDS.victoriousTeam = 'Vermelho'
+									victoriousTeam = 'Vermelho'
 									msgfinal.text = 'Red Team is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 									msgfinal.displayTime = 60  
 									msgfinal.sound = 'victory_Lane.ogg'
@@ -6262,7 +6262,7 @@ FDS.eventActions = FDS.switch {
 								if allClearFlag then
 									local msgfinal = {}
 									--trigger.action.setUserFlag(900, true)
-									FDS.victoriousTeam = 'Azul'
+									victoriousTeam = 'Azul'
 									msgfinal.text = 'Blue Team is victorious! Restarting Server in 60 seconds. It is recommended to disconnect to avoid DCS crash.'
 									msgfinal.displayTime = 60
 									msgfinal.sound = 'victory_Lane.ogg'
