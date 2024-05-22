@@ -3,13 +3,13 @@ settings=
 	["dials"]=
 	{
 		["mode_dial"]=0,
-		["manual_frequency"]=305000000,
+		["manual_frequency"]=251000000,
 		["selection_dial"]=0,
 		["channel_dial"]=0,
 	},
 	["presets"]=
 	{
-		[1]=305000000,
+		[1]=251000000,
 		[2]=275800000,
 		[3]=327000000,
 		[4]=273550000,

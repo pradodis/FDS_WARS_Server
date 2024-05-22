@@ -159,6 +159,7 @@ FDS.rewardDict = {
 	['Fuel tank'] = FDS.fuelReward,
 	['FA-18C_hornet'] = FDS.f18Reward,
 	['F-4E'] = FDS.f4Reward,
+	['F-4E-45MC'] = FDS.f4Reward,
 	['F-5E-3'] = FDS.f5Reward,
 	['Mirage-F1C'] = FDS.f1cReward,
 	['F-14B'] = FDS.f14bReward,
@@ -1453,6 +1454,7 @@ function FDS.baseSpawn(args)
 			FDS.deployedUnits[FDS.trueCoalitionCode[args.requester:getCoalition()]][Group.getByName(newTroop.name):getUnits()[1]:getName()] = {['owner'] = gpUcid, ['ownerName'] = args.requester:getUnits()[1]:getPlayerName(), ['age'] = 0, ['groupData'] = {['listName'] = listName, ['mockUpName'] = mockUpName,['x'] = dropPoint.x, ['z'] = dropPoint.z, ['hz'] = headingDev.z, ['hx'] = headingDev.x, ['type'] =  navalGroundAssets[args.isNaval][args.name].type, ['coa'] = args.requester:getCoalition(), ['showName'] = groupNameMock .. tostring(groupNameId)}}
 			exportCreatedUnits()
 			local gpId = Group.getByName(newTroop.name)
+			deployerID = FDS.retrieveUcid(gpId:getUnits()[1]:getPlayerName(),FDS.isName)
 			gpId = gpId:getUnits()[1].id_
 			redisStringAdd = tostring(FDS.trueCoalitionCode[args.requester:getCoalition()])
 			redisStringAdd = redisStringAdd:gsub("%s", "")
@@ -3600,8 +3602,8 @@ end
 function checkAirbornFighters(coa)
 	coaKeys = {[1]='red',[2]='blue'}
 	counterKeys = {[1]='blue',[2]='red'}
-	interceptorKeys = {"M-2000C", "Mirage-F1CE", "MiG-21Bis", "F-5E-3"}
-	fighterKeys = {"F-16C_50", "F-15C", "FA-18C_hornet", "F-14B", "MiG-29G", "JF-17", "Su-33", "MiG-29S", "Su-27", "F-14A-135-GR", "J-11A", "MiG-29A", }
+	interceptorKeys = {"M-2000C", "Mirage-F1CE", "MiG-21Bis", "F-5E-3", "F-4E-45MC"}
+	fighterKeys = {"F-16C_50", "F-15C", "F-15ESE", "FA-18C_hornet", "F-14B", "MiG-29G", "JF-17", "Su-33", "MiG-29S", "Su-27", "F-14A-135-GR", "J-11A", "MiG-29A", }
 	gPData = mist.DBs.humansByName
 	nFighter = 0
 	counterFighter = 0
